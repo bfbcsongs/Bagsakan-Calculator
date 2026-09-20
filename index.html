@@ -178,6 +178,20 @@ button {
   border-radius: 15px;
   padding: 18px;
   box-shadow: 0 10px 40px rgba(0,0,0,.3);
+  position: relative;
+  touch-action: pan-y;
+  transition: transform 0.15s ease-out;
+}
+
+/* Visual handle indicator for swiping */
+.modal::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  margin: 0 auto 12px;
 }
 
 .modal h2 {
@@ -371,7 +385,7 @@ button {
 
 <div class="modal-backdrop" id="modalBackdrop">
 
-  <div class="modal">
+  <div class="modal" id="modalWindow">
 
     <h2>Amount Multipliers</h2>
 
@@ -669,7 +683,7 @@ function restoreInputs() {
 }
 
 
-/* INPUT LISTENER */
+/* INPUT & NAVIGATION LISTENERS */
 
 document.addEventListener(
   "input",
@@ -687,6 +701,50 @@ document.addEventListener(
 
   }
 );
+
+
+/* AUTO-SELECT TEXT ON FOCUS */
+
+document.addEventListener("focusin", e => {
+
+  if (e.target.tagName === "INPUT") {
+
+    setTimeout(() => {
+      e.target.select();
+    }, 50);
+
+  }
+
+});
+
+
+/* PRESS ENTER TO FOCUS NEXT INPUT FIELD */
+
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Enter" && e.target.tagName === "INPUT") {
+
+    e.preventDefault();
+
+    const inputs = Array.from(
+      document.querySelectorAll("input[type=number]")
+    ).filter(i => i.offsetParent !== null);
+
+    const index = inputs.indexOf(e.target);
+
+    if (index > -1 && index < inputs.length - 1) {
+
+      inputs[index + 1].focus();
+
+    } else {
+
+      e.target.blur();
+
+    }
+
+  }
+
+});
 
 
 /* RESTORE */
@@ -788,18 +846,26 @@ function openMultiplierSettings() {
 }
 
 
-/* CANCEL */
+/* CLOSE MODAL HELPER */
 
-document.getElementById(
-  "cancelBtn"
-).onclick = () => {
+function closeModal() {
+
+  const modal = document.getElementById("modalWindow");
+  modal.style.transform = "";
 
   document.getElementById(
     "modalBackdrop"
   ).style.display =
     "none";
 
-};
+}
+
+
+/* CANCEL */
+
+document.getElementById(
+  "cancelBtn"
+).onclick = closeModal;
 
 
 /* SAVE MULTIPLIERS */
@@ -831,11 +897,7 @@ document.getElementById(
   );
 
 
-  document.getElementById(
-    "modalBackdrop"
-  ).style.display =
-    "none";
-
+  closeModal();
 
   calculate();
 
@@ -855,13 +917,66 @@ document
         "modalBackdrop"
       ) {
 
-        e.target.style.display =
-          "none";
+        closeModal();
 
       }
 
     }
   );
+
+
+/* SWIPE DOWN TO DISMISS MODAL */
+
+const modalWindow = document.getElementById("modalWindow");
+let startY = 0;
+let currentY = 0;
+let isSwiping = false;
+
+modalWindow.addEventListener("touchstart", e => {
+
+  startY = e.touches[0].clientY;
+  isSwiping = true;
+  modalWindow.style.transition = "none";
+
+}, { passive: true });
+
+modalWindow.addEventListener("touchmove", e => {
+
+  if (!isSwiping) return;
+
+  currentY = e.touches[0].clientY;
+  const diffY = currentY - startY;
+
+  if (diffY > 0) {
+
+    modalWindow.style.transform = `translateY(${diffY}px)`;
+
+  }
+
+}, { passive: true });
+
+modalWindow.addEventListener("touchend", e => {
+
+  if (!isSwiping) return;
+
+  isSwiping = false;
+  const diffY = currentY - startY;
+  modalWindow.style.transition = "transform 0.15s ease-out";
+
+  if (diffY > 90) {
+
+    closeModal();
+
+  } else {
+
+    modalWindow.style.transform = "translateY(0)";
+
+  }
+
+  startY = 0;
+  currentY = 0;
+
+});
 
 
 /* CLEAR INPUTS */
