@@ -556,10 +556,12 @@ function calculate() {
       sale * num(multipliers[p]);
 
 
+    /* FORMAT SALE AS QUANTITY (INTEGER OR CLEAN DECIMAL) */
+
     document.getElementById(
       `sale-${p}`
     ).textContent =
-      sale.toFixed(2);
+      Number.isInteger(sale) ? sale : sale.toFixed(2);
 
 
     document.getElementById(
