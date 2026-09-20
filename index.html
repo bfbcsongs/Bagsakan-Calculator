@@ -7,7 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="DEL RET SALES">
 <title>DEL RET SALES</title>
-
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <style>
 * {
   box-sizing: border-box;
@@ -1039,6 +1040,15 @@ document.getElementById(
 };
 
 </script>
-
+<script>
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js?v=1', { scope: './' })
+            .then(reg => console.log('Service Worker Registered!', reg))
+            .catch(err => console.log('Service Worker Registration Failed:', err));
+    });
+}
+</script>
 </body>
 </html>
