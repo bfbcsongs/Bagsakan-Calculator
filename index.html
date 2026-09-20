@@ -64,12 +64,12 @@ th {
 }
 
 th:first-child {
-  width: 12%;
+  width: 20%;
 }
 
 th:nth-child(2),
 th:nth-child(3) {
-  width: 22%;
+  width: 20%;
 }
 
 th:nth-child(4) {
@@ -77,12 +77,19 @@ th:nth-child(4) {
 }
 
 th:nth-child(5) {
-  width: 24%;
+  width: 20%;
 }
 
 td.product {
   font-weight: bold;
-  font-size: 19px;
+  font-size: 16px;
+}
+
+td.product span.mult-tag {
+  font-size: 12px;
+  color: #107c41;
+  display: block;
+  font-weight: normal;
 }
 
 input {
@@ -271,10 +278,10 @@ button {
 
       <thead>
         <tr>
-          <th></th>
+          <th>ITEM</th>
           <th>DEL</th>
           <th>RET</th>
-          <th>SALE</th>
+          <th id="saleHeader">SALE</th>
           <th id="amountHeader">Amount</th>
         </tr>
       </thead>
@@ -375,7 +382,7 @@ button {
   </button>
 
   <div class="hint">
-    Tap "Amount" 5 times to open multiplier settings.
+    Tap "SALE" 5 times to edit multiplier settings.
   </div>
 
 </div>
@@ -442,8 +449,8 @@ products.forEach(p => {
 
   tr.innerHTML = `
 
-    <td class="product">
-      ${p}
+    <td class="product" id="label-${p}">
+      ${p} <span class="mult-tag">(x${multipliers[p]})</span>
     </td>
 
     <td>
@@ -483,6 +490,25 @@ products.forEach(p => {
   mainRows.appendChild(tr);
 
 });
+
+
+/* UPDATE DISPLAY MULTIPLIERS */
+
+function updateProductLabels() {
+
+  products.forEach(p => {
+
+    const label = document.getElementById(`label-${p}`);
+
+    if (label) {
+
+      label.innerHTML = `${p} <span class="mult-tag">(x${multipliers[p]})</span>`;
+
+    }
+
+  });
+
+}
 
 
 /* NUMBER FUNCTION */
@@ -755,7 +781,7 @@ calculate();
 
 
 /* =================================
-   5-TAP AMOUNT SETTINGS
+   5-TAP SALE HEADER SETTINGS
    ================================= */
 
 let tapCount = 0;
@@ -764,7 +790,7 @@ let tapTimer;
 
 
 document
-  .getElementById("amountHeader")
+  .getElementById("saleHeader")
   .addEventListener(
     "click",
     () => {
@@ -897,6 +923,8 @@ document.getElementById(
   );
 
 
+  updateProductLabels();
+
   closeModal();
 
   calculate();
@@ -1012,4 +1040,4 @@ document.getElementById(
 </script>
 
 </body>
-  </html>
+</html>
