@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#107c41">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DEL RET SALES">
+<title>DEL RET SALES</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+  padding: 14px;
+}
+
+.app {
+  max-width: 620px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  margin: 4px 0 14px;
+  font-size: 25px;
+  letter-spacing: .5px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th,
+td {
+  border: 1px solid #d1d5db;
+  text-align: center;
+  padding: 8px 5px;
+}
+
+th {
+  background: #107c41;
+  color: white;
+  font-size: 14px;
+  height: 45px;
+  cursor: pointer;
+}
+
+th:first-child {
+  width: 12%;
+}
+
+th:nth-child(2),
+th:nth-child(3) {
+  width: 22%;
+}
+
+th:nth-child(4) {
+  width: 20%;
+}
+
+th:nth-child(5) {
+  width: 24%;
+}
+
+td.product {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  padding: 9px 5px;
+  font-size: 17px;
+  text-align: center;
+  background: #fff;
+  outline: none;
+}
+
+input:focus {
+  border-color: #107c41;
+  box-shadow: 0 0 0 2px rgba(16,124,65,.12);
+}
+
+.sale,
+.amount,
+.calc-value {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.amount {
+  color: #107c41;
+}
+
+.summary td:first-child {
+  text-align: left;
+  font-weight: bold;
+  padding-left: 14px;
+}
+
+.summary input {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.total-row td {
+  background: #ecfdf5;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.net-row td {
+  background: #107c41;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.net-row td:first-child {
+  color: white;
+}
+
+.hint {
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  margin: 8px 0 2px;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 16px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.clear {
+  width: 100%;
+  background: #dc2626;
+  color: white;
+}
+
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 10;
+  padding: 25px 14px;
+}
+
+.modal {
+  max-width: 500px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 15px;
+  padding: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.3);
+}
+
+.modal h2 {
+  margin: 0 0 12px;
+  font-size: 21px;
+}
+
+.mult-row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.mult-row input {
+  text-align: right;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.save {
+  flex: 1;
+  background: #107c41;
+  color: white;
+}
+
+.cancel {
+  flex: 1;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.small-note {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 8px;
+  }
+
+  th,
+  td {
+    padding: 6px 3px;
+  }
+
+  input {
+    font-size: 15px;
+    padding: 8px 2px;
+  }
+
+  .sale,
+  .amount {
+    font-size: 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>DEL • RET • SALES</h1>
+
+  <!-- MAIN TABLE -->
+  <div class="card">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th></th>
+          <th>DEL</th>
+          <th>RET</th>
+          <th>SALE</th>
+          <th id="amountHeader">Amount</th>
+        </tr>
+      </thead>
+
+      <tbody id="mainRows"></tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- SUMMARY -->
+  <div class="card summary">
+
+    <table>
+
+      <tbody>
+
+        <tr class="total-row">
+          <td colspan="3">Total</td>
+          <td colspan="2" id="total">0.00</td>
+        </tr>
+
+        <tr>
+          <td colspan="3">Barya</td>
+          <td colspan="2">
+            <input
+              id="barya"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              placeholder="0">
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">AL</td>
+          <td colspan="2">
+            <input
+              id="al"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              placeholder="0">
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">EX1</td>
+          <td colspan="2">
+            <input
+              id="ex1"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              placeholder="0">
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">EX2</td>
+          <td colspan="2">
+            <input
+              id="ex2"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              placeholder="0">
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">EX3</td>
+          <td colspan="2">
+            <input
+              id="ex3"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              placeholder="0">
+          </td>
+        </tr>
+
+        <tr class="net-row">
+          <td colspan="3">NET TOTAL</td>
+          <td colspan="2" id="netTotal">0.00</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <button class="clear" id="clearBtn">
+    CLEAR INPUTS
+  </button>
+
+  <div class="hint">
+    Tap "Amount" 5 times to open multiplier settings.
+  </div>
+
+</div>
+
+
+<!-- MULTIPLIER SETTINGS -->
+
+<div class="modal-backdrop" id="modalBackdrop">
+
+  <div class="modal">
+
+    <h2>Amount Multipliers</h2>
+
+    <div id="multiplierRows"></div>
+
+    <div class="small-note">
+      Formula: SALE × multiplier = Amount
+    </div>
+
+    <div class="modal-actions">
+
+      <button class="cancel" id="cancelBtn">
+        Cancel
+      </button>
+
+      <button class="save" id="saveBtn">
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const products = ["R", "P", "L", "M", "C"];
+
+const defaultMultipliers = {
+  R: 45,
+  P: 45,
+  L: 45,
+  M: 45,
+  C: 45
+};
+
+let multipliers =
+  JSON.parse(
+    localStorage.getItem("delret_multipliers")
+  ) || {...defaultMultipliers};
+
+
+const mainRows =
+  document.getElementById("mainRows");
+
+
+/* CREATE PRODUCT ROWS */
+
+products.forEach(p => {
+
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+
+    <td class="product">
+      ${p}
+    </td>
+
+    <td>
+      <input
+        class="del"
+        data-product="${p}"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        placeholder="0">
+    </td>
+
+    <td>
+      <input
+        class="ret"
+        data-product="${p}"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        placeholder="0">
+    </td>
+
+    <td
+      class="sale"
+      id="sale-${p}">
+      0.00
+    </td>
+
+    <td
+      class="amount"
+      id="amount-${p}">
+      0.00
+    </td>
+
+  `;
+
+  mainRows.appendChild(tr);
+
+});
+
+
+/* NUMBER FUNCTION */
+
+function num(value) {
+
+  const n = parseFloat(value);
+
+  return Number.isFinite(n) ? n : 0;
+
+}
+
+
+/* CALCULATE EVERYTHING */
+
+function calculate() {
+
+  let total = 0;
+
+
+  products.forEach(p => {
+
+    const del =
+      num(
+        document.querySelector(
+          `.del[data-product="${p}"]`
+        ).value
+      );
+
+    const ret =
+      num(
+        document.querySelector(
+          `.ret[data-product="${p}"]`
+        ).value
+      );
+
+
+    /* DEL - RET */
+
+    const sale = del - ret;
+
+
+    /* SALE × MULTIPLIER */
+
+    const amount =
+      sale * num(multipliers[p]);
+
+
+    document.getElementById(
+      `sale-${p}`
+    ).textContent =
+      sale.toFixed(2);
+
+
+    document.getElementById(
+      `amount-${p}`
+    ).textContent =
+      amount.toFixed(2);
+
+
+    total += amount;
+
+  });
+
+
+  /* INPUTS */
+
+  const barya =
+    num(
+      document.getElementById("barya").value
+    );
+
+  const al =
+    num(
+      document.getElementById("al").value
+    );
+
+  const ex1 =
+    num(
+      document.getElementById("ex1").value
+    );
+
+  const ex2 =
+    num(
+      document.getElementById("ex2").value
+    );
+
+  const ex3 =
+    num(
+      document.getElementById("ex3").value
+    );
+
+
+  /*
+
+    NET TOTAL
+    = TOTAL
+    + BARYA
+    - AL
+    - EX1
+    - EX2
+    - EX3
+
+  */
+
+  const net =
+    total
+    + barya
+    - al
+    - ex1
+    - ex2
+    - ex3;
+
+
+  document.getElementById(
+    "total"
+  ).textContent =
+    total.toFixed(2);
+
+
+  document.getElementById(
+    "netTotal"
+  ).textContent =
+    net.toFixed(2);
+
+
+  saveInputs();
+
+}
+
+
+/* SAVE INPUTS */
+
+function saveInputs() {
+
+  const data = {};
+
+  document.querySelectorAll(
+    "input"
+  ).forEach(input => {
+
+    if (input.type === "number") {
+
+      const key =
+        input.id ||
+        input.dataset.product +
+        "_" +
+        input.className;
+
+      data[key] = input.value;
+
+    }
+
+  });
+
+  localStorage.setItem(
+    "delret_inputs",
+    JSON.stringify(data)
+  );
+
+}
+
+
+/* RESTORE INPUTS */
+
+function restoreInputs() {
+
+  const data =
+    JSON.parse(
+      localStorage.getItem(
+        "delret_inputs"
+      ) || "{}"
+    );
+
+
+  document.querySelectorAll(
+    "input"
+  ).forEach(input => {
+
+    const key =
+      input.id ||
+      input.dataset.product +
+      "_" +
+      input.className;
+
+
+    if (
+      data[key] !== undefined
+    ) {
+
+      input.value =
+        data[key];
+
+    }
+
+  });
+
+}
+
+
+/* INPUT LISTENER */
+
+document.addEventListener(
+  "input",
+  e => {
+
+    if (
+      e.target.matches(
+        "input[type=number]"
+      )
+    ) {
+
+      calculate();
+
+    }
+
+  }
+);
+
+
+/* RESTORE */
+
+restoreInputs();
+
+calculate();
+
+
+/* =================================
+   5-TAP AMOUNT SETTINGS
+   ================================= */
+
+let tapCount = 0;
+
+let tapTimer;
+
+
+document
+  .getElementById("amountHeader")
+  .addEventListener(
+    "click",
+    () => {
+
+      tapCount++;
+
+      clearTimeout(tapTimer);
+
+      tapTimer =
+        setTimeout(
+          () => {
+            tapCount = 0;
+          },
+          1200
+        );
+
+
+      if (tapCount >= 5) {
+
+        tapCount = 0;
+
+        openMultiplierSettings();
+
+      }
+
+    }
+  );
+
+
+/* OPEN MULTIPLIER SETTINGS */
+
+function openMultiplierSettings() {
+
+  const box =
+    document.getElementById(
+      "multiplierRows"
+    );
+
+  box.innerHTML = "";
+
+
+  products.forEach(p => {
+
+    const row =
+      document.createElement(
+        "div"
+      );
+
+    row.className =
+      "mult-row";
+
+
+    row.innerHTML = `
+
+      <strong>
+        ${p} multiplier
+      </strong>
+
+      <input
+        id="mult-${p}"
+        type="number"
+        inputmode="decimal"
+        step="0.01"
+        value="${multipliers[p]}">
+
+    `;
+
+
+    box.appendChild(row);
+
+  });
+
+
+  document.getElementById(
+    "modalBackdrop"
+  ).style.display =
+    "block";
+
+}
+
+
+/* CANCEL */
+
+document.getElementById(
+  "cancelBtn"
+).onclick = () => {
+
+  document.getElementById(
+    "modalBackdrop"
+  ).style.display =
+    "none";
+
+};
+
+
+/* SAVE MULTIPLIERS */
+
+document.getElementById(
+  "saveBtn"
+).onclick = () => {
+
+  products.forEach(p => {
+
+    const value =
+      num(
+        document.getElementById(
+          `mult-${p}`
+        ).value
+      );
+
+    multipliers[p] =
+      value;
+
+  });
+
+
+  localStorage.setItem(
+    "delret_multipliers",
+    JSON.stringify(
+      multipliers
+    )
+  );
+
+
+  document.getElementById(
+    "modalBackdrop"
+  ).style.display =
+    "none";
+
+
+  calculate();
+
+};
+
+
+/* CLOSE MODAL BY TAPPING OUTSIDE */
+
+document
+  .getElementById("modalBackdrop")
+  .addEventListener(
+    "click",
+    e => {
+
+      if (
+        e.target.id ===
+        "modalBackdrop"
+      ) {
+
+        e.target.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+/* CLEAR INPUTS */
+
+document.getElementById(
+  "clearBtn"
+).onclick = () => {
+
+  if (
+    !confirm(
+      "Clear all DEL, RET, Barya and deductions?"
+    )
+  ) {
+    return;
+  }
+
+
+  document
+    .querySelectorAll(
+      "input[type=number]"
+    )
+    .forEach(input => {
+
+      input.value = "";
+
+    });
+
+
+  calculate();
+
+};
+
+</script>
+
+</body>
+  </html>
