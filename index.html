@@ -2,329 +2,643 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
 <meta name="theme-color" content="#107c41">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="DEL RET SALES">
-<title>DEL RET SALES</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<title>DEL • RET • SALES</title>
 
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
 <style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-  color: #111827;
-  padding: 14px;
+html,body{
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7f5;
+  color:#222;
 }
 
-.app {
-  max-width: 620px;
-  margin: auto;
+body{
+  min-height:100vh;
 }
 
-h1 {
-  text-align: center;
-  margin: 4px 0 14px;
-  font-size: 25px;
-  letter-spacing: .5px;
+button,
+input,
+textarea{
+  font-family:inherit;
 }
 
-.card {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  overflow: hidden;
-  margin-bottom: 14px;
+button{
+  cursor:pointer;
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-th,
-td {
-  border: 1px solid #d1d5db;
-  text-align: center;
-  padding: 8px 5px;
-}
-
-th {
-  background: #107c41;
-  color: white;
-  font-size: 14px;
-  height: 45px;
-  cursor: pointer;
-}
-
-th:first-child {
-  width: 20%;
-}
-
-th:nth-child(2),
-th:nth-child(3),
-th:nth-child(4),
-th:nth-child(5) {
-  width: 20%;
-}
-
-td.product {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-td.product span.mult-tag {
-  font-size: 12px;
-  color: #107c41;
-  display: block;
-  font-weight: normal;
-}
-
-input {
-  width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
-  padding: 9px 5px;
-  font-size: 17px;
-  text-align: center;
-  background: #fff;
-  outline: none;
-}
-
-input:focus,
-textarea:focus {
-  border-color: #107c41;
-  box-shadow: 0 0 0 2px rgba(16,124,65,.12);
-}
-
-.sale,
-.amount,
-.calc-value {
-  font-weight: bold;
-  font-size: 17px;
-}
-
-.amount {
-  color: #107c41;
-}
-
-.summary td:first-child {
-  text-align: left;
-  font-weight: bold;
-  padding-left: 14px;
-}
-
-.summary input {
-  text-align: right;
-  padding-right: 10px;
-}
-
-.total-row td {
-  background: #ecfdf5;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.net-row td {
-  background: #107c41;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.net-row td:first-child {
-  color: white;
-}
-
 
 /* =========================
-   NOTE BAR
-   ========================= */
+   TOP BAR
+========================= */
 
-.note-card {
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  margin-bottom: 14px;
-  padding: 8px;
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#107c41;
+  color:white;
+  padding:9px 10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
 }
 
-.note-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+.topbar-title{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:.4px;
 }
 
-.note-label {
-  font-weight: bold;
-  font-size: 14px;
-  color: #111827;
-  padding-left: 4px;
-  padding-top: 10px;
-  white-space: nowrap;
+.topbar-sub{
+  font-size:12px;
+  opacity:.9;
+  margin-top:2px;
 }
 
-#note {
-  flex: 1;
-  width: 100%;
-  min-height: 38px;
-  height: 38px;
-  max-height: 180px;
-
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
-
-  padding: 8px 10px;
-
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 21px;
-
-  text-align: left;
-
-  background: #fff;
-  outline: none;
-
-  resize: none;
-  overflow-y: hidden;
+.ledger-info{
+  display:flex;
+  gap:7px;
+  margin-top:7px;
+  flex-wrap:wrap;
 }
 
-#note::placeholder {
-  color: #9ca3af;
+.info-pill{
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:7px;
+  padding:5px 8px;
+  font-size:12px;
+  font-weight:700;
 }
 
-.hint {
-  text-align: center;
-  color: #6b7280;
-  font-size: 12px;
-  margin: 8px 0 2px;
+.top-actions{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
 }
 
-button {
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+.top-action{
+  border:0;
+  border-radius:7px;
+  padding:8px 12px;
+  font-weight:800;
+  font-size:13px;
 }
 
-.clear {
-  width: 100%;
-  background: #dc2626;
-  color: white;
+.new-day-btn{
+  background:#fff;
+  color:#107c41;
 }
 
-.modal-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  z-index: 10;
-  padding: 25px 14px;
+.save-day-btn{
+  background:#ffd83d;
+  color:#222;
 }
 
-.modal {
-  max-width: 500px;
-  margin: 50px auto;
-  background: white;
-  border-radius: 15px;
-  padding: 18px;
-  box-shadow: 0 10px 40px rgba(0,0,0,.3);
-  position: relative;
-  touch-action: pan-y;
-  transition: transform 0.15s ease-out;
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  padding:9px;
+  max-width:1000px;
+  margin:auto;
 }
 
-.modal::before {
-  content: "";
-  display: block;
-  width: 36px;
-  height: 4px;
-  background: #e5e7eb;
-  border-radius: 2px;
-  margin: 0 auto 12px;
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+  background:white;
+  border-radius:9px;
+  box-shadow:0 1px 5px rgba(0,0,0,.12);
 }
 
-.modal h2 {
-  margin: 0 0 12px;
-  font-size: 21px;
+table{
+  width:100%;
+  min-width:560px;
+  border-collapse:collapse;
 }
 
-.mult-row {
-  display: grid;
-  grid-template-columns: 1fr 120px;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0;
+th{
+  background:#107c41;
+  color:white;
+  padding:8px 5px;
+  font-size:13px;
+  text-align:center;
+  position:sticky;
+  top:0;
 }
 
-.mult-row input {
-  text-align: right;
+td{
+  border-bottom:1px solid #ddd;
+  padding:5px;
+  text-align:center;
+  font-size:13px;
 }
 
-.modal-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 15px;
+.item-cell{
+  font-weight:800;
+  width:50px;
 }
 
-.save {
-  flex: 1;
-  background: #107c41;
-  color: white;
+.num-input{
+  width:100%;
+  min-width:75px;
+  height:38px;
+  border:1px solid #bbb;
+  border-radius:6px;
+  text-align:center;
+  font-size:17px;
+  font-weight:700;
+  background:#fff;
 }
 
-.cancel {
-  flex: 1;
-  background: #e5e7eb;
-  color: #111827;
+.num-input:focus{
+  outline:2px solid #107c41;
+  border-color:#107c41;
 }
 
-.small-note {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 8px;
+.sale-cell{
+  font-weight:800;
+  background:#eef7f1;
 }
 
-@media (max-width: 420px) {
+.amount-cell{
+  font-weight:800;
+  text-align:right;
+  white-space:nowrap;
+  padding-right:8px;
+}
 
-  body {
-    padding: 8px;
+.sale-header{
+  cursor:pointer;
+  user-select:none;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+  margin-top:9px;
+  background:white;
+  border-radius:9px;
+  box-shadow:0 1px 5px rgba(0,0,0,.12);
+  overflow:hidden;
+}
+
+.summary-row{
+  display:flex;
+  align-items:center;
+  min-height:42px;
+  border-bottom:1px solid #ddd;
+}
+
+.summary-label{
+  width:85px;
+  padding:8px;
+  font-weight:800;
+}
+
+.summary-input-wrap{
+  flex:1;
+  padding:5px;
+}
+
+.summary-input{
+  width:100%;
+  height:34px;
+  border:1px solid #bbb;
+  border-radius:6px;
+  text-align:right;
+  padding:0 8px;
+  font-size:16px;
+  font-weight:700;
+}
+
+.summary-value{
+  flex:1;
+  text-align:right;
+  padding:8px;
+  font-size:18px;
+  font-weight:900;
+}
+
+.net-row{
+  background:#107c41;
+  color:white;
+  border-bottom:0;
+}
+
+.net-row .summary-value{
+  font-size:22px;
+}
+
+/* =========================
+   NOTE
+========================= */
+
+.note-bar{
+  margin-top:9px;
+  background:white;
+  border-radius:9px;
+  box-shadow:0 1px 5px rgba(0,0,0,.12);
+  padding:7px;
+}
+
+.note-title{
+  font-weight:800;
+  font-size:13px;
+  margin:0 0 5px 2px;
+}
+
+#note{
+  width:100%;
+  min-height:38px;
+  height:38px;
+  resize:none;
+  overflow-y:auto;
+  border:1px solid #bbb;
+  border-radius:7px;
+  padding:8px;
+  font-size:14px;
+  line-height:20px;
+  display:block;
+}
+
+/* =========================
+   CLEAR
+========================= */
+
+.clear-btn{
+  width:100%;
+  margin-top:9px;
+  height:42px;
+  border:0;
+  border-radius:8px;
+  background:#555;
+  color:white;
+  font-weight:800;
+  font-size:14px;
+}
+
+/* =========================
+   SETUP OVERLAY
+========================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:rgba(0,0,0,.48);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.setup-card{
+  width:min(500px,100%);
+  max-height:92vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:13px;
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+  padding:16px;
+}
+
+.setup-title{
+  font-size:22px;
+  font-weight:900;
+  color:#107c41;
+  margin-bottom:3px;
+}
+
+.setup-sub{
+  font-size:13px;
+  color:#666;
+  margin-bottom:14px;
+}
+
+.field-label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  margin:9px 0 4px;
+}
+
+.setup-input{
+  width:100%;
+  height:43px;
+  border:1px solid #aaa;
+  border-radius:7px;
+  padding:0 10px;
+  font-size:16px;
+  background:white;
+}
+
+.setup-input:focus{
+  outline:2px solid #107c41;
+  border-color:#107c41;
+}
+
+.open-ledger{
+  width:100%;
+  height:45px;
+  margin-top:13px;
+  border:0;
+  border-radius:8px;
+  background:#999;
+  color:white;
+  font-size:16px;
+  font-weight:900;
+  transition:.15s;
+}
+
+.open-ledger.ready{
+  background:#107c41;
+}
+
+.open-ledger:active{
+  transform:scale(.98);
+}
+
+.warning-text{
+  min-height:17px;
+  margin-top:7px;
+  text-align:center;
+  color:#b00020;
+  font-size:12px;
+  font-weight:700;
+}
+
+/* =========================
+   SAVED DAYS
+========================= */
+
+.saved-section{
+  margin-top:17px;
+  border-top:1px solid #ddd;
+  padding-top:13px;
+}
+
+.saved-title{
+  font-size:15px;
+  font-weight:900;
+  color:#333;
+  margin-bottom:8px;
+}
+
+.saved-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.saved-empty{
+  color:#888;
+  font-size:13px;
+  text-align:center;
+  padding:10px;
+  background:#f5f5f5;
+  border-radius:7px;
+}
+
+.saved-card{
+  border:1px solid #ddd;
+  border-radius:8px;
+  background:#fafafa;
+  padding:8px;
+}
+
+.saved-main{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+.saved-date{
+  font-weight:900;
+  font-size:14px;
+}
+
+.saved-name{
+  font-size:12px;
+  color:#666;
+  margin-top:2px;
+}
+
+.saved-net{
+  font-weight:900;
+  font-size:15px;
+  text-align:right;
+}
+
+.saved-actions{
+  display:flex;
+  gap:6px;
+  margin-top:7px;
+}
+
+.saved-action{
+  flex:1;
+  height:32px;
+  border:0;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.edit-btn{
+  background:#107c41;
+  color:white;
+}
+
+.delete-btn{
+  background:#d93636;
+  color:white;
+}
+
+/* =========================
+   SAVE MODAL
+========================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:600;
+  background:rgba(0,0,0,.52);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.save-modal{
+  width:min(480px,100%);
+  max-height:82vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 8px 35px rgba(0,0,0,.35);
+  padding:15px;
+}
+
+.modal-title{
+  font-size:20px;
+  font-weight:900;
+  color:#107c41;
+}
+
+.modal-sub{
+  color:#666;
+  font-size:12px;
+  margin-top:3px;
+  margin-bottom:12px;
+}
+
+.modal-field{
+  margin-bottom:9px;
+}
+
+.modal-input{
+  width:100%;
+  height:42px;
+  border:1px solid #aaa;
+  border-radius:7px;
+  padding:0 9px;
+  font-size:16px;
+}
+
+.save-preview{
+  margin-top:8px;
+  background:#f1f6f3;
+  border-radius:8px;
+  padding:10px;
+  font-size:13px;
+}
+
+.preview-row{
+  display:flex;
+  justify-content:space-between;
+  padding:3px 0;
+}
+
+.preview-row strong{
+  font-weight:900;
+}
+
+.scroll-hint{
+  margin-top:12px;
+  text-align:center;
+  color:#888;
+  font-size:12px;
+  padding:9px;
+  background:#f7f7f7;
+  border-radius:7px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.cancel-modal{
+  flex:1;
+  height:42px;
+  border:0;
+  border-radius:7px;
+  background:#777;
+  color:white;
+  font-weight:800;
+}
+
+.final-save{
+  flex:1;
+  height:42px;
+  border:0;
+  border-radius:7px;
+  background:#107c41;
+  color:white;
+  font-weight:900;
+  display:none;
+}
+
+.final-save.visible{
+  display:block;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%) translateY(20px);
+  background:#222;
+  color:white;
+  padding:10px 15px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:700;
+  z-index:1000;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  max-width:90%;
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:500px){
+  .topbar-title{
+    font-size:18px;
   }
 
-  th,
-  td {
-    padding: 6px 3px;
+  .main{
+    padding:7px;
   }
 
-  input {
-    font-size: 15px;
-    padding: 8px 2px;
+  th{
+    font-size:12px;
   }
 
-  .sale,
-  .amount {
-    font-size: 15px;
+  td{
+    padding:4px;
   }
 
-  .note-label {
-    font-size: 13px;
-    padding-top: 9px;
-  }
-
-  #note {
-    font-size: 15px;
-    line-height: 20px;
+  .num-input{
+    min-width:68px;
   }
 }
 </style>
@@ -332,469 +646,839 @@ button {
 
 <body>
 
-<div class="app">
+<!-- =========================
+     TOP BAR
+========================= -->
 
-  <h1>DEL • RET • SALES</h1>
+<div class="topbar">
+  <div class="topbar-title">DEL • RET • SALES</div>
+  <div class="topbar-sub">Daily Delivery • Return • Sales Ledger</div>
+
+  <div class="ledger-info">
+    <div class="info-pill">
+      DATE:
+      <span id="currentDate">—</span>
+    </div>
+
+    <div class="info-pill">
+      NAME:
+      <span id="currentName">—</span>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <button class="top-action new-day-btn" id="newDayBtn">
+      NEW DAY
+    </button>
+
+    <button class="top-action save-day-btn" id="saveDayBtn">
+      SAVE
+    </button>
+  </div>
+</div>
 
 
-  <!-- MAIN TABLE -->
+<!-- =========================
+     MAIN CALCULATOR
+========================= -->
 
-  <div class="card">
+<div class="main">
 
+  <div class="table-wrap">
     <table>
-
       <thead>
         <tr>
           <th>ITEM</th>
           <th>DEL</th>
           <th>RET</th>
-          <th id="saleHeader">SALE</th>
-          <th id="amountHeader">Amount</th>
+          <th class="sale-header" id="saleHeader">
+            SALE
+          </th>
+          <th>Amount</th>
         </tr>
       </thead>
 
-      <tbody id="mainRows"></tbody>
-
+      <tbody id="productBody"></tbody>
     </table>
-
   </div>
 
 
   <!-- SUMMARY -->
 
-  <div class="card summary">
+  <div class="summary">
 
-    <table>
+    <div class="summary-row">
+      <div class="summary-label">TOTAL</div>
+      <div class="summary-value" id="totalValue">0.00</div>
+    </div>
 
-      <tbody>
-
-        <tr class="total-row">
-          <td colspan="3">Total</td>
-          <td colspan="2" id="total">0.00</td>
-        </tr>
-
-        <tr>
-          <td colspan="3">Barya</td>
-          <td colspan="2">
-            <input
-              id="barya"
-              type="number"
-              inputmode="decimal"
-              step="0.01"
-              placeholder="0">
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="3">AL</td>
-          <td colspan="2">
-            <input
-              id="al"
-              type="number"
-              inputmode="decimal"
-              step="0.01"
-              placeholder="0">
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="3">EX1</td>
-          <td colspan="2">
-            <input
-              id="ex1"
-              type="number"
-              inputmode="decimal"
-              step="0.01"
-              placeholder="0">
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="3">EX2</td>
-          <td colspan="2">
-            <input
-              id="ex2"
-              type="number"
-              inputmode="decimal"
-              step="0.01"
-              placeholder="0">
-          </td>
-        </tr>
-
-        <tr>
-          <td colspan="3">EX3</td>
-          <td colspan="2">
-            <input
-              id="ex3"
-              type="number"
-              inputmode="decimal"
-              step="0.01"
-              placeholder="0">
-          </td>
-        </tr>
-
-        <tr class="net-row">
-          <td colspan="3">NET TOTAL</td>
-          <td colspan="2" id="netTotal">0.00</td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-
-  <!-- NOTE BAR -->
-
-  <div class="note-card">
-
-    <div class="note-row">
-
-      <div class="note-label">
-        NOTE
+    <div class="summary-row">
+      <div class="summary-label">Barya</div>
+      <div class="summary-input-wrap">
+        <input
+          class="summary-input"
+          id="barya"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
       </div>
+    </div>
 
-      <textarea
-        id="note"
-        rows="1"
-        placeholder="Enter note..."
-        autocomplete="off"></textarea>
+    <div class="summary-row">
+      <div class="summary-label">AL</div>
+      <div class="summary-input-wrap">
+        <input
+          class="summary-input"
+          id="al"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </div>
+    </div>
 
+    <div class="summary-row">
+      <div class="summary-label">EX1</div>
+      <div class="summary-input-wrap">
+        <input
+          class="summary-input"
+          id="ex1"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-label">EX2</div>
+      <div class="summary-input-wrap">
+        <input
+          class="summary-input"
+          id="ex2"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-label">EX3</div>
+      <div class="summary-input-wrap">
+        <input
+          class="summary-input"
+          id="ex3"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div class="summary-row net-row">
+      <div class="summary-label">NET TOTAL</div>
+      <div class="summary-value" id="netTotal">0.00</div>
     </div>
 
   </div>
 
 
-  <!-- CLEAR BUTTON -->
+  <!-- NOTE -->
 
-  <button class="clear" id="clearBtn">
+  <div class="note-bar">
+    <div class="note-title">NOTE</div>
+
+    <textarea
+      id="note"
+      placeholder="Type note here..."
+      autocomplete="off"
+    ></textarea>
+  </div>
+
+
+  <button class="clear-btn" id="clearBtn">
     CLEAR INPUTS
   </button>
 
-  <div class="hint">
-    Tap "SALE" 5 times to edit multiplier settings.
-  </div>
-
 </div>
 
 
-<!-- MULTIPLIER SETTINGS -->
+<!-- =========================
+     SETUP OVERLAY
+========================= -->
 
-<div class="modal-backdrop" id="modalBackdrop">
+<div class="overlay" id="setupOverlay">
 
-  <div class="modal" id="modalWindow">
+  <div class="setup-card">
 
-    <h2>Amount Multipliers</h2>
-
-    <div id="multiplierRows"></div>
-
-    <div class="small-note">
-      Formula: SALE × multiplier = Amount
+    <div class="setup-title">
+      NEW DAILY LEDGER
     </div>
+
+    <div class="setup-sub">
+      Enter the Date and Name before opening the ledger.
+    </div>
+
+
+    <label class="field-label">
+      DATE
+    </label>
+
+    <input
+      class="setup-input"
+      id="setupDate"
+      type="date"
+      autocomplete="off"
+    >
+
+
+    <label class="field-label">
+      NAME
+    </label>
+
+    <input
+      class="setup-input"
+      id="setupName"
+      type="text"
+      placeholder="Enter name"
+      autocomplete="off"
+    >
+
+
+    <button class="open-ledger" id="openLedgerBtn">
+      OPEN LEDGER
+    </button>
+
+    <div class="warning-text" id="setupWarning"></div>
+
+
+    <!-- SAVED FILES -->
+
+    <div class="saved-section">
+
+      <div class="saved-title">
+        SAVED DAYS
+      </div>
+
+      <div class="saved-list" id="savedList"></div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- =========================
+     SAVE MODAL
+========================= -->
+
+<div class="modal-overlay" id="saveModalOverlay">
+
+  <div class="save-modal" id="saveModal">
+
+    <div class="modal-title">
+      SAVE NEW FILE
+    </div>
+
+    <div class="modal-sub">
+      Confirm or edit the Date and Name before creating the daily file.
+    </div>
+
+
+    <div class="modal-field">
+
+      <label class="field-label">
+        DATE
+      </label>
+
+      <input
+        class="modal-input"
+        id="saveDate"
+        type="date"
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <div class="modal-field">
+
+      <label class="field-label">
+        NAME
+      </label>
+
+      <input
+        class="modal-input"
+        id="saveName"
+        type="text"
+        autocomplete="off"
+      >
+
+    </div>
+
+
+    <div class="save-preview">
+
+      <div class="preview-row">
+        <span>TOTAL</span>
+        <strong id="previewTotal">0.00</strong>
+      </div>
+
+      <div class="preview-row">
+        <span>NET TOTAL</span>
+        <strong id="previewNet">0.00</strong>
+      </div>
+
+      <div class="preview-row">
+        <span>NOTE</span>
+        <strong id="previewNote">—</strong>
+      </div>
+
+    </div>
+
+
+    <div class="scroll-hint" id="scrollHint">
+      Scroll down a little to reveal FINAL SAVE.
+    </div>
+
 
     <div class="modal-actions">
 
-      <button class="cancel" id="cancelBtn">
-        Cancel
+      <button class="cancel-modal" id="cancelSaveBtn">
+        CANCEL
       </button>
 
-      <button class="save" id="saveBtn">
-        Save
+      <button class="final-save" id="finalSaveBtn">
+        FINAL SAVE
       </button>
 
     </div>
 
   </div>
-
 </div>
+
+
+<!-- =========================
+     MULTIPLIER MODAL
+========================= -->
+
+<div class="modal-overlay" id="multiplierOverlay">
+
+  <div class="save-modal">
+
+    <div class="modal-title">
+      SALE MULTIPLIERS
+    </div>
+
+    <div class="modal-sub">
+      Edit the multiplier for each item.
+    </div>
+
+    <div id="multiplierFields"></div>
+
+    <div class="modal-actions">
+
+      <button class="cancel-modal" id="cancelMultiplierBtn">
+        CANCEL
+      </button>
+
+      <button
+        class="final-save visible"
+        id="saveMultiplierBtn"
+      >
+        SAVE
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
 
 
 <script>
 
-const products = ["R", "P", "L", "M", "C"];
+/* =========================================================
+   CONFIG
+========================================================= */
 
-const defaultMultipliers = {
-  R: 45,
-  P: 45,
-  L: 45,
-  M: 45,
-  C: 45
+const PRODUCTS = ["R","P","L","M","C"];
+
+const DEFAULT_MULTIPLIERS = {
+  R:45,
+  P:45,
+  L:45,
+  M:45,
+  C:45
 };
 
-let multipliers =
-  JSON.parse(
-    localStorage.getItem("delret_multipliers")
-  ) || {...defaultMultipliers};
+const MULTIPLIER_KEY = "delret_multipliers";
+const INPUT_KEY = "delret_inputs";
+const LEDGER_KEY = "delret_ledger_files";
+
+const MAX_FILES = 30;
 
 
-const mainRows =
-  document.getElementById("mainRows");
+/* =========================================================
+   STATE
+========================================================= */
+
+let multipliers = loadMultipliers();
+
+let currentLedger = {
+  date:"",
+  name:"",
+  editingId:null
+};
+
+let saleHeaderTaps = 0;
+let saleHeaderTapTimer = null;
 
 
-/* CREATE PRODUCT ROWS */
+/* =========================================================
+   HELPERS
+========================================================= */
 
-products.forEach(p => {
+function $(id){
+  return document.getElementById(id);
+}
 
-  const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-
-    <td class="product" id="label-${p}">
-      ${p}
-      <span class="mult-tag">
-        (x${multipliers[p]})
-      </span>
-    </td>
-
-    <td>
-      <input
-        class="del"
-        data-product="${p}"
-        type="number"
-        inputmode="decimal"
-        step="0.01"
-        placeholder="0">
-    </td>
-
-    <td>
-      <input
-        class="ret"
-        data-product="${p}"
-        type="number"
-        inputmode="decimal"
-        step="0.01"
-        placeholder="0">
-    </td>
-
-    <td
-      class="sale"
-      id="sale-${p}">
-      0
-    </td>
-
-    <td
-      class="amount"
-      id="amount-${p}">
-      0.00
-    </td>
-
-  `;
-
-  mainRows.appendChild(tr);
-
-});
-
-
-/* UPDATE DISPLAY MULTIPLIERS */
-
-function updateProductLabels() {
-
-  products.forEach(p => {
-
-    const label =
-      document.getElementById(`label-${p}`);
-
-    if (label) {
-
-      label.innerHTML =
-        `${p} <span class="mult-tag">(x${multipliers[p]})</span>`;
-
+function money(value){
+  return Number(value || 0).toLocaleString(
+    "en-PH",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
     }
+  );
+}
+
+function todayISO(){
+  const d = new Date();
+
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+
+  return `${y}-${m}-${day}`;
+}
+
+function formatDate(dateString){
+
+  if(!dateString) return "—";
+
+  const parts = dateString.split("-");
+
+  if(parts.length !== 3){
+    return dateString;
+  }
+
+  const y = parts[0];
+  const m = parts[1];
+  const d = parts[2];
+
+  return `${m}/${d}/${y}`;
+}
+
+function showToast(message){
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(()=>{
+    toast.classList.remove("show");
+  },2200);
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function loadMultipliers(){
+
+  try{
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(MULTIPLIER_KEY)
+      );
+
+    return {
+      ...DEFAULT_MULTIPLIERS,
+      ...(saved || {})
+    };
+
+  }catch(e){
+
+    return {...DEFAULT_MULTIPLIERS};
+
+  }
+}
+
+function saveMultipliers(){
+
+  localStorage.setItem(
+    MULTIPLIER_KEY,
+    JSON.stringify(multipliers)
+  );
+}
+
+function getLedgerFiles(){
+
+  try{
+
+    const files =
+      JSON.parse(
+        localStorage.getItem(LEDGER_KEY)
+      );
+
+    return Array.isArray(files) ? files : [];
+
+  }catch(e){
+
+    return [];
+
+  }
+}
+
+function saveLedgerFiles(files){
+
+  localStorage.setItem(
+    LEDGER_KEY,
+    JSON.stringify(files)
+  );
+}
+
+
+/* =========================================================
+   BUILD PRODUCT TABLE
+========================================================= */
+
+function buildTable(){
+
+  const body = $("productBody");
+
+  body.innerHTML = "";
+
+  PRODUCTS.forEach(product=>{
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+
+      <td class="item-cell">
+        ${product}
+      </td>
+
+      <td>
+        <input
+          class="num-input data-input"
+          id="del_${product}"
+          data-field="del"
+          data-product="${product}"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </td>
+
+      <td>
+        <input
+          class="num-input data-input"
+          id="ret_${product}"
+          data-field="ret"
+          data-product="${product}"
+          type="number"
+          inputmode="decimal"
+          step="any"
+          autocomplete="off"
+        >
+      </td>
+
+      <td
+        class="sale-cell"
+        id="sale_${product}"
+      >
+        0
+      </td>
+
+      <td
+        class="amount-cell"
+        id="amount_${product}"
+      >
+        0.00
+      </td>
+
+    `;
+
+    body.appendChild(tr);
 
   });
 
+  document
+    .querySelectorAll(".data-input")
+    .forEach(input=>{
+
+      input.addEventListener("focus",function(){
+        setTimeout(()=>{
+          try{
+            this.select();
+          }catch(e){}
+        },10);
+      });
+
+      input.addEventListener("input",()=>{
+        calculate();
+        saveInputs();
+      });
+
+      input.addEventListener("keydown",(e)=>{
+
+        if(e.key === "Enter"){
+
+          e.preventDefault();
+
+          const inputs =
+            [...document.querySelectorAll(".data-input, .summary-input")];
+
+          const index = inputs.indexOf(e.target);
+
+          if(index >= 0 && index < inputs.length-1){
+
+            inputs[index+1].focus();
+
+          }
+
+        }
+
+      });
+
+    });
 }
 
 
-/* NUMBER FUNCTION */
+/* =========================================================
+   CALCULATE
+========================================================= */
 
-function num(value) {
-
-  const n = parseFloat(value);
-
-  return Number.isFinite(n) ? n : 0;
-
-}
-
-
-/* CALCULATE */
-
-function calculate() {
+function calculate(){
 
   let total = 0;
 
-  products.forEach(p => {
+  PRODUCTS.forEach(product=>{
 
     const del =
-      num(
-        document.querySelector(
-          `.del[data-product="${p}"]`
-        ).value
+      Number(
+        $(`del_${product}`)?.value || 0
       );
 
     const ret =
-      num(
-        document.querySelector(
-          `.ret[data-product="${p}"]`
-        ).value
+      Number(
+        $(`ret_${product}`)?.value || 0
       );
 
     const sale = del - ret;
 
     const amount =
-      sale * num(multipliers[p]);
+      sale * Number(
+        multipliers[product] || 0
+      );
 
-    document.getElementById(
-      `sale-${p}`
-    ).textContent =
-      Number.isInteger(sale)
-        ? sale
-        : sale.toFixed(2);
+    $(`sale_${product}`).textContent = sale;
 
-    document.getElementById(
-      `amount-${p}`
-    ).textContent =
-      amount.toFixed(2);
+    $(`amount_${product}`).textContent =
+      money(amount);
 
     total += amount;
 
   });
 
+  $("totalValue").textContent =
+    money(total);
 
   const barya =
-    num(
-      document.getElementById("barya").value
-    );
+    Number($("barya").value || 0);
 
   const al =
-    num(
-      document.getElementById("al").value
-    );
+    Number($("al").value || 0);
 
   const ex1 =
-    num(
-      document.getElementById("ex1").value
-    );
+    Number($("ex1").value || 0);
 
   const ex2 =
-    num(
-      document.getElementById("ex2").value
-    );
+    Number($("ex2").value || 0);
 
   const ex3 =
-    num(
-      document.getElementById("ex3").value
-    );
-
+    Number($("ex3").value || 0);
 
   const net =
-    total
-    + barya
-    - al
-    - ex1
-    - ex2
-    - ex3;
+    total +
+    barya -
+    al -
+    ex1 -
+    ex2 -
+    ex3;
 
+  $("netTotal").textContent =
+    money(net);
 
-  document.getElementById(
-    "total"
-  ).textContent =
-    total.toFixed(2);
-
-  document.getElementById(
-    "netTotal"
-  ).textContent =
-    net.toFixed(2);
-
-
-  saveInputs();
-
+  return {
+    total,
+    barya,
+    al,
+    ex1,
+    ex2,
+    ex3,
+    net
+  };
 }
 
 
-/* SAVE INPUTS */
+/* =========================================================
+   SAVE CURRENT INPUTS AS DRAFT
+========================================================= */
 
-function saveInputs() {
+function collectInputs(){
 
-  const data = {};
+  const data = {
+    products:{},
+    barya:$("barya").value || "",
+    al:$("al").value || "",
+    ex1:$("ex1").value || "",
+    ex2:$("ex2").value || "",
+    ex3:$("ex3").value || "",
+    note:$("note").value || ""
+  };
 
-  document.querySelectorAll(
-    "input, textarea"
-  ).forEach(input => {
+  PRODUCTS.forEach(product=>{
 
-    if (
-      input.type === "number" ||
-      input.id === "note"
-    ) {
-
-      const key =
-        input.id ||
-        input.dataset.product +
-        "_" +
-        input.className;
-
-      data[key] =
-        input.value;
-
-    }
+    data.products[product] = {
+      del:$(`del_${product}`).value || "",
+      ret:$(`ret_${product}`).value || ""
+    };
 
   });
 
-
-  localStorage.setItem(
-    "delret_inputs",
-    JSON.stringify(data)
-  );
-
+  return data;
 }
 
+function saveInputs(){
 
-/* RESTORE INPUTS */
+  try{
 
-function restoreInputs() {
-
-  const data =
-    JSON.parse(
-      localStorage.getItem(
-        "delret_inputs"
-      ) || "{}"
+    localStorage.setItem(
+      INPUT_KEY,
+      JSON.stringify(
+        collectInputs()
+      )
     );
 
-
-  document.querySelectorAll(
-    "input, textarea"
-  ).forEach(input => {
-
-    const key =
-      input.id ||
-      input.dataset.product +
-      "_" +
-      input.className;
-
-
-    if (
-      data[key] !== undefined
-    ) {
-
-      input.value =
-        data[key];
-
-    }
-
-  });
+  }catch(e){}
 
 }
 
 
-/* =========================
-   AUTO GROW NOTE
-   ========================= */
+/* =========================================================
+   LOAD INPUT DATA
+========================================================= */
 
-function autoGrowNote() {
+function loadInputs(data){
 
-  const note =
-    document.getElementById("note");
+  if(!data) return;
+
+  PRODUCTS.forEach(product=>{
+
+    const p =
+      data.products?.[product];
+
+    if(!p) return;
+
+    $(`del_${product}`).value =
+      p.del ?? "";
+
+    $(`ret_${product}`).value =
+      p.ret ?? "";
+
+  });
+
+  $("barya").value =
+    data.barya ?? "";
+
+  $("al").value =
+    data.al ?? "";
+
+  $("ex1").value =
+    data.ex1 ?? "";
+
+  $("ex2").value =
+    data.ex2 ?? "";
+
+  $("ex3").value =
+    data.ex3 ?? "";
+
+  $("note").value =
+    data.note ?? "";
+
+  autoGrowNote();
+
+  calculate();
+
+}
+
+
+/* =========================================================
+   CLEAR CURRENT INPUTS
+========================================================= */
+
+function clearInputs(){
+
+  PRODUCTS.forEach(product=>{
+
+    $(`del_${product}`).value = "";
+    $(`ret_${product}`).value = "";
+
+  });
+
+  $("barya").value = "";
+  $("al").value = "";
+  $("ex1").value = "";
+  $("ex2").value = "";
+  $("ex3").value = "";
+  $("note").value = "";
+
+  autoGrowNote();
+
+  calculate();
+
+  localStorage.removeItem(INPUT_KEY);
+
+}
+
+
+/* =========================================================
+   NOTE AUTO GROW
+========================================================= */
+
+function autoGrowNote(){
+
+  const note = $("note");
 
   note.style.height = "38px";
 
@@ -806,299 +1490,978 @@ function autoGrowNote() {
 
   note.style.height =
     newHeight + "px";
+}
+
+
+/* =========================================================
+   SETUP VALIDATION
+========================================================= */
+
+function validateSetup(){
+
+  const date =
+    $("setupDate").value.trim();
+
+  const name =
+    $("setupName").value.trim();
+
+  const ready =
+    date !== "" &&
+    name !== "";
+
+  $("openLedgerBtn")
+    .classList.toggle(
+      "ready",
+      ready
+    );
+
+  return ready;
+}
+
+function setupPrompt(){
+
+  const date =
+    $("setupDate").value.trim();
+
+  const name =
+    $("setupName").value.trim();
+
+  if(!date && !name){
+
+    $("setupWarning").textContent =
+      "Please enter the Date and Name.";
+
+    return false;
+  }
+
+  if(!date){
+
+    $("setupWarning").textContent =
+      "Please enter the Date.";
+
+    $("setupDate").focus();
+
+    return false;
+  }
+
+  if(!name){
+
+    $("setupWarning").textContent =
+      "Please enter the Name.";
+
+    $("setupName").focus();
+
+    return false;
+  }
+
+  $("setupWarning").textContent = "";
+
+  return true;
+}
+
+
+/* =========================================================
+   OPEN NEW LEDGER
+========================================================= */
+
+function openNewLedger(){
+
+  if(!setupPrompt()){
+
+    validateSetup();
+
+    return;
+  }
+
+  currentLedger = {
+    date:$("setupDate").value,
+    name:$("setupName").value.trim(),
+    editingId:null
+  };
+
+  $("currentDate").textContent =
+    formatDate(
+      currentLedger.date
+    );
+
+  $("currentName").textContent =
+    currentLedger.name;
+
+  $("setupOverlay").style.display =
+    "none";
+
+  clearInputs();
+
+  showToast("New empty ledger opened.");
 
 }
 
 
-const note =
-  document.getElementById("note");
+/* =========================================================
+   SHOW SETUP
+========================================================= */
+
+function showSetup(){
+
+  $("setupDate").value = "";
+  $("setupName").value = "";
+  $("setupWarning").textContent = "";
+
+  validateSetup();
+
+  renderSavedFiles();
+
+  $("setupOverlay").style.display =
+    "flex";
+
+}
 
 
-note.addEventListener(
-  "input",
-  () => {
+/* =========================================================
+   NEW DAY
+========================================================= */
 
-    autoGrowNote();
+function newDay(){
 
-    saveInputs();
+  const current =
+    collectInputs();
+
+  const hasData =
+    PRODUCTS.some(product=>
+      current.products[product].del !== "" ||
+      current.products[product].ret !== ""
+    ) ||
+    current.barya !== "" ||
+    current.al !== "" ||
+    current.ex1 !== "" ||
+    current.ex2 !== "" ||
+    current.ex3 !== "" ||
+    current.note !== "";
+
+  if(hasData){
+
+    const proceed =
+      confirm(
+        "Start a NEW DAY?\n\n" +
+        "Any unsaved entries in this current ledger will be cleared."
+      );
+
+    if(!proceed) return;
+
+  }
+
+  clearInputs();
+
+  currentLedger = {
+    date:"",
+    name:"",
+    editingId:null
+  };
+
+  $("currentDate").textContent = "—";
+  $("currentName").textContent = "—";
+
+  showSetup();
+
+}
+
+
+/* =========================================================
+   SAVE MODAL
+========================================================= */
+
+function openSaveModal(){
+
+  if(!currentLedger.date ||
+     !currentLedger.name){
+
+    showSetup();
+
+    $("setupWarning").textContent =
+      "Please complete the Date and Name first.";
+
+    return;
+  }
+
+  $("saveDate").value =
+    currentLedger.date;
+
+  $("saveName").value =
+    currentLedger.name;
+
+  const totals =
+    calculate();
+
+  $("previewTotal").textContent =
+    money(totals.total);
+
+  $("previewNet").textContent =
+    money(totals.net);
+
+  const note =
+    $("note").value.trim();
+
+  $("previewNote").textContent =
+    note ? note : "—";
+
+  $("finalSaveBtn")
+    .classList.remove("visible");
+
+  $("scrollHint").style.display =
+    "block";
+
+  $("saveModal").scrollTop = 0;
+
+  $("saveModalOverlay")
+    .classList.add("show");
+
+}
+
+
+/* =========================================================
+   SAVE MODAL SCROLL
+========================================================= */
+
+$("saveModal").addEventListener(
+  "scroll",
+  function(){
+
+    if(this.scrollTop > 35){
+
+      $("finalSaveBtn")
+        .classList.add("visible");
+
+      $("scrollHint").style.display =
+        "none";
+
+    }
 
   }
 );
 
 
-/* INPUT LISTENER */
+/* =========================================================
+   FINAL SAVE
+========================================================= */
 
-document.addEventListener(
-  "input",
-  e => {
+function finalSave(){
 
-    if (
-      e.target.matches(
-        "input[type=number]"
+  const date =
+    $("saveDate").value.trim();
+
+  const name =
+    $("saveName").value.trim();
+
+  if(!date){
+
+    alert("Please enter the Date.");
+    $("saveDate").focus();
+    return;
+  }
+
+  if(!name){
+
+    alert("Please enter the Name.");
+    $("saveName").focus();
+    return;
+  }
+
+  const files =
+    getLedgerFiles();
+
+  const inputs =
+    collectInputs();
+
+  const totals =
+    calculate();
+
+  const existingIndex =
+    files.findIndex(file=>
+      file.date === date
+    );
+
+  let replaceExisting = false;
+
+  if(existingIndex >= 0){
+
+    replaceExisting =
+      confirm(
+        "A saved file already exists for:\n\n" +
+        formatDate(date) +
+        "\n\nReplace/update that daily file?"
+      );
+
+    if(!replaceExisting){
+
+      return;
+    }
+
+  }
+
+  const record = {
+
+    id:
+      currentLedger.editingId ||
+      (
+        Date.now().toString() +
+        Math.random().toString(16).slice(2)
+      ),
+
+    date,
+    name,
+
+    savedAt:
+      new Date().toISOString(),
+
+    inputs,
+
+    multipliers:{
+      ...multipliers
+    },
+
+    totals
+
+  };
+
+
+  if(existingIndex >= 0){
+
+    files[existingIndex] =
+      record;
+
+  }else{
+
+    files.push(record);
+
+  }
+
+
+  /*
+    Sort newest date first.
+  */
+
+  files.sort((a,b)=>
+    String(b.date)
+      .localeCompare(
+        String(a.date)
       )
-    ) {
-
-      calculate();
-
-    }
-
-  }
-);
-
-
-/* AUTO SELECT */
-
-document.addEventListener(
-  "focusin",
-  e => {
-
-    if (
-      e.target.tagName === "INPUT"
-    ) {
-
-      setTimeout(() => {
-
-        e.target.select();
-
-      }, 50);
-
-    }
-
-  }
-);
-
-
-/* ENTER NEXT */
-
-document.addEventListener(
-  "keydown",
-  e => {
-
-    if (
-      e.key === "Enter" &&
-      e.target.tagName === "INPUT"
-    ) {
-
-      e.preventDefault();
-
-      const inputs =
-        Array.from(
-          document.querySelectorAll(
-            "input[type=number]"
-          )
-        ).filter(
-          i => i.offsetParent !== null
-        );
-
-      const index =
-        inputs.indexOf(e.target);
-
-
-      if (
-        index > -1 &&
-        index < inputs.length - 1
-      ) {
-
-        inputs[index + 1].focus();
-
-      } else {
-
-        e.target.blur();
-
-      }
-
-    }
-
-  }
-);
-
-
-/* RESTORE */
-
-restoreInputs();
-
-autoGrowNote();
-
-calculate();
-
-
-/* =========================
-   5-TAP SALE SETTINGS
-   ========================= */
-
-let tapCount = 0;
-let tapTimer;
-
-
-document
-  .getElementById("saleHeader")
-  .addEventListener(
-    "click",
-    () => {
-
-      tapCount++;
-
-      clearTimeout(tapTimer);
-
-      tapTimer =
-        setTimeout(
-          () => {
-
-            tapCount = 0;
-
-          },
-          1200
-        );
-
-
-      if (
-        tapCount >= 5
-      ) {
-
-        tapCount = 0;
-
-        openMultiplierSettings();
-
-      }
-
-    }
   );
 
 
-/* OPEN SETTINGS */
+  /*
+    Keep maximum 30 files.
+  */
 
-function openMultiplierSettings() {
+  let removedOldest = false;
 
-  const box =
-    document.getElementById(
-      "multiplierRows"
+  if(files.length > MAX_FILES){
+
+    files.splice(
+      MAX_FILES
     );
 
-  box.innerHTML = "";
+    removedOldest = true;
+
+  }
 
 
-  products.forEach(p => {
+  saveLedgerFiles(files);
 
-    const row =
-      document.createElement(
-        "div"
+
+  currentLedger = {
+    date,
+    name,
+    editingId:record.id
+  };
+
+
+  $("saveModalOverlay")
+    .classList.remove("show");
+
+
+  $("currentDate").textContent =
+    formatDate(date);
+
+  $("currentName").textContent =
+    name;
+
+
+  if(removedOldest){
+
+    showToast(
+      "Saved. 30-day limit reached; oldest file was removed."
+    );
+
+  }else{
+
+    showToast(
+      "Daily file saved."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   EDIT SAVED FILE
+========================================================= */
+
+function editLedger(id){
+
+  const files =
+    getLedgerFiles();
+
+  const record =
+    files.find(file=>
+      file.id === id
+    );
+
+  if(!record) return;
+
+
+  const current =
+    collectInputs();
+
+  const hasData =
+    PRODUCTS.some(product=>
+      current.products[product].del !== "" ||
+      current.products[product].ret !== ""
+    ) ||
+    current.barya !== "" ||
+    current.al !== "" ||
+    current.ex1 !== "" ||
+    current.ex2 !== "" ||
+    current.ex3 !== "" ||
+    current.note !== "";
+
+  if(hasData){
+
+    const proceed =
+      confirm(
+        "Open saved file?\n\n" +
+        "Current unsaved entries will be replaced."
       );
 
-    row.className =
-      "mult-row";
+    if(!proceed) return;
 
+  }
+
+
+  /*
+    Restore multiplier snapshot
+    from that saved daily file.
+  */
+
+  if(record.multipliers){
+
+    multipliers = {
+      ...DEFAULT_MULTIPLIERS,
+      ...record.multipliers
+    };
+
+    saveMultipliers();
+
+  }
+
+
+  currentLedger = {
+    date:record.date,
+    name:record.name,
+    editingId:record.id
+  };
+
+
+  loadInputs(
+    record.inputs
+  );
+
+
+  $("currentDate").textContent =
+    formatDate(record.date);
+
+  $("currentName").textContent =
+    record.name;
+
+
+  $("setupOverlay").style.display =
+    "none";
+
+
+  showToast(
+    "Saved file opened for editing."
+  );
+
+}
+
+
+/* =========================================================
+   DELETE SAVED FILE
+========================================================= */
+
+function deleteLedger(id){
+
+  const files =
+    getLedgerFiles();
+
+  const record =
+    files.find(file=>
+      file.id === id
+    );
+
+  if(!record) return;
+
+
+  const yes =
+    confirm(
+      "Delete this saved file?\n\n" +
+      formatDate(record.date) +
+      "\n" +
+      record.name
+    );
+
+  if(!yes) return;
+
+
+  const filtered =
+    files.filter(file=>
+      file.id !== id
+    );
+
+  saveLedgerFiles(filtered);
+
+  renderSavedFiles();
+
+  showToast(
+    "Saved file deleted."
+  );
+
+}
+
+
+/* =========================================================
+   RENDER SAVED FILES
+========================================================= */
+
+function renderSavedFiles(){
+
+  const list =
+    $("savedList");
+
+  const files =
+    getLedgerFiles();
+
+  list.innerHTML = "";
+
+
+  if(files.length === 0){
+
+    list.innerHTML = `
+      <div class="saved-empty">
+        No saved daily files yet.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  files
+    .sort((a,b)=>
+      String(b.date)
+        .localeCompare(
+          String(a.date)
+        )
+    )
+    .forEach(file=>{
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "saved-card";
+
+
+      const net =
+        Number(
+          file.totals?.net || 0
+        );
+
+
+      card.innerHTML = `
+
+        <div class="saved-main">
+
+          <div>
+            <div class="saved-date">
+              ${escapeHTML(
+                formatDate(file.date)
+              )}
+            </div>
+
+            <div class="saved-name">
+              ${escapeHTML(file.name || "")}
+            </div>
+          </div>
+
+          <div class="saved-net">
+            ${money(net)}
+          </div>
+
+        </div>
+
+        <div class="saved-actions">
+
+          <button
+            class="saved-action edit-btn"
+            data-edit-id="${escapeHTML(file.id)}"
+          >
+            EDIT
+          </button>
+
+          <button
+            class="saved-action delete-btn"
+            data-delete-id="${escapeHTML(file.id)}"
+          >
+            DELETE
+          </button>
+
+        </div>
+
+      `;
+
+
+      card
+        .querySelector(".edit-btn")
+        .addEventListener(
+          "click",
+          ()=>{
+            editLedger(file.id);
+          }
+        );
+
+
+      card
+        .querySelector(".delete-btn")
+        .addEventListener(
+          "click",
+          ()=>{
+            deleteLedger(file.id);
+          }
+        );
+
+
+      list.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   MULTIPLIER EDITOR
+========================================================= */
+
+function openMultiplierModal(){
+
+  const fields =
+    $("multiplierFields");
+
+  fields.innerHTML = "";
+
+
+  PRODUCTS.forEach(product=>{
+
+    const row =
+      document.createElement("div");
+
+    row.style.marginBottom =
+      "9px";
 
     row.innerHTML = `
 
-      <strong>
-        ${p} multiplier
-      </strong>
+      <label class="field-label">
+        ${product}
+      </label>
 
       <input
-        id="mult-${p}"
+        class="modal-input multiplier-edit"
+        data-product="${product}"
         type="number"
         inputmode="decimal"
-        step="0.01"
-        value="${multipliers[p]}">
+        step="any"
+        value="${multipliers[product]}"
+      >
 
     `;
 
-
-    box.appendChild(row);
+    fields.appendChild(row);
 
   });
 
 
-  document.getElementById(
-    "modalBackdrop"
-  ).style.display =
-    "block";
+  $("multiplierOverlay")
+    .classList.add("show");
 
 }
 
 
-/* CLOSE MODAL */
+function saveMultiplierChanges(){
 
-function closeModal() {
+  document
+    .querySelectorAll(".multiplier-edit")
+    .forEach(input=>{
 
-  const modal =
-    document.getElementById(
-      "modalWindow"
-    );
-
-  modal.style.transform = "";
-
-  document.getElementById(
-    "modalBackdrop"
-  ).style.display =
-    "none";
-
-}
-
-
-/* CANCEL */
-
-document.getElementById(
-  "cancelBtn"
-).onclick =
-  closeModal;
-
-
-/* SAVE MULTIPLIERS */
-
-document.getElementById(
-  "saveBtn"
-).onclick =
-  () => {
-
-    products.forEach(p => {
+      const product =
+        input.dataset.product;
 
       const value =
-        num(
-          document.getElementById(
-            `mult-${p}`
-          ).value
-        );
+        Number(input.value);
 
-      multipliers[p] =
-        value;
+      if(Number.isFinite(value)){
+
+        multipliers[product] =
+          value;
+
+      }
 
     });
 
 
-    localStorage.setItem(
-      "delret_multipliers",
-      JSON.stringify(
-        multipliers
-      )
+  saveMultipliers();
+
+  calculate();
+
+  saveInputs();
+
+  $("multiplierOverlay")
+    .classList.remove("show");
+
+  showToast(
+    "Sale multipliers updated."
+  );
+
+}
+
+
+/* =========================================================
+   SALE HEADER — 5 TAPS
+========================================================= */
+
+$("saleHeader").addEventListener(
+  "click",
+  ()=>{
+
+    saleHeaderTaps++;
+
+    clearTimeout(
+      saleHeaderTapTimer
     );
 
-
-    updateProductLabels();
-
-    closeModal();
-
-    calculate();
-
-  };
+    saleHeaderTapTimer =
+      setTimeout(()=>{
+        saleHeaderTaps = 0;
+      },1200);
 
 
-/* OUTSIDE TAP */
+    if(saleHeaderTaps >= 5){
+
+      saleHeaderTaps = 0;
+
+      openMultiplierModal();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SUMMARY INPUTS
+========================================================= */
 
 document
-  .getElementById(
-    "modalBackdrop"
-  )
+  .querySelectorAll(".summary-input")
+  .forEach(input=>{
+
+    input.addEventListener(
+      "input",
+      ()=>{
+        calculate();
+        saveInputs();
+      }
+    );
+
+    input.addEventListener(
+      "focus",
+      function(){
+        setTimeout(()=>{
+          try{
+            this.select();
+          }catch(e){}
+        },10);
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   NOTE
+========================================================= */
+
+$("note").addEventListener(
+  "input",
+  ()=>{
+    autoGrowNote();
+    saveInputs();
+  }
+);
+
+
+/* =========================================================
+   SETUP EVENTS
+========================================================= */
+
+$("setupDate").addEventListener(
+  "input",
+  ()=>{
+    $("setupWarning").textContent = "";
+    validateSetup();
+  }
+);
+
+$("setupName").addEventListener(
+  "input",
+  ()=>{
+    $("setupWarning").textContent = "";
+    validateSetup();
+  }
+);
+
+$("setupName").addEventListener(
+  "keydown",
+  e=>{
+    if(e.key === "Enter"){
+      e.preventDefault();
+      openNewLedger();
+    }
+  }
+);
+
+
+$("openLedgerBtn").addEventListener(
+  "click",
+  ()=>{
+    openNewLedger();
+  }
+);
+
+
+/* =========================================================
+   NEW DAY
+========================================================= */
+
+$("newDayBtn").addEventListener(
+  "click",
+  newDay
+);
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+$("saveDayBtn").addEventListener(
+  "click",
+  openSaveModal
+);
+
+
+/* =========================================================
+   SAVE MODAL BUTTONS
+========================================================= */
+
+$("cancelSaveBtn").addEventListener(
+  "click",
+  ()=>{
+    $("saveModalOverlay")
+      .classList.remove("show");
+  }
+);
+
+$("finalSaveBtn").addEventListener(
+  "click",
+  finalSave
+);
+
+
+/* =========================================================
+   SAVE MODAL OUTSIDE TAP
+========================================================= */
+
+$("saveModalOverlay").addEventListener(
+  "click",
+  e=>{
+
+    if(e.target ===
+       $("saveModalOverlay")){
+
+      $("saveModalOverlay")
+        .classList.remove("show");
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   MULTIPLIER MODAL
+========================================================= */
+
+$("cancelMultiplierBtn")
   .addEventListener(
     "click",
-    e => {
+    ()=>{
+      $("multiplierOverlay")
+        .classList.remove("show");
+    }
+  );
 
-      if (
-        e.target.id ===
-        "modalBackdrop"
-      ) {
+$("saveMultiplierBtn")
+  .addEventListener(
+    "click",
+    saveMultiplierChanges
+);
 
-        closeModal();
+
+$("multiplierOverlay")
+  .addEventListener(
+    "click",
+    e=>{
+
+      if(e.target ===
+         $("multiplierOverlay")){
+
+        $("multiplierOverlay")
+          .classList.remove("show");
 
       }
 
@@ -1106,177 +2469,102 @@ document
   );
 
 
-/* SWIPE DOWN MODAL */
+/* =========================================================
+   CLEAR
+========================================================= */
 
-const modalWindow =
-  document.getElementById(
-    "modalWindow"
-  );
+$("clearBtn").addEventListener(
+  "click",
+  ()=>{
 
-let startY = 0;
-let currentY = 0;
-let isSwiping = false;
+    const yes =
+      confirm(
+        "Clear all current inputs?"
+      );
 
+    if(!yes) return;
 
-modalWindow.addEventListener(
-  "touchstart",
-  e => {
+    clearInputs();
 
-    startY =
-      e.touches[0].clientY;
-
-    isSwiping = true;
-
-    modalWindow.style.transition =
-      "none";
-
-  },
-  { passive: true }
-);
-
-
-modalWindow.addEventListener(
-  "touchmove",
-  e => {
-
-    if (!isSwiping) return;
-
-    currentY =
-      e.touches[0].clientY;
-
-    const diffY =
-      currentY - startY;
-
-
-    if (diffY > 0) {
-
-      modalWindow.style.transform =
-        `translateY(${diffY}px)`;
-
-    }
-
-  },
-  { passive: true }
-);
-
-
-modalWindow.addEventListener(
-  "touchend",
-  () => {
-
-    if (!isSwiping) return;
-
-    isSwiping = false;
-
-    const diffY =
-      currentY - startY;
-
-    modalWindow.style.transition =
-      "transform 0.15s ease-out";
-
-
-    if (diffY > 90) {
-
-      closeModal();
-
-    } else {
-
-      modalWindow.style.transform =
-        "translateY(0)";
-
-    }
-
-
-    startY = 0;
-    currentY = 0;
+    showToast(
+      "Current inputs cleared."
+    );
 
   }
 );
 
 
-/* =========================
-   CLEAR INPUTS
-   ========================= */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-document.getElementById(
-  "clearBtn"
-).onclick =
-  () => {
+function initialize(){
 
-    if (
-      !confirm(
-        "Clear all DEL, RET, Barya, deductions and Note?"
-      )
-    ) {
+  /*
+    Important:
+    Every refresh starts as a NEW EMPTY FILE.
+    We intentionally do not restore the previous draft.
+  */
 
-      return;
-
-    }
-
-
-    document
-      .querySelectorAll(
-        "input[type=number]"
-      )
-      .forEach(input => {
-
-        input.value = "";
-
-      });
-
-
-    /* CLEAR NOTE */
-
-    note.value = "";
-
-    autoGrowNote();
-
-
-    calculate();
-
-  };
-
-</script>
-
-
-<script>
-
-/* SERVICE WORKER */
-
-if (
-  "serviceWorker" in navigator
-) {
-
-  window.addEventListener(
-    "load",
-    () => {
-
-      navigator.serviceWorker
-        .register(
-          "./sw.js?v=1",
-          {
-            scope: "./"
-          }
-        )
-        .then(
-          reg =>
-            console.log(
-              "Service Worker Registered!",
-              reg
-            )
-        )
-        .catch(
-          err =>
-            console.log(
-              "Service Worker Registration Failed:",
-              err
-            )
-        );
-
-    }
+  localStorage.removeItem(
+    INPUT_KEY
   );
 
+
+  buildTable();
+
+  clearInputs();
+
+  renderSavedFiles();
+
+  $("currentDate").textContent =
+    "—";
+
+  $("currentName").textContent =
+    "—";
+
+
+  /*
+    Empty setup fields every refresh.
+  */
+
+  $("setupDate").value = "";
+  $("setupName").value = "";
+
+  validateSetup();
+
+
+  /*
+    Show setup immediately.
+  */
+
+  $("setupOverlay").style.display =
+    "flex";
+
+
+  /*
+    Register service worker.
+  */
+
+  if("serviceWorker" in navigator){
+
+    window.addEventListener(
+      "load",
+      ()=>{
+        navigator.serviceWorker
+          .register("./sw.js?v=2")
+          .catch(
+            ()=>{}
+          );
+      }
+    );
+
+  }
+
 }
+
+
+initialize();
 
 </script>
 
