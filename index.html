@@ -9,6 +9,7 @@
 <title>DEL RET SALES</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
+
 <style>
 * {
   box-sizing: border-box;
@@ -69,14 +70,8 @@ th:first-child {
 }
 
 th:nth-child(2),
-th:nth-child(3) {
-  width: 20%;
-}
-
-th:nth-child(4) {
-  width: 20%;
-}
-
+th:nth-child(3),
+th:nth-child(4),
 th:nth-child(5) {
   width: 20%;
 }
@@ -146,6 +141,36 @@ input:focus {
 
 .net-row td:first-child {
   color: white;
+}
+
+/* NOTE BAR */
+.note-card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  margin-bottom: 14px;
+  padding: 8px;
+}
+
+.note-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.note-label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #111827;
+  padding-left: 4px;
+  white-space: nowrap;
+}
+
+#note {
+  flex: 1;
+  text-align: left;
+  padding: 9px 10px;
+  font-size: 16px;
 }
 
 .hint {
@@ -243,6 +268,7 @@ button {
 }
 
 @media (max-width: 420px) {
+
   body {
     padding: 8px;
   }
@@ -259,6 +285,14 @@ button {
 
   .sale,
   .amount {
+    font-size: 15px;
+  }
+
+  .note-label {
+    font-size: 13px;
+  }
+
+  #note {
     font-size: 15px;
   }
 }
@@ -377,6 +411,27 @@ button {
   </div>
 
 
+  <!-- NOTE BAR -->
+  <div class="note-card">
+
+    <div class="note-row">
+
+      <div class="note-label">
+        NOTE
+      </div>
+
+      <input
+        id="note"
+        type="text"
+        placeholder="Enter note..."
+        autocomplete="off">
+
+    </div>
+
+  </div>
+
+
+  <!-- CLEAR -->
   <button class="clear" id="clearBtn">
     CLEAR INPUTS
   </button>
@@ -498,11 +553,13 @@ function updateProductLabels() {
 
   products.forEach(p => {
 
-    const label = document.getElementById(`label-${p}`);
+    const label =
+      document.getElementById(`label-${p}`);
 
     if (label) {
 
-      label.innerHTML = `${p} <span class="mult-tag">(x${multipliers[p]})</span>`;
+      label.innerHTML =
+        `${p} <span class="mult-tag">(x${multipliers[p]})</span>`;
 
     }
 
@@ -527,7 +584,6 @@ function num(value) {
 function calculate() {
 
   let total = 0;
-
 
   products.forEach(p => {
 
@@ -557,12 +613,12 @@ function calculate() {
       sale * num(multipliers[p]);
 
 
-    /* FORMAT SALE AS QUANTITY (INTEGER OR CLEAN DECIMAL) */
-
     document.getElementById(
       `sale-${p}`
     ).textContent =
-      Number.isInteger(sale) ? sale : sale.toFixed(2);
+      Number.isInteger(sale)
+        ? sale
+        : sale.toFixed(2);
 
 
     document.getElementById(
@@ -604,17 +660,7 @@ function calculate() {
     );
 
 
-  /*
-
-    NET TOTAL
-    = TOTAL
-    + BARYA
-    - AL
-    - EX1
-    - EX2
-    - EX3
-
-  */
+  /* NET TOTAL */
 
   const net =
     total
@@ -652,7 +698,10 @@ function saveInputs() {
     "input"
   ).forEach(input => {
 
-    if (input.type === "number") {
+    if (
+      input.type === "number" ||
+      input.id === "note"
+    ) {
 
       const key =
         input.id ||
@@ -711,7 +760,7 @@ function restoreInputs() {
 }
 
 
-/* INPUT & NAVIGATION LISTENERS */
+/* INPUT LISTENER */
 
 document.addEventListener(
   "input",
@@ -727,52 +776,83 @@ document.addEventListener(
 
     }
 
+
+    /* NOTE SAVE */
+
+    if (
+      e.target.id === "note"
+    ) {
+
+      saveInputs();
+
+    }
+
   }
 );
 
 
 /* AUTO-SELECT TEXT ON FOCUS */
 
-document.addEventListener("focusin", e => {
+document.addEventListener(
+  "focusin",
+  e => {
 
-  if (e.target.tagName === "INPUT") {
+    if (e.target.tagName === "INPUT") {
 
-    setTimeout(() => {
-      e.target.select();
-    }, 50);
+      setTimeout(() => {
 
-  }
+        e.target.select();
 
-});
-
-
-/* PRESS ENTER TO FOCUS NEXT INPUT FIELD */
-
-document.addEventListener("keydown", e => {
-
-  if (e.key === "Enter" && e.target.tagName === "INPUT") {
-
-    e.preventDefault();
-
-    const inputs = Array.from(
-      document.querySelectorAll("input[type=number]")
-    ).filter(i => i.offsetParent !== null);
-
-    const index = inputs.indexOf(e.target);
-
-    if (index > -1 && index < inputs.length - 1) {
-
-      inputs[index + 1].focus();
-
-    } else {
-
-      e.target.blur();
+      }, 50);
 
     }
 
   }
+);
 
-});
+
+/* PRESS ENTER TO FOCUS NEXT INPUT */
+
+document.addEventListener(
+  "keydown",
+  e => {
+
+    if (
+      e.key === "Enter" &&
+      e.target.tagName === "INPUT"
+    ) {
+
+      e.preventDefault();
+
+      const inputs =
+        Array.from(
+          document.querySelectorAll(
+            "input[type=number]"
+          )
+        ).filter(
+          i => i.offsetParent !== null
+        );
+
+      const index =
+        inputs.indexOf(e.target);
+
+      if (
+        index > -1 &&
+        index < inputs.length - 1
+      ) {
+
+        inputs[index + 1].focus();
+
+      } else {
+
+        e.target.blur();
+
+      }
+
+    }
+
+  }
+);
 
 
 /* RESTORE */
@@ -804,7 +884,9 @@ document
       tapTimer =
         setTimeout(
           () => {
+
             tapCount = 0;
+
           },
           1200
         );
@@ -874,11 +956,15 @@ function openMultiplierSettings() {
 }
 
 
-/* CLOSE MODAL HELPER */
+/* CLOSE MODAL */
 
 function closeModal() {
 
-  const modal = document.getElementById("modalWindow");
+  const modal =
+    document.getElementById(
+      "modalWindow"
+    );
+
   modal.style.transform = "";
 
   document.getElementById(
@@ -893,51 +979,55 @@ function closeModal() {
 
 document.getElementById(
   "cancelBtn"
-).onclick = closeModal;
+).onclick =
+  closeModal;
 
 
 /* SAVE MULTIPLIERS */
 
 document.getElementById(
   "saveBtn"
-).onclick = () => {
+).onclick =
+  () => {
 
-  products.forEach(p => {
+    products.forEach(p => {
 
-    const value =
-      num(
-        document.getElementById(
-          `mult-${p}`
-        ).value
-      );
+      const value =
+        num(
+          document.getElementById(
+            `mult-${p}`
+          ).value
+        );
 
-    multipliers[p] =
-      value;
+      multipliers[p] =
+        value;
 
-  });
-
-
-  localStorage.setItem(
-    "delret_multipliers",
-    JSON.stringify(
-      multipliers
-    )
-  );
+    });
 
 
-  updateProductLabels();
+    localStorage.setItem(
+      "delret_multipliers",
+      JSON.stringify(
+        multipliers
+      )
+    );
 
-  closeModal();
 
-  calculate();
+    updateProductLabels();
 
-};
+    closeModal();
+
+    calculate();
+
+  };
 
 
-/* CLOSE MODAL BY TAPPING OUTSIDE */
+/* CLOSE MODAL OUTSIDE */
 
 document
-  .getElementById("modalBackdrop")
+  .getElementById(
+    "modalBackdrop"
+  )
   .addEventListener(
     "click",
     e => {
@@ -955,100 +1045,177 @@ document
   );
 
 
-/* SWIPE DOWN TO DISMISS MODAL */
+/* SWIPE DOWN TO DISMISS */
 
-const modalWindow = document.getElementById("modalWindow");
+const modalWindow =
+  document.getElementById(
+    "modalWindow"
+  );
+
 let startY = 0;
 let currentY = 0;
 let isSwiping = false;
 
-modalWindow.addEventListener("touchstart", e => {
 
-  startY = e.touches[0].clientY;
-  isSwiping = true;
-  modalWindow.style.transition = "none";
+modalWindow.addEventListener(
+  "touchstart",
+  e => {
 
-}, { passive: true });
+    startY =
+      e.touches[0].clientY;
 
-modalWindow.addEventListener("touchmove", e => {
+    isSwiping = true;
 
-  if (!isSwiping) return;
+    modalWindow.style.transition =
+      "none";
 
-  currentY = e.touches[0].clientY;
-  const diffY = currentY - startY;
+  },
+  { passive: true }
+);
 
-  if (diffY > 0) {
 
-    modalWindow.style.transform = `translateY(${diffY}px)`;
+modalWindow.addEventListener(
+  "touchmove",
+  e => {
+
+    if (!isSwiping) return;
+
+    currentY =
+      e.touches[0].clientY;
+
+    const diffY =
+      currentY - startY;
+
+
+    if (diffY > 0) {
+
+      modalWindow.style.transform =
+        `translateY(${diffY}px)`;
+
+    }
+
+  },
+  { passive: true }
+);
+
+
+modalWindow.addEventListener(
+  "touchend",
+  e => {
+
+    if (!isSwiping) return;
+
+    isSwiping = false;
+
+    const diffY =
+      currentY - startY;
+
+    modalWindow.style.transition =
+      "transform 0.15s ease-out";
+
+
+    if (diffY > 90) {
+
+      closeModal();
+
+    } else {
+
+      modalWindow.style.transform =
+        "translateY(0)";
+
+    }
+
+
+    startY = 0;
+    currentY = 0;
 
   }
-
-}, { passive: true });
-
-modalWindow.addEventListener("touchend", e => {
-
-  if (!isSwiping) return;
-
-  isSwiping = false;
-  const diffY = currentY - startY;
-  modalWindow.style.transition = "transform 0.15s ease-out";
-
-  if (diffY > 90) {
-
-    closeModal();
-
-  } else {
-
-    modalWindow.style.transform = "translateY(0)";
-
-  }
-
-  startY = 0;
-  currentY = 0;
-
-});
+);
 
 
 /* CLEAR INPUTS */
 
 document.getElementById(
   "clearBtn"
-).onclick = () => {
+).onclick =
+  () => {
 
-  if (
-    !confirm(
-      "Clear all DEL, RET, Barya and deductions?"
-    )
-  ) {
-    return;
-  }
+    if (
+      !confirm(
+        "Clear all DEL, RET, Barya, deductions and Note?"
+      )
+    ) {
 
+      return;
 
-  document
-    .querySelectorAll(
-      "input[type=number]"
-    )
-    .forEach(input => {
-
-      input.value = "";
-
-    });
+    }
 
 
-  calculate();
+    document
+      .querySelectorAll(
+        "input[type=number]"
+      )
+      .forEach(input => {
 
-};
+        input.value = "";
+
+      });
+
+
+    /* CLEAR NOTE TOO */
+
+    document.getElementById(
+      "note"
+    ).value = "";
+
+
+    calculate();
+
+  };
 
 </script>
+
+
 <script>
-// Service Worker Registration
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=1', { scope: './' })
-            .then(reg => console.log('Service Worker Registered!', reg))
-            .catch(err => console.log('Service Worker Registration Failed:', err));
-    });
+
+/* SERVICE WORKER REGISTRATION */
+
+if (
+  "serviceWorker" in navigator
+) {
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register(
+          "./sw.js?v=1",
+          {
+            scope: "./"
+          }
+        )
+        .then(
+          reg =>
+            console.log(
+              "Service Worker Registered!",
+              reg
+            )
+        )
+        .catch(
+          err =>
+            console.log(
+              "Service Worker Registration Failed:",
+              err
+            )
+        );
+
+    }
+  );
+
 }
+
 </script>
+
 </body>
 </html>
