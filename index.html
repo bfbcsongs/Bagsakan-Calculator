@@ -32,6 +32,7 @@ body {
 
 /* =========================================================
    LEDGER BAR
+   DATE / NAME ONLY
 ========================================================= */
 
 #ledgerBar {
@@ -47,7 +48,6 @@ body {
   display: flex;
   gap: 7px;
   width: 100%;
-  margin-bottom: 8px;
 }
 
 .ledger-info-pill {
@@ -63,23 +63,6 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.ledger-bar-buttons {
-  display: flex;
-  gap: 7px;
-}
-
-#newDayBtn {
-  flex: 1;
-  background: #e5e7eb;
-  color: #111827;
-}
-
-#saveLedgerBtn {
-  flex: 1;
-  background: #107c41;
-  color: white;
 }
 
 /* =========================================================
@@ -239,7 +222,7 @@ textarea:focus {
 }
 
 /* =========================================================
-   NOTE BAR
+   NOTE
 ========================================================= */
 
 .note-card {
@@ -271,21 +254,15 @@ textarea:focus {
   min-height: 38px;
   height: 38px;
   max-height: 180px;
-
   border: 1px solid #cbd5e1;
   border-radius: 7px;
-
   padding: 8px 10px;
-
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 21px;
-
   text-align: left;
-
   background: #fff;
   outline: none;
-
   resize: none;
   overflow-y: hidden;
 }
@@ -294,12 +271,9 @@ textarea:focus {
   color: #9ca3af;
 }
 
-.hint {
-  text-align: center;
-  color: #6b7280;
-  font-size: 12px;
-  margin: 8px 0 12px;
-}
+/* =========================================================
+   BUTTON AREA
+========================================================= */
 
 button {
   border: 0;
@@ -316,8 +290,27 @@ button {
   color: white;
 }
 
+.main-ledger-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+#newDayBtn {
+  flex: 1;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+#saveLedgerBtn {
+  flex: 1;
+  background: #107c41;
+  color: white;
+}
+
 /* =========================================================
-   SAVED FILES AT BOTTOM
+   SAVED FILES
    SEPARATE SCROLL AREA
 ========================================================= */
 
@@ -340,18 +333,11 @@ button {
 
 .saved-days-list-bottom {
   margin-top: 8px;
-
-  /*
-    About 4 files visible.
-    Only this box scrolls.
-  */
   height: 290px;
   overflow-y: auto;
   overflow-x: hidden;
-
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-
   padding-right: 2px;
 }
 
@@ -370,16 +356,40 @@ button {
   border-radius: 9px;
   padding: 9px;
   margin-bottom: 7px;
+  transition: background .15s ease, border .15s ease, box-shadow .15s ease;
+  cursor: pointer;
 }
 
 .saved-file:last-child {
   margin-bottom: 0;
 }
 
+/* TAPPED / SELECTED */
+.saved-file.selected {
+  background: #dcfce7;
+  border: 2px solid #107c41;
+  box-shadow: 0 0 0 2px rgba(16,124,65,.12);
+}
+
+/* CURRENTLY OPENED FILE */
+.saved-file.current-file {
+  border-color: #107c41;
+  box-shadow: inset 0 0 0 1px #107c41;
+}
+
+.saved-file.selected.current-file {
+  background: #bbf7d0;
+  border: 2px solid #107c41;
+}
+
 .saved-file-top {
   display: flex;
   justify-content: space-between;
   gap: 8px;
+}
+
+.saved-file-left {
+  min-width: 0;
 }
 
 .saved-file-date {
@@ -391,6 +401,20 @@ button {
   color: #6b7280;
   font-size: 12px;
   margin-top: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.saved-current-label {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: #107c41;
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
 }
 
 .saved-file-net {
@@ -638,20 +662,10 @@ button {
   color: #107c41;
 }
 
-.save-scroll-message {
-  text-align: center;
-  color: #6b7280;
-  background: #f3f4f6;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  margin-top: 12px;
-}
-
 .save-file-actions {
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 #cancelFileSave {
@@ -663,10 +677,6 @@ button {
   flex: 1;
   background: #107c41;
   color: white;
-  display: none;
-}
-
-#finalFileSave.show {
   display: block;
 }
 
@@ -713,17 +723,20 @@ button {
   .saved-days-list-bottom {
     height: 285px;
   }
+
+  .saved-file-net {
+    font-size: 13px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-
 <div class="app">
 
   <!-- =====================================================
-       DATE / NAME AT TOP OF TABLE
+       DATE / NAME AT TOP
   ====================================================== -->
 
   <div id="ledgerBar">
@@ -742,18 +755,6 @@ button {
 
     </div>
 
-    <div class="ledger-bar-buttons">
-
-      <button id="newDayBtn">
-        NEW DAY
-      </button>
-
-      <button id="saveLedgerBtn">
-        SAVE
-      </button>
-
-    </div>
-
   </div>
 
 
@@ -764,7 +765,6 @@ button {
 
   <!-- =====================================================
        MAIN TABLE
-       ONLY THIS TABLE AREA SCROLLS
   ====================================================== -->
 
   <div class="main-table-scroll">
@@ -905,21 +905,35 @@ button {
 
 
   <!-- =====================================================
-       CLEAR
+       CLEAR INPUTS
   ====================================================== -->
 
   <button class="clear" id="clearBtn">
     CLEAR INPUTS
   </button>
 
-  <div class="hint">
-    Tap "SALE" 5 times to edit multiplier settings.
+
+  <!-- =====================================================
+       NEW DAY + SAVE
+       BETWEEN CLEAR AND SAVED FILES
+  ====================================================== -->
+
+  <div class="main-ledger-buttons">
+
+    <button id="newDayBtn">
+      NEW DAY
+    </button>
+
+    <button id="saveLedgerBtn">
+      SAVE
+    </button>
+
   </div>
 
 
   <!-- =====================================================
-       SAVED FILES AT BOTTOM
-       THIS AREA HAS ITS OWN SCROLL
+       SAVED FILES
+       ONLY THIS AREA SCROLLS
   ====================================================== -->
 
   <div class="saved-files-bottom-card">
@@ -939,7 +953,7 @@ button {
 
 
 <!-- =======================================================
-     ORIGINAL MULTIPLIER SETTINGS
+     MULTIPLIER SETTINGS
 ======================================================= -->
 
 <div class="modal-backdrop" id="modalBackdrop">
@@ -1076,12 +1090,6 @@ button {
 
     </div>
 
-    <div
-      class="save-scroll-message"
-      id="saveScrollMessage">
-      Scroll down a little to reveal the green SAVE button.
-    </div>
-
     <div class="save-file-actions">
 
       <button
@@ -1122,6 +1130,13 @@ let multipliers =
 
 const mainRows =
   document.getElementById("mainRows");
+
+
+/* =========================================================
+   SAVED FILE SELECTION
+========================================================= */
+
+let selectedSavedFileId = null;
 
 
 /* CREATE PRODUCT ROWS */
@@ -2282,9 +2297,13 @@ function openLedger() {
   };
 
 
+  selectedSavedFileId = null;
+
   clearCalculatorOnly();
 
   updateLedgerBar();
+
+  renderSavedDays();
 
 
   document.getElementById(
@@ -2375,6 +2394,9 @@ function showNewDaySetup() {
     name: "",
     id: null
   };
+
+
+  selectedSavedFileId = null;
 
 
   document.getElementById(
@@ -2501,63 +2523,12 @@ function openSaveFileModal() {
     totals.net.toFixed(2);
 
 
-  const modal =
-    document.getElementById(
-      "saveFileModal"
-    );
-
-
-  modal.scrollTop = 0;
-
-
-  document.getElementById(
-    "saveScrollMessage"
-  ).style.display =
-    "block";
-
-
-  document.getElementById(
-    "finalFileSave"
-  ).classList.remove(
-    "show"
-  );
-
-
   document.getElementById(
     "saveFileBackdrop"
   ).style.display =
     "block";
 
 }
-
-
-/* SAVE MODAL SCROLL */
-
-document.getElementById(
-  "saveFileModal"
-).addEventListener(
-  "scroll",
-  function() {
-
-    if (
-      this.scrollTop > 35
-    ) {
-
-      document.getElementById(
-        "finalFileSave"
-      ).classList.add(
-        "show"
-      );
-
-      document.getElementById(
-        "saveScrollMessage"
-      ).style.display =
-        "none";
-
-    }
-
-  }
-);
 
 
 /* FINAL SAVE */
@@ -2707,6 +2678,9 @@ function finalSaveLedger() {
   };
 
 
+  selectedSavedFileId = null;
+
+
   updateLedgerBar();
 
 
@@ -2736,7 +2710,35 @@ function finalSaveLedger() {
 }
 
 
-/* EDIT SAVED FILE */
+/* =========================================================
+   SELECT SAVED FILE
+   TAP ON ROW ONLY SELECTS
+   SECOND TAP ON SAME ROW DESELECTS
+========================================================= */
+
+function selectSavedFile(id) {
+
+  if (
+    selectedSavedFileId === id
+  ) {
+
+    selectedSavedFileId = null;
+
+  } else {
+
+    selectedSavedFileId = id;
+
+  }
+
+  renderSavedDays();
+
+}
+
+
+/* =========================================================
+   EDIT SAVED FILE
+   ONLY EDIT BUTTON OPENS THE FILE
+========================================================= */
 
 function editSavedFile(id) {
 
@@ -2780,6 +2782,9 @@ function editSavedFile(id) {
   };
 
 
+  selectedSavedFileId = null;
+
+
   clearCalculatorOnly();
 
   loadLedgerData(
@@ -2788,6 +2793,8 @@ function editSavedFile(id) {
 
 
   updateLedgerBar();
+
+  renderSavedDays();
 
 
   document.getElementById(
@@ -2845,6 +2852,35 @@ function deleteSavedFile(id) {
   );
 
 
+  if (
+    selectedSavedFileId === id
+  ) {
+
+    selectedSavedFileId = null;
+
+  }
+
+
+  /*
+    If deleting the currently opened file,
+    remove the CURRENT indicator.
+    The calculator itself is not cleared.
+  */
+
+  if (
+    currentLedger.id === id
+  ) {
+
+    currentLedger.id = null;
+
+    document.getElementById(
+      "editingNotice"
+    ).style.display =
+      "none";
+
+  }
+
+
   renderSavedDays();
 
 
@@ -2857,7 +2893,6 @@ function deleteSavedFile(id) {
 
 /* =========================================================
    RENDER SAVED FILES
-   BOTTOM SCROLL AREA ONLY
 ========================================================= */
 
 function renderSavedDays() {
@@ -2888,6 +2923,10 @@ function renderSavedDays() {
   }
 
 
+  /*
+    ALWAYS LATEST DATE FIRST
+  */
+
   files.sort(
     (a,b) =>
       String(b.date)
@@ -2909,6 +2948,36 @@ function renderSavedDays() {
       "saved-file";
 
 
+    /*
+      CURRENT FILE
+    */
+
+    if (
+      currentLedger.id === file.id
+    ) {
+
+      item.classList.add(
+        "current-file"
+      );
+
+    }
+
+
+    /*
+      USER TAPPED / SELECTED FILE
+    */
+
+    if (
+      selectedSavedFileId === file.id
+    ) {
+
+      item.classList.add(
+        "selected"
+      );
+
+    }
+
+
     const net =
       num(
         file.data &&
@@ -2916,11 +2985,15 @@ function renderSavedDays() {
       );
 
 
+    const isCurrent =
+      currentLedger.id === file.id;
+
+
     item.innerHTML = `
 
       <div class="saved-file-top">
 
-        <div>
+        <div class="saved-file-left">
 
           <div class="saved-file-date">
             ${escapeHTML(
@@ -2936,6 +3009,16 @@ function renderSavedDays() {
             )}
           </div>
 
+          ${
+            isCurrent
+              ? `
+                <div class="saved-current-label">
+                  CURRENT
+                </div>
+              `
+              : ""
+          }
+
         </div>
 
         <div class="saved-file-net">
@@ -2948,12 +3031,14 @@ function renderSavedDays() {
       <div class="saved-file-buttons">
 
         <button
-          class="edit-file">
+          class="edit-file"
+          type="button">
           EDIT
         </button>
 
         <button
-          class="delete-file">
+          class="delete-file"
+          type="button">
           DELETE
         </button>
 
@@ -2962,26 +3047,80 @@ function renderSavedDays() {
     `;
 
 
+    /*
+      TAP ROW
+      DOES NOT OPEN FILE
+    */
+
+    item.addEventListener(
+      "click",
+      e => {
+
+        /*
+          Ignore taps on EDIT / DELETE
+        */
+
+        if (
+          e.target.closest(
+            ".saved-file-buttons"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        selectSavedFile(
+          file.id
+        );
+
+      }
+    );
+
+
+    /*
+      EDIT BUTTON
+    */
+
     item
       .querySelector(
         ".edit-file"
       )
-      .onclick =
-      () =>
-        editSavedFile(
-          file.id
-        );
+      .addEventListener(
+        "click",
+        e => {
 
+          e.stopPropagation();
+
+          editSavedFile(
+            file.id
+          );
+
+        }
+      );
+
+
+    /*
+      DELETE BUTTON
+    */
 
     item
       .querySelector(
         ".delete-file"
       )
-      .onclick =
-      () =>
-        deleteSavedFile(
-          file.id
-        );
+      .addEventListener(
+        "click",
+        e => {
+
+          e.stopPropagation();
+
+          deleteSavedFile(
+            file.id
+          );
+
+        }
+      );
 
 
     box.appendChild(
