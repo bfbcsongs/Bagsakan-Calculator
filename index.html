@@ -1619,21 +1619,23 @@ function updateLedgerBar(){
   let displayDate = currentLedger.date || "—";
 
   if(displayDate !== "—"){
-    const parts = displayDate.split("/");
-    if(parts.length === 3){
-      const month = Number(parts[0]);
-      const day = Number(parts[1]);
-      const year = Number(parts[2]);
+    const d = new Date(displayDate);
 
-      const d = new Date(year, month - 1, day);
-
-      displayDate = d.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
+    if(!isNaN(d.getTime())){
+      displayDate = d.toLocaleDateString("en-US",{
+        month:"long",
+        day:"numeric",
+        year:"numeric"
       });
     }
   }
+
+  document.getElementById("ledgerDate").textContent =
+    displayDate;
+
+  document.getElementById("ledgerName").textContent =
+    currentLedger.name || "—";
+}
 
   document.getElementById("ledgerDate").textContent =
     displayDate;
