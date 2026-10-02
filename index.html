@@ -5,24 +5,42 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#107c41">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>DEL • RET • SALES</title>
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#f2f4f3;font-family:Arial,sans-serif;color:#222}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:#f2f4f3;
+  font-family:Arial,sans-serif;
+  color:#222
+}
+
 body{font-size:13px}
+
 button,input,textarea{font:inherit}
 button{cursor:pointer;border:0}
-.app{width:100%;max-width:600px;margin:auto;padding:5px}
 
-/* TOP */
+.app{
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  padding:5px
+}
+
+/* =========================
+   TOP
+   ========================= */
+
 .ledger-bar{
   display:grid;
   grid-template-columns:1fr 1fr auto;
   gap:4px;
   margin-bottom:4px
 }
+
 .top-box{
   background:#fff;
   border:1px solid #ccc;
@@ -30,13 +48,20 @@ button{cursor:pointer;border:0}
   padding:5px 7px;
   min-width:0
 }
-.top-label{font-size:9px;color:#777;text-transform:uppercase}
+
+.top-label{
+  font-size:9px;
+  color:#777;
+  text-transform:uppercase
+}
+
 .top-value{
   font-weight:bold;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis
 }
+
 .top-btn{
   background:#666;
   color:#fff;
@@ -45,30 +70,94 @@ button{cursor:pointer;border:0}
   font-size:10px;
   font-weight:bold
 }
+
 .top-btn:disabled{opacity:.4}
 
-/* NOTICES */
-.notice{
-  background:#fff3cd;
-  border:1px solid #e0c76a;
-  color:#765d00;
-  border-radius:5px;
-  padding:5px 7px;
-  margin-bottom:4px;
-  font-size:10px;
-  text-align:center
-}
-.notice button{
-  margin-left:6px;
-  padding:3px 7px;
-  border-radius:4px;
-  background:#666;
-  color:#fff;
-  font-size:9px
-}
-#readonlyNotice{display:none}
+/* =========================
+   MODE ATMOSPHERE
+   ========================= */
 
-/* CARD */
+/*
+  Normal = white/green
+  Saved preview = cool gray atmosphere
+  Edit mode = warm/light atmosphere
+*/
+
+body.saved-preview{
+  background:#e7e9ec
+}
+
+body.edit-mode{
+  background:#fff4df
+}
+
+body.saved-preview .card,
+body.saved-preview .saved-card{
+  border-color:#7d8791
+}
+
+body.saved-preview .main-table th{
+  background:#59636d
+}
+
+body.saved-preview .summary-table .net-row{
+  background:#59636d
+}
+
+body.saved-preview .top-box{
+  background:#f5f6f7;
+  border-color:#8b949d
+}
+
+body.edit-mode .card{
+  border-color:#d59b42
+}
+
+body.edit-mode .main-table th{
+  background:#c47b19
+}
+
+body.edit-mode .summary-table .net-row{
+  background:#c47b19
+}
+
+body.edit-mode .top-box{
+  background:#fffaf0;
+  border-color:#d8a354
+}
+
+/* Small fixed mode indicator.
+   It does NOT push the screen down. */
+.mode-pill{
+  position:fixed;
+  top:4px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:90;
+  display:none;
+  padding:3px 9px;
+  border-radius:20px;
+  font-size:9px;
+  font-weight:bold;
+  box-shadow:0 2px 7px rgba(0,0,0,.2)
+}
+
+body.saved-preview .mode-pill{
+  display:block;
+  background:#59636d;
+  color:#fff
+}
+
+body.edit-mode .mode-pill{
+  display:block;
+  background:#c47b19;
+  color:#fff
+}
+
+/* =========================
+   CARD
+   ========================= */
+
 .card,.saved-card{
   background:#fff;
   border:1px solid #ccc;
@@ -77,21 +166,33 @@ button{cursor:pointer;border:0}
   margin-bottom:5px
 }
 
-/* MAIN TABLE */
+/* =========================
+   MAIN TABLE
+   ========================= */
+
 .main-table-scroll{
   max-height:285px;
   overflow:auto;
   border:1px solid #aaa;
   border-radius:4px
 }
-table{border-collapse:collapse;width:100%}
-.main-table{table-layout:fixed}
+
+table{
+  border-collapse:collapse;
+  width:100%
+}
+
+.main-table{
+  table-layout:fixed
+}
+
 .main-table th,
 .main-table td{
   border:1px solid #aaa;
   text-align:center;
   padding:4px 2px
 }
+
 .main-table th{
   background:#107c41;
   color:#fff;
@@ -100,6 +201,7 @@ table{border-collapse:collapse;width:100%}
   top:0;
   z-index:2
 }
+
 .main-table th:nth-child(1){width:23%}
 .main-table th:nth-child(2),
 .main-table th:nth-child(3),
@@ -107,12 +209,14 @@ table{border-collapse:collapse;width:100%}
 .main-table th:nth-child(5){width:23%}
 
 .item-name{font-weight:bold}
+
 .mult-tag{
   display:block;
   font-size:8px;
   color:#777;
   margin-top:1px
 }
+
 .main-table input{
   width:100%;
   border:1px solid #ccc;
@@ -121,19 +225,28 @@ table{border-collapse:collapse;width:100%}
   padding:4px 1px;
   background:#fff
 }
+
 .sale-cell{font-weight:bold}
 .amount-cell{font-weight:bold}
 
-/* SUMMARY */
-.summary-table{margin-top:5px}
+/* =========================
+   SUMMARY
+   ========================= */
+
+.summary-table{
+  margin-top:5px
+}
+
 .summary-table td{
   border:1px solid #aaa;
   padding:4px
 }
+
 .summary-table td:first-child{
   font-weight:bold;
   width:50%
 }
+
 .summary-table input{
   width:100%;
   border:1px solid #ccc;
@@ -141,16 +254,31 @@ table{border-collapse:collapse;width:100%}
   padding:4px;
   text-align:right
 }
-.total-row{background:#e9f5ed}
+
+.total-row{
+  background:#e9f5ed
+}
+
 .net-row{
   background:#107c41;
   color:#fff;
   font-size:15px
 }
-.net-row td{border-color:#107c41}
-#totalAmount,#netTotal{font-weight:bold;text-align:right}
 
-/* NOTE */
+.net-row td{
+  border-color:#107c41
+}
+
+#totalAmount,
+#netTotal{
+  font-weight:bold;
+  text-align:right
+}
+
+/* =========================
+   NOTE
+   ========================= */
+
 #note{
   width:100%;
   min-height:42px;
@@ -161,13 +289,17 @@ table{border-collapse:collapse;width:100%}
   resize:vertical
 }
 
-/* ACTIONS */
+/* =========================
+   ACTIONS
+   ========================= */
+
 .actions{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:5px;
   margin-top:5px
 }
+
 .action-btn{
   padding:8px 4px;
   border-radius:5px;
@@ -175,11 +307,18 @@ table{border-collapse:collapse;width:100%}
   font-weight:bold;
   font-size:11px
 }
+
 .new-btn{background:#555}
 .save-btn{background:#107c41}
-.action-btn:disabled{opacity:.4}
 
-/* HINT */
+.action-btn:disabled{
+  opacity:.4
+}
+
+/* =========================
+   HINT
+   ========================= */
+
 .hint{
   text-align:center;
   color:#777;
@@ -187,17 +326,22 @@ table{border-collapse:collapse;width:100%}
   padding:3px
 }
 
-/* SAVED FILES */
+/* =========================
+   SAVED FILES
+   ========================= */
+
 .saved-title{
   font-weight:bold;
   color:#107c41;
   padding:2px 1px 5px
 }
+
 .saved-list{
   height:210px;
   overflow:auto;
   border-top:1px solid #ddd
 }
+
 .saved-item{
   display:grid;
   grid-template-columns:1fr auto auto;
@@ -207,15 +351,29 @@ table{border-collapse:collapse;width:100%}
   padding:5px 2px;
   background:#fff
 }
-.saved-item.selected{background:#e6f3eb}
+
+.saved-item.selected{
+  background:#e6f3eb
+}
+
+body.saved-preview .saved-item.selected{
+  background:#d9dee3
+}
+
+body.edit-mode .saved-item.selected{
+  background:#ffe8bf
+}
+
 .saved-info{
   min-width:0;
   cursor:pointer
 }
+
 .saved-date{
   font-weight:bold;
   font-size:11px
 }
+
 .saved-name{
   color:#666;
   font-size:10px;
@@ -223,10 +381,12 @@ table{border-collapse:collapse;width:100%}
   overflow:hidden;
   text-overflow:ellipsis
 }
+
 .saved-net{
   font-size:9px;
   color:#107c41
 }
+
 .small-btn{
   padding:5px 7px;
   border-radius:4px;
@@ -234,10 +394,14 @@ table{border-collapse:collapse;width:100%}
   font-size:9px;
   font-weight:bold
 }
+
 .edit-btn{background:#2878b9}
 .delete-btn{background:#b33}
 
-/* MODALS */
+/* =========================
+   MODALS
+   ========================= */
+
 .modal{
   position:fixed;
   inset:0;
@@ -247,7 +411,11 @@ table{border-collapse:collapse;width:100%}
   justify-content:center;
   z-index:100
 }
-.modal.show{display:flex}
+
+.modal.show{
+  display:flex
+}
+
 .modal-box{
   width:calc(100% - 24px);
   max-width:350px;
@@ -258,6 +426,7 @@ table{border-collapse:collapse;width:100%}
   padding:12px;
   box-shadow:0 8px 30px rgba(0,0,0,.3)
 }
+
 .modal-title{
   font-weight:bold;
   font-size:16px;
@@ -265,38 +434,44 @@ table{border-collapse:collapse;width:100%}
   margin-bottom:10px;
   color:#107c41
 }
+
 .form-label{
   display:block;
   font-size:10px;
   color:#666;
   margin:7px 0 3px
 }
+
 .form-input{
   width:100%;
   padding:8px;
   border:1px solid #bbb;
   border-radius:5px
 }
+
 .modal-actions{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:6px;
   margin-top:12px
 }
+
 .modal-btn{
   padding:9px;
   border-radius:5px;
   font-weight:bold;
   color:#fff
 }
+
 .cancel-btn{background:#666}
 .green-btn{background:#107c41}
 .blue-btn{background:#2878b9}
 .red-btn{background:#b33}
 
-.save-box{
-  max-height:80vh
-}
+/* =========================
+   SAVE PREVIEW
+   ========================= */
+
 .save-preview{
   background:#f4f7f5;
   border:1px solid #ddd;
@@ -304,41 +479,43 @@ table{border-collapse:collapse;width:100%}
   padding:8px;
   margin-bottom:10px
 }
+
 .preview-row{
   display:flex;
   justify-content:space-between;
   border-bottom:1px solid #ddd;
   padding:4px 0
 }
-.preview-row:last-child{border:0}
-.preview-row strong{color:#107c41}
-.save-scroll-note{
-  background:#fff3cd;
-  border:1px solid #e1ca70;
-  padding:7px;
-  border-radius:5px;
-  font-size:10px;
-  text-align:center;
-  margin-bottom:8px
-}
-.final-area{
-  margin-top:18px;
-  padding-top:12px;
-  border-top:2px dashed #107c41
-}
-#finalSaveBtn{display:none;width:100%}
 
-/* MULTIPLIER */
+.preview-row:last-child{
+  border:0
+}
+
+.preview-row strong{
+  color:#107c41
+}
+
+#finalSaveBtn{
+  width:100%;
+  margin-top:12px
+}
+
+/* =========================
+   MULTIPLIER
+   ========================= */
+
 .mult-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:7px
 }
+
 .mult-box label{
   display:block;
   font-weight:bold;
   margin-bottom:3px
 }
+
 .mult-box input{
   width:100%;
   padding:7px;
@@ -347,7 +524,10 @@ table{border-collapse:collapse;width:100%}
   text-align:center
 }
 
-/* TOAST */
+/* =========================
+   TOAST
+   ========================= */
+
 #toast{
   position:fixed;
   left:50%;
@@ -368,9 +548,12 @@ table{border-collapse:collapse;width:100%}
 
 <body>
 
+<div class="mode-pill" id="modePill"></div>
+
 <div class="app">
 
   <div class="ledger-bar">
+
     <div class="top-box">
       <div class="top-label">Date</div>
       <div class="top-value" id="ledgerDate">—</div>
@@ -381,22 +564,18 @@ table{border-collapse:collapse;width:100%}
       <div class="top-value" id="ledgerName">—</div>
     </div>
 
-    <button class="top-btn" id="clearBtn">CLEAR<br>INPUTS</button>
-  </div>
+    <button class="top-btn" id="clearBtn">
+      CLEAR<br>INPUTS
+    </button>
 
-  <div class="notice" id="readonlyNotice">
-    SAVED FILE — READ ONLY
-  </div>
-
-  <div class="notice" id="editNotice">
-    EDIT MODE
-    <button id="cancelEditBtn">CANCEL EDIT</button>
   </div>
 
   <div class="card">
 
     <div class="main-table-scroll">
+
       <table class="main-table">
+
         <thead>
           <tr>
             <th>ITEM</th>
@@ -406,54 +585,78 @@ table{border-collapse:collapse;width:100%}
             <th>AMOUNT</th>
           </tr>
         </thead>
+
         <tbody id="productRows"></tbody>
+
       </table>
+
     </div>
 
     <table class="summary-table">
+
       <tbody>
+
         <tr class="total-row">
           <td>TOTAL</td>
-          <td id="totalAmount">0.00</td>
+          <td id="totalAmount">0</td>
         </tr>
 
         <tr>
           <td>BARYA</td>
-          <td><input id="barya" type="number" inputmode="decimal" step="any"></td>
+          <td>
+            <input id="barya" type="number" inputmode="decimal" step="any">
+          </td>
         </tr>
 
         <tr>
           <td>AL</td>
-          <td><input id="al" type="number" inputmode="decimal" step="any"></td>
+          <td>
+            <input id="al" type="number" inputmode="decimal" step="any">
+          </td>
         </tr>
 
         <tr>
           <td>EX1</td>
-          <td><input id="ex1" type="number" inputmode="decimal" step="any"></td>
+          <td>
+            <input id="ex1" type="number" inputmode="decimal" step="any">
+          </td>
         </tr>
 
         <tr>
           <td>EX2</td>
-          <td><input id="ex2" type="number" inputmode="decimal" step="any"></td>
+          <td>
+            <input id="ex2" type="number" inputmode="decimal" step="any">
+          </td>
         </tr>
 
         <tr>
           <td>EX3</td>
-          <td><input id="ex3" type="number" inputmode="decimal" step="any"></td>
+          <td>
+            <input id="ex3" type="number" inputmode="decimal" step="any">
+          </td>
         </tr>
 
         <tr class="net-row">
           <td>NET TOTAL</td>
-          <td id="netTotal">0.00</td>
+          <td id="netTotal">0</td>
         </tr>
+
       </tbody>
+
     </table>
 
     <textarea id="note" placeholder="Note..."></textarea>
 
     <div class="actions">
-      <button class="action-btn new-btn" id="newDayBtn">NEW DAY</button>
-      <button class="action-btn save-btn" id="saveBtn">SAVE</button>
+
+      <button class="action-btn new-btn" id="newDayBtn">
+        NEW DAY
+      </button>
+
+      <button class="action-btn save-btn" id="saveBtn">
+        SAVE
+      </button>
+
     </div>
 
   </div>
@@ -463,95 +666,155 @@ table{border-collapse:collapse;width:100%}
   </div>
 
   <div class="saved-card">
-    <div class="saved-title">SAVED FILES</div>
+
+    <div class="saved-title">
+      SAVED FILES
+    </div>
+
     <div class="saved-list" id="savedFilesList"></div>
+
   </div>
 
 </div>
 
 
-<!-- NEW LEDGER -->
+<!-- =========================
+     NEW LEDGER
+     ========================= -->
+
 <div class="modal" id="setup">
+
   <div class="modal-box">
 
-    <div class="modal-title">NEW LEDGER</div>
+    <div class="modal-title">
+      NEW LEDGER
+    </div>
 
     <label class="form-label">DATE</label>
-    <input class="form-input" id="setupDate" type="date">
+
+    <input
+      class="form-input"
+      id="setupDate"
+      type="date"
+    >
 
     <label class="form-label">NAME</label>
-    <input class="form-input" id="setupName" type="text" autocomplete="off">
+
+    <input
+      class="form-input"
+      id="setupName"
+      type="text"
+      autocomplete="off"
+    >
 
     <div class="modal-actions">
-      <button class="modal-btn cancel-btn" id="setupExitBtn">EXIT</button>
-      <button class="modal-btn green-btn" id="startLedgerBtn">START</button>
+
+      <button
+        class="modal-btn cancel-btn"
+        id="setupExitBtn">
+        EXIT
+      </button>
+
+      <button
+        class="modal-btn green-btn"
+        id="startLedgerBtn">
+        START
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- SAVE -->
-<div class="modal" id="saveModal">
-  <div class="modal-box save-box" id="saveModalBox">
+<!-- =========================
+     SAVE
+     ========================= -->
 
-    <div class="modal-title">SAVE LEDGER</div>
+<div class="modal" id="saveModal">
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+      SAVE LEDGER
+    </div>
 
     <div class="save-preview">
+
       <div class="preview-row">
         <span>Date</span>
         <strong id="previewDate">—</strong>
       </div>
+
       <div class="preview-row">
         <span>Name</span>
         <strong id="previewName">—</strong>
       </div>
+
       <div class="preview-row">
         <span>Total</span>
-        <strong id="previewTotal">0.00</strong>
+        <strong id="previewTotal">0</strong>
       </div>
+
       <div class="preview-row">
         <span>Net Total</span>
-        <strong id="previewNet">0.00</strong>
+        <strong id="previewNet">0</strong>
       </div>
+
     </div>
 
-    <div class="save-scroll-note">
-      Scroll down a little to reveal the green SAVE button.
-    </div>
-
-    <div style="height:80px"></div>
-
-    <div class="final-area">
-      <button class="modal-btn green-btn" id="finalSaveBtn">
-        FINAL SAVE
-      </button>
-    </div>
+    <button
+      class="modal-btn green-btn"
+      id="finalSaveBtn">
+      FINAL SAVE
+    </button>
 
     <div class="modal-actions">
-      <button class="modal-btn cancel-btn" id="saveCancelBtn">CANCEL</button>
-      <button class="modal-btn blue-btn" id="reviewSaveBtn">REVIEW</button>
+
+      <button
+        class="modal-btn cancel-btn"
+        id="saveCancelBtn">
+        CANCEL
+      </button>
+
+      <button
+        class="modal-btn blue-btn"
+        id="reviewSaveBtn">
+        REVIEW
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- EDIT CONFIRMATION -->
+<!-- =========================
+     EDIT
+     ========================= -->
+
 <div class="modal" id="editModal">
+
   <div class="modal-box">
 
-    <div class="modal-title">EDIT SAVED FILE</div>
+    <div class="modal-title">
+      EDIT SAVED FILE
+    </div>
 
     <div class="save-preview">
+
       <div class="preview-row">
         <span>Date</span>
         <strong id="editPreviewDate">—</strong>
       </div>
+
       <div class="preview-row">
         <span>Name</span>
         <strong id="editPreviewName">—</strong>
       </div>
+
     </div>
 
     <div style="font-size:11px;color:#666;text-align:center">
@@ -559,53 +822,89 @@ table{border-collapse:collapse;width:100%}
     </div>
 
     <div class="modal-actions">
-      <button class="modal-btn cancel-btn" id="editCancelBtn">EXIT</button>
-      <button class="modal-btn blue-btn" id="editConfirmBtn">EDIT</button>
+
+      <button
+        class="modal-btn cancel-btn"
+        id="editCancelBtn">
+        EXIT
+      </button>
+
+      <button
+        class="modal-btn blue-btn"
+        id="editConfirmBtn">
+        EDIT
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- MULTIPLIERS -->
+<!-- =========================
+     MULTIPLIERS
+     ========================= -->
+
 <div class="modal" id="multiplierModal">
+
   <div class="modal-box">
 
-    <div class="modal-title">AMOUNT MULTIPLIERS</div>
+    <div class="modal-title">
+      AMOUNT MULTIPLIERS
+    </div>
 
     <div style="font-size:10px;color:#666;text-align:center;margin-bottom:10px">
       Formula: SALES × multiplier = Amount
     </div>
 
     <div class="mult-grid">
+
       <div class="mult-box">
         <label>R</label>
         <input id="mult-R" type="number" step="any">
       </div>
+
       <div class="mult-box">
         <label>P</label>
         <input id="mult-P" type="number" step="any">
       </div>
+
       <div class="mult-box">
         <label>L</label>
         <input id="mult-L" type="number" step="any">
       </div>
+
       <div class="mult-box">
         <label>M</label>
         <input id="mult-M" type="number" step="any">
       </div>
+
       <div class="mult-box">
         <label>C</label>
         <input id="mult-C" type="number" step="any">
       </div>
+
     </div>
 
     <div class="modal-actions">
-      <button class="modal-btn cancel-btn" id="multCancelBtn">CANCEL</button>
-      <button class="modal-btn green-btn" id="multSaveBtn">SAVE</button>
+
+      <button
+        class="modal-btn cancel-btn"
+        id="multCancelBtn">
+        CANCEL
+      </button>
+
+      <button
+        class="modal-btn green-btn"
+        id="multSaveBtn">
+        SAVE
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
@@ -613,8 +912,9 @@ table{border-collapse:collapse;width:100%}
 
 
 <script>
+
 /* =========================
-   DEL • RET • SALES
+   BASIC DATA
    ========================= */
 
 const products=["R","P","L","M","C"];
@@ -637,27 +937,23 @@ let currentLedger={
 };
 
 let ledgerReadOnly=false;
+
 let selectedSavedFileId=null;
 
+
 /*
-  Saved-file preview state.
-
-  savedViewBackup = the ledger that was on screen
-  BEFORE the user opened a saved file.
-
-  This is the important part that lets you:
-  CURRENT WORK
-       ↓
-  REVIEW SAVED FILE
-       ↓
-  TAP SAME FILE
-       ↓
-  RETURN TO CURRENT WORK
+  Saved preview:
+  Holds the CURRENT WORK before we temporarily
+  display a saved file.
 */
 let savedViewBackup=null;
 let viewingSavedId=null;
 
-/* Edit state */
+
+/*
+  Edit backup:
+  Holds the state before entering edit mode.
+*/
 let editBackup=null;
 let editingSavedId=null;
 
@@ -667,38 +963,74 @@ let editingSavedId=null;
    ========================= */
 
 function num(v){
+
   const n=parseFloat(v);
+
   return Number.isFinite(n)?n:0;
 }
 
+
+/*
+  No unnecessary .00.
+  500 stays 500.
+  500.50 stays 500.50.
+  0 stays 0.
+*/
 function money(v){
-  return num(v).toFixed(2);
+
+  const n=num(v);
+
+  if(Number.isInteger(n)){
+    return String(n);
+  }
+
+  return n
+    .toFixed(2)
+    .replace(/0+$/,"")
+    .replace(/\.$/,"");
 }
+
 
 function makeId(){
-  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+
+  return Date.now().toString(36)+
+    Math.random().toString(36).slice(2,8);
 }
 
+
 function toast(msg){
+
   const el=document.getElementById("toast");
+
   el.textContent=msg;
   el.style.display="block";
+
   clearTimeout(window.__toastTimer);
+
   window.__toastTimer=setTimeout(()=>{
     el.style.display="none";
   },1800);
 }
 
+
 function getSavedFiles(){
+
   try{
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY)||"[]"
+    );
   }catch(e){
     return [];
   }
 }
 
+
 function setSavedFiles(files){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(files));
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(files)
+  );
 }
 
 
@@ -709,6 +1041,7 @@ function setSavedFiles(files){
 function buildProductRows(){
 
   const tbody=document.getElementById("productRows");
+
   tbody.innerHTML="";
 
   products.forEach(p=>{
@@ -716,9 +1049,12 @@ function buildProductRows(){
     const tr=document.createElement("tr");
 
     tr.innerHTML=`
+
       <td>
         <div class="item-name">${p}</div>
-        <span class="mult-tag" id="tag-${p}">(x45)</span>
+        <span class="mult-tag" id="tag-${p}">
+          (x${multipliers[p]})
+        </span>
       </td>
 
       <td>
@@ -726,8 +1062,7 @@ function buildProductRows(){
           id="del-${p}"
           type="number"
           inputmode="decimal"
-          step="any"
-        >
+          step="any">
       </td>
 
       <td>
@@ -735,13 +1070,21 @@ function buildProductRows(){
           id="ret-${p}"
           type="number"
           inputmode="decimal"
-          step="any"
-        >
+          step="any">
       </td>
 
-      <td class="sale-cell" id="sale-${p}">0</td>
+      <td
+        class="sale-cell"
+        id="sale-${p}">
+        0
+      </td>
 
-      <td class="amount-cell" id="amount-${p}">0.00</td>
+      <td
+        class="amount-cell"
+        id="amount-${p}">
+        0
+      </td>
+
     `;
 
     tbody.appendChild(tr);
@@ -751,23 +1094,22 @@ function buildProductRows(){
 }
 
 
-/* =========================
-   MULTIPLIER DISPLAY
-   ========================= */
-
 function updateMultiplierTags(){
 
   products.forEach(p=>{
+
     const tag=document.getElementById(`tag-${p}`);
+
     if(tag){
       tag.textContent=`(x${multipliers[p]})`;
     }
+
   });
 }
 
 
 /* =========================
-   CALCULATION
+   CALCULATE
    ========================= */
 
 function calculate(){
@@ -776,43 +1118,87 @@ function calculate(){
 
   products.forEach(p=>{
 
-    const del=num(document.getElementById(`del-${p}`)?.value);
-    const ret=num(document.getElementById(`ret-${p}`)?.value);
+    const del=num(
+      document.getElementById(`del-${p}`)?.value
+    );
+
+    const ret=num(
+      document.getElementById(`ret-${p}`)?.value
+    );
 
     const sales=del-ret;
-    const amount=sales*num(multipliers[p]);
 
-    const saleEl=document.getElementById(`sale-${p}`);
-    const amountEl=document.getElementById(`amount-${p}`);
+    const amount=
+      sales*num(multipliers[p]);
 
-    if(saleEl) saleEl.textContent=money(sales);
-    if(amountEl) amountEl.textContent=money(amount);
+    const saleEl=
+      document.getElementById(`sale-${p}`);
+
+    const amountEl=
+      document.getElementById(`amount-${p}`);
+
+    if(saleEl){
+      saleEl.textContent=money(sales);
+    }
+
+    if(amountEl){
+      amountEl.textContent=money(amount);
+    }
 
     total+=amount;
   });
 
-  const barya=num(document.getElementById("barya")?.value);
-  const al=num(document.getElementById("al")?.value);
-  const ex1=num(document.getElementById("ex1")?.value);
-  const ex2=num(document.getElementById("ex2")?.value);
-  const ex3=num(document.getElementById("ex3")?.value);
 
-  const net=total+barya-al-ex1-ex2-ex3;
+  const barya=num(
+    document.getElementById("barya")?.value
+  );
 
-  /*
-    Always explicitly render BOTH totals.
-    This prevents NET TOTAL from becoming blank after
-    loading, viewing, saving, or restoring a ledger.
-  */
-  const totalEl=document.getElementById("totalAmount");
-  const netEl=document.getElementById("netTotal");
+  const al=num(
+    document.getElementById("al")?.value
+  );
 
-  if(totalEl) totalEl.textContent=money(total);
-  if(netEl) netEl.textContent=money(net);
+  const ex1=num(
+    document.getElementById("ex1")?.value
+  );
+
+  const ex2=num(
+    document.getElementById("ex2")?.value
+  );
+
+  const ex3=num(
+    document.getElementById("ex3")?.value
+  );
+
+
+  const net=
+    total+
+    barya-
+    al-
+    ex1-
+    ex2-
+    ex3;
+
+
+  const totalEl=
+    document.getElementById("totalAmount");
+
+  const netEl=
+    document.getElementById("netTotal");
+
+
+  if(totalEl){
+    totalEl.textContent=money(total);
+  }
+
+  if(netEl){
+    netEl.textContent=money(net);
+  }
+
 
   if(!ledgerReadOnly){
     saveCurrentInputs();
   }
+
 
   return{
     total,
@@ -827,7 +1213,7 @@ function calculate(){
 
 
 /* =========================
-   CURRENT INPUT AUTOSAVE
+   CURRENT INPUTS
    ========================= */
 
 function getCurrentInputs(){
@@ -835,73 +1221,116 @@ function getCurrentInputs(){
   const data={
     del:{},
     ret:{},
-    barya:num(document.getElementById("barya")?.value),
-    al:num(document.getElementById("al")?.value),
-    ex1:num(document.getElementById("ex1")?.value),
-    ex2:num(document.getElementById("ex2")?.value),
-    ex3:num(document.getElementById("ex3")?.value),
-    note:document.getElementById("note")?.value||""
+    barya:num(
+      document.getElementById("barya")?.value
+    ),
+    al:num(
+      document.getElementById("al")?.value
+    ),
+    ex1:num(
+      document.getElementById("ex1")?.value
+    ),
+    ex2:num(
+      document.getElementById("ex2")?.value
+    ),
+    ex3:num(
+      document.getElementById("ex3")?.value
+    ),
+    note:
+      document.getElementById("note")?.value||""
   };
 
+
   products.forEach(p=>{
-    data.del[p]=num(document.getElementById(`del-${p}`)?.value);
-    data.ret[p]=num(document.getElementById(`ret-${p}`)?.value);
+
+    data.del[p]=num(
+      document.getElementById(`del-${p}`)?.value
+    );
+
+    data.ret[p]=num(
+      document.getElementById(`ret-${p}`)?.value
+    );
+
   });
+
 
   return data;
 }
 
+
 function saveCurrentInputs(){
 
-  if(ledgerReadOnly) return;
+  if(ledgerReadOnly)return;
 
-  const data={
-    ledger:{...currentLedger},
-    inputs:getCurrentInputs(),
-    multipliers:{...multipliers}
-  };
-
-  localStorage.setItem(CURRENT_KEY,JSON.stringify(data));
+  localStorage.setItem(
+    CURRENT_KEY,
+    JSON.stringify({
+      ledger:{...currentLedger},
+      inputs:getCurrentInputs(),
+      multipliers:{...multipliers}
+    })
+  );
 }
 
 
 /* =========================
-   LOAD INPUTS
+   PUT INPUTS
    ========================= */
 
 function putInputs(data){
 
   data=data||{};
 
+
   products.forEach(p=>{
 
     const del=data.del?.[p];
     const ret=data.ret?.[p];
 
-    const delEl=document.getElementById(`del-${p}`);
-    const retEl=document.getElementById(`ret-${p}`);
+    const delEl=
+      document.getElementById(`del-${p}`);
 
-    if(delEl) delEl.value=(del===undefined||del===0)?"":del;
-    if(retEl) retEl.value=(ret===undefined||ret===0)?"":ret;
-  });
+    const retEl=
+      document.getElementById(`ret-${p}`);
 
-  const fields=["barya","al","ex1","ex2","ex3"];
 
-  fields.forEach(id=>{
-    const el=document.getElementById(id);
-    const value=data[id];
-
-    if(el){
-      el.value=(value===undefined||value===0)?"":value;
+    if(delEl){
+      delEl.value=
+        (del===undefined||del===0)?"":del;
     }
+
+    if(retEl){
+      retEl.value=
+        (ret===undefined||ret===0)?"":ret;
+    }
+
   });
 
-  document.getElementById("note").value=data.note||"";
+
+  ["barya","al","ex1","ex2","ex3"]
+    .forEach(id=>{
+
+      const el=document.getElementById(id);
+
+      const value=data[id];
+
+      if(el){
+        el.value=
+          (value===undefined||value===0)
+          ?""
+          :value;
+      }
+
+    });
+
+
+  document.getElementById("note").value=
+    data.note||"";
 }
 
 
 /* =========================
-   CAPTURE COMPLETE LEDGER
+   SNAPSHOT
    ========================= */
 
 function captureLedgerState(){
@@ -915,26 +1344,26 @@ function captureLedgerState(){
 }
 
 
-/* =========================
-   RESTORE COMPLETE LEDGER
-   ========================= */
-
 function restoreLedgerState(snapshot){
 
-  if(!snapshot) return;
+  if(!snapshot)return;
 
-  currentLedger={...snapshot.currentLedger};
-  multipliers={...snapshot.multipliers};
+  currentLedger={
+    ...snapshot.currentLedger
+  };
+
+  multipliers={
+    ...snapshot.multipliers
+  };
+
   putInputs(snapshot.inputs);
 
   updateMultiplierTags();
+
   setLedgerReadOnly(snapshot.readOnly);
+
   updateLedgerBar();
 
-  /*
-    calculate() is deliberately called AFTER restoring
-    the values so NET TOTAL is immediately restored too.
-  */
   calculate();
 }
 
@@ -945,7 +1374,8 @@ function restoreLedgerState(snapshot){
 
 function loadRecordIntoLedger(record,readOnly){
 
-  if(!record) return;
+  if(!record)return;
+
 
   currentLedger={
     id:record.id,
@@ -953,64 +1383,81 @@ function loadRecordIntoLedger(record,readOnly){
     name:record.name||""
   };
 
+
   multipliers={
-    ...{
-      R:45,
-      P:45,
-      L:45,
-      M:45,
-      C:45
-    },
+    R:45,
+    P:45,
+    L:45,
+    M:45,
+    C:45,
     ...(record.multipliers||{})
   };
+
 
   putInputs(record.inputs||{});
 
   updateMultiplierTags();
 
   setLedgerReadOnly(!!readOnly);
+
   updateLedgerBar();
 
-  /*
-    Recalculate from actual loaded inputs rather than
-    relying only on the stored total/net.
-  */
   calculate();
 }
 
 
 /* =========================
-   READ ONLY
+   READ ONLY / EDIT MODE
    ========================= */
 
 function setLedgerReadOnly(state){
 
   ledgerReadOnly=!!state;
 
+
   const fields=document.querySelectorAll(
-    '.main-table input[type="number"],' +
-    '.summary-table input[type="number"],' +
+    '.main-table input[type="number"],'+
+    '.summary-table input[type="number"],'+
     '#note'
   );
+
 
   fields.forEach(el=>{
     el.disabled=ledgerReadOnly;
   });
 
-  document.getElementById("clearBtn").disabled=ledgerReadOnly;
-  document.getElementById("saveBtn").disabled=ledgerReadOnly;
 
-  document.getElementById("readonlyNotice").style.display=
-    ledgerReadOnly?"block":"none";
+  document.getElementById("clearBtn").disabled=
+    ledgerReadOnly;
 
-  document.getElementById("editNotice").style.display=
-    editingSavedId?"block":"none";
+  document.getElementById("saveBtn").disabled=
+    ledgerReadOnly;
+
+
+  document.body.classList.toggle(
+    "saved-preview",
+    ledgerReadOnly
+  );
+
+  document.body.classList.toggle(
+    "edit-mode",
+    !!editingSavedId
+  );
+
+
+  const pill=
+    document.getElementById("modePill");
+
+
+  if(editingSavedId){
+    pill.textContent="EDIT MODE";
+  }else if(ledgerReadOnly){
+    pill.textContent="READ ONLY";
+  }else{
+    pill.textContent="";
+  }
 }
 
-
-/* =========================
-   TOP BAR
-   ========================= */
 
 function updateLedgerBar(){
 
@@ -1023,50 +1470,79 @@ function updateLedgerBar(){
 
 
 /* =========================
-   NEW LEDGER SETUP
+   NEW LEDGER
    ========================= */
 
 function showNewDaySetup(){
 
   /*
-    IMPORTANT:
-    Date is intentionally EMPTY.
-    The user must choose the date.
+    Date ALWAYS starts empty.
   */
   document.getElementById("setupDate").value="";
+
   document.getElementById("setupName").value="";
 
-  document.getElementById("setup").classList.add("show");
+  document.getElementById("setup")
+    .classList.add("show");
 }
 
+
 function closeSetup(){
-  document.getElementById("setup").classList.remove("show");
+
+  document.getElementById("setup")
+    .classList.remove("show");
+
+
+  /*
+    If there is NO valid current ledger,
+    exiting setup leaves the calculator READ ONLY.
+    User can press NEW DAY again.
+  */
+  if(!currentLedger.date || !currentLedger.name){
+
+    setLedgerReadOnly(true);
+
+    currentLedger={
+      id:null,
+      date:"",
+      name:""
+    };
+
+    updateLedgerBar();
+
+    calculate();
+  }
 }
+
 
 function startNewLedger(){
 
-  const date=document.getElementById("setupDate").value;
-  const name=document.getElementById("setupName").value.trim();
+  const date=
+    document.getElementById("setupDate").value;
+
+  const name=
+    document.getElementById("setupName")
+      .value.trim();
+
 
   if(!date){
     toast("Please select a date.");
     return;
   }
 
+
   if(!name){
     toast("Please enter a name.");
     return;
   }
 
-  /*
-    Starting a new ledger intentionally clears the old
-    calculator inputs.
-  */
+
   currentLedger={
     id:null,
     date,
     name
   };
+
 
   multipliers={
     R:45,
@@ -1076,12 +1552,14 @@ function startNewLedger(){
     C:45
   };
 
+
   editingSavedId=null;
   editBackup=null;
 
   savedViewBackup=null;
   viewingSavedId=null;
   selectedSavedFileId=null;
+
 
   putInputs({
     del:{},
@@ -1094,14 +1572,19 @@ function startNewLedger(){
     note:""
   });
 
+
   updateMultiplierTags();
+
   setLedgerReadOnly(false);
+
   updateLedgerBar();
 
   localStorage.removeItem(CURRENT_KEY);
 
   closeSetup();
+
   calculate();
+
   renderSavedDays();
 
   toast("New ledger started.");
@@ -1109,7 +1592,7 @@ function startNewLedger(){
 
 
 /* =========================
-   CLEAR INPUTS
+   CLEAR
    ========================= */
 
 function clearInputs(){
@@ -1119,7 +1602,11 @@ function clearInputs(){
     return;
   }
 
-  if(!confirm("Clear all current inputs?")) return;
+
+  if(!confirm("Clear all current inputs?")){
+    return;
+  }
+
 
   putInputs({
     del:{},
@@ -1132,7 +1619,9 @@ function clearInputs(){
     note:""
   });
 
+
   calculate();
+
   toast("Inputs cleared.");
 }
 
@@ -1144,13 +1633,16 @@ function clearInputs(){
 function viewSavedFile(id){
 
   const files=getSavedFiles();
-  const record=files.find(x=>x.id===id);
 
-  if(!record) return;
+  const record=
+    files.find(x=>x.id===id);
+
+  if(!record)return;
+
 
   /*
     SECOND TAP ON SAME FILE:
-    restore exactly what was on screen before preview.
+    restore the exact current work.
   */
   if(viewingSavedId===id){
 
@@ -1158,109 +1650,173 @@ function viewSavedFile(id){
       restoreLedgerState(savedViewBackup);
     }
 
+
     savedViewBackup=null;
     viewingSavedId=null;
     selectedSavedFileId=null;
 
+
     renderSavedDays();
 
     toast("Returned to current work.");
+
     return;
   }
 
+
   /*
     FIRST TAP:
-    Capture current work ONLY ONCE.
-
-    If user switches between several saved files,
-    we DO NOT replace this backup.
+    save current work only once.
   */
   if(!viewingSavedId){
-    savedViewBackup=captureLedgerState();
+
+    savedViewBackup=
+      captureLedgerState();
   }
+
 
   viewingSavedId=id;
   selectedSavedFileId=id;
 
-  /*
-    Read-only review.
-  */
-  loadRecordIntoLedger(record,true);
+
+  loadRecordIntoLedger(
+    record,
+    true
+  );
+
 
   renderSavedDays();
 
-  toast("Saved file opened — READ ONLY.");
+  toast("READ ONLY — review mode.");
 }
 
 
 /* =========================
-   SAVED FILE LIST
+   SAVED LIST
    ========================= */
 
 function renderSavedDays(){
 
-  const list=document.getElementById("savedFilesList");
+  const list=
+    document.getElementById("savedFilesList");
+
   const files=getSavedFiles();
+
 
   files.sort((a,b)=>{
 
-    const da=new Date((a.date||"0000-00-00")+"T00:00:00").getTime();
-    const db=new Date((b.date||"0000-00-00")+"T00:00:00").getTime();
+    const da=
+      new Date(
+        (a.date||"0000-00-00")+"T00:00:00"
+      ).getTime();
 
-    if(db!==da) return db-da;
+    const db=
+      new Date(
+        (b.date||"0000-00-00")+"T00:00:00"
+      ).getTime();
 
-    return String(b.savedAt||"").localeCompare(String(a.savedAt||""));
+
+    if(db!==da)return db-da;
+
+    return String(b.savedAt||"")
+      .localeCompare(
+        String(a.savedAt||"")
+      );
   });
+
 
   list.innerHTML="";
 
+
   if(!files.length){
-    list.innerHTML=
-      `<div style="padding:15px;text-align:center;color:#888">
+
+    list.innerHTML=`
+      <div style="
+        padding:15px;
+        text-align:center;
+        color:#888">
         No saved files yet.
-      </div>`;
+      </div>
+    `;
+
     return;
   }
 
+
   files.forEach(record=>{
 
-    const row=document.createElement("div");
+    const row=
+      document.createElement("div");
+
 
     row.className=
       "saved-item"+
-      (selectedSavedFileId===record.id?" selected":"");
+      (
+        selectedSavedFileId===record.id
+        ?" selected"
+        :""
+      );
 
-    const info=document.createElement("div");
+
+    const info=
+      document.createElement("div");
+
     info.className="saved-info";
 
+
     info.innerHTML=`
-      <div class="saved-date">${record.date||"—"}</div>
-      <div class="saved-name">${escapeHtml(record.name||"—")}</div>
-      <div class="saved-net">NET: ${money(record.net)}</div>
+      <div class="saved-date">
+        ${record.date||"—"}
+      </div>
+
+      <div class="saved-name">
+        ${escapeHtml(record.name||"—")}
+      </div>
+
+      <div class="saved-net">
+        NET: ${money(record.net)}
+      </div>
     `;
 
-    /*
-      The entire information area is the review button.
-    */
-    info.onclick=()=>viewSavedFile(record.id);
 
-    const edit=document.createElement("button");
-    edit.className="small-btn edit-btn";
+    info.onclick=()=>{
+      viewSavedFile(record.id);
+    };
+
+
+    const edit=
+      document.createElement("button");
+
+    edit.className=
+      "small-btn edit-btn";
+
     edit.textContent="EDIT";
 
+
     edit.onclick=e=>{
+
       e.stopPropagation();
+
       openEditModal(record.id);
     };
 
-    const del=document.createElement("button");
-    del.className="small-btn delete-btn";
+
+    const del=
+      document.createElement("button");
+
+    del.className=
+      "small-btn delete-btn";
+
     del.textContent="DEL";
 
+
     del.onclick=e=>{
+
       e.stopPropagation();
+
       deleteSavedFile(record.id);
     };
+
 
     row.appendChild(info);
     row.appendChild(edit);
@@ -1269,6 +1825,7 @@ function renderSavedDays(){
     list.appendChild(row);
   });
 }
+
 
 function escapeHtml(str){
 
@@ -1282,74 +1839,104 @@ function escapeHtml(str){
 
 
 /* =========================
-   EDIT SAVED FILE
+   EDIT
    ========================= */
 
 function openEditModal(id){
 
-  const record=getSavedFiles().find(x=>x.id===id);
+  const record=
+    getSavedFiles()
+      .find(x=>x.id===id);
 
-  if(!record) return;
+  if(!record)return;
 
-  document.getElementById("editPreviewDate").textContent=
-    record.date||"—";
 
-  document.getElementById("editPreviewName").textContent=
-    record.name||"—";
+  document.getElementById(
+    "editPreviewDate"
+  ).textContent=record.date||"—";
 
-  document.getElementById("editModal").dataset.id=id;
 
-  document.getElementById("editModal").classList.add("show");
+  document.getElementById(
+    "editPreviewName"
+  ).textContent=record.name||"—";
+
+
+  document.getElementById(
+    "editModal"
+  ).dataset.id=id;
+
+
+  document.getElementById(
+    "editModal"
+  ).classList.add("show");
 }
+
 
 function closeEditModal(){
-  document.getElementById("editModal").classList.remove("show");
+
+  document.getElementById(
+    "editModal"
+  ).classList.remove("show");
 }
+
 
 function beginEditSavedFile(id){
 
-  const record=getSavedFiles().find(x=>x.id===id);
+  const record=
+    getSavedFiles()
+      .find(x=>x.id===id);
 
-  if(!record) return;
+  if(!record)return;
+
 
   /*
-    Save the exact state before entering edit mode.
-    This allows CANCEL EDIT to restore it.
+    Save the exact state before editing.
   */
-  editBackup=captureLedgerState();
+  editBackup=
+    captureLedgerState();
+
   editingSavedId=id;
 
-  /*
-    If we came from saved-file preview, the edit operation
-    is now intentional, so preview mode ends.
-  */
+
   savedViewBackup=null;
   viewingSavedId=null;
+
   selectedSavedFileId=id;
 
-  loadRecordIntoLedger(record,false);
+
+  loadRecordIntoLedger(
+    record,
+    false
+  );
+
 
   closeEditModal();
-
-  document.getElementById("editNotice").style.display="block";
 
   renderSavedDays();
 
   toast("Edit mode enabled.");
 }
 
+
 function cancelEdit(){
 
-  if(!editingSavedId) return;
+  if(!editingSavedId)return;
+
 
   if(editBackup){
     restoreLedgerState(editBackup);
   }
 
+
   editingSavedId=null;
   editBackup=null;
 
-  document.getElementById("editNotice").style.display="none";
+
+  /*
+    Re-apply the proper visual mode
+    after leaving edit.
+  */
+  setLedgerReadOnly(ledgerReadOnly);
 
   renderSavedDays();
 
@@ -1358,7 +1945,7 @@ function cancelEdit(){
 
 
 /* =========================
-   SAVE MODAL
+   SAVE
    ========================= */
 
 function openSaveFileModal(){
@@ -1368,55 +1955,57 @@ function openSaveFileModal(){
     return;
   }
 
+
   if(!currentLedger.date){
     toast("Please start a ledger first.");
     return;
   }
+
 
   if(!currentLedger.name){
     toast("Name is required.");
     return;
   }
 
+
   const result=calculate();
 
-  document.getElementById("previewDate").textContent=
-    currentLedger.date;
 
-  document.getElementById("previewName").textContent=
-    currentLedger.name;
+  document.getElementById(
+    "previewDate"
+  ).textContent=currentLedger.date;
 
-  document.getElementById("previewTotal").textContent=
-    money(result.total);
 
-  document.getElementById("previewNet").textContent=
-    money(result.net);
+  document.getElementById(
+    "previewName"
+  ).textContent=currentLedger.name;
 
-  const box=document.getElementById("saveModalBox");
 
-  box.scrollTop=0;
+  document.getElementById(
+    "previewTotal"
+  ).textContent=money(result.total);
 
-  document.getElementById("finalSaveBtn").style.display="none";
 
-  document.getElementById("saveModal").classList.add("show");
+  document.getElementById(
+    "previewNet"
+  ).textContent=money(result.net);
+
+
+  /*
+    FINAL SAVE is now immediately visible.
+    No scroll instruction.
+  */
+  document.getElementById(
+    "saveModal"
+  ).classList.add("show");
 }
+
 
 function closeSaveModal(){
-  document.getElementById("saveModal").classList.remove("show");
-}
 
-function revealFinalSave(){
-
-  const box=document.getElementById("saveModalBox");
-
-  box.scrollTo({
-    top:box.scrollHeight,
-    behavior:"smooth"
-  });
-
-  setTimeout(()=>{
-    document.getElementById("finalSaveBtn").style.display="block";
-  },250);
+  document.getElementById(
+    "saveModal"
+  ).classList.remove("show");
 }
 
 
@@ -1426,38 +2015,61 @@ function revealFinalSave(){
 
 function finalSaveLedger(){
 
-  if(ledgerReadOnly) return;
+  if(ledgerReadOnly)return;
+
 
   const result=calculate();
 
+
   const record={
-    id:currentLedger.id||makeId(),
 
-    date:currentLedger.date,
-    name:currentLedger.name,
+    id:
+      currentLedger.id||makeId(),
 
-    inputs:getCurrentInputs(),
+    date:
+      currentLedger.date,
 
-    multipliers:{...multipliers},
+    name:
+      currentLedger.name,
 
-    total:result.total,
-    net:result.net,
+    inputs:
+      getCurrentInputs(),
 
-    savedAt:new Date().toISOString()
+    multipliers:
+      {...multipliers},
+
+    total:
+      result.total,
+
+    net:
+      result.net,
+
+    savedAt:
+      new Date().toISOString()
   };
+
 
   const files=getSavedFiles();
 
+
   const existingIndex=
-    files.findIndex(x=>x.id===record.id);
+    files.findIndex(
+      x=>x.id===record.id
+    );
+
 
   if(existingIndex>=0){
+
     files[existingIndex]=record;
+
   }else{
+
     files.push(record);
   }
 
+
   setSavedFiles(files);
+
 
   currentLedger={
     id:record.id,
@@ -1465,25 +2077,28 @@ function finalSaveLedger(){
     name:record.name
   };
 
+
   selectedSavedFileId=record.id;
 
-  /*
-    Final save ends edit mode and preview mode.
-  */
+
   editingSavedId=null;
   editBackup=null;
+
   savedViewBackup=null;
   viewingSavedId=null;
 
-  localStorage.removeItem(CURRENT_KEY);
 
-  /*
-    This is now a permanently saved/read-only ledger.
-  */
+  localStorage.removeItem(
+    CURRENT_KEY
+  );
+
+
   setLedgerReadOnly(true);
+
   updateLedgerBar();
 
   closeSaveModal();
+
   renderSavedDays();
 
   toast("Ledger saved successfully.");
@@ -1497,52 +2112,65 @@ function finalSaveLedger(){
 function deleteSavedFile(id){
 
   const files=getSavedFiles();
-  const record=files.find(x=>x.id===id);
 
-  if(!record) return;
+  const record=
+    files.find(x=>x.id===id);
+
+  if(!record)return;
+
 
   if(!confirm(
     `Delete saved file?\n\n${record.date} — ${record.name}`
-  )) return;
+  )){
+    return;
+  }
 
-  const newFiles=files.filter(x=>x.id!==id);
 
-  setSavedFiles(newFiles);
+  setSavedFiles(
+    files.filter(x=>x.id!==id)
+  );
+
 
   /*
-    If deleting the file currently being previewed,
-    restore the original working ledger.
+    If deleting the file being reviewed,
+    return to the previous working ledger.
   */
   if(viewingSavedId===id){
 
     if(savedViewBackup){
-      restoreLedgerState(savedViewBackup);
+      restoreLedgerState(
+        savedViewBackup
+      );
     }
+
 
     savedViewBackup=null;
     viewingSavedId=null;
     selectedSavedFileId=null;
   }
 
-  /*
-    If deleting the current ledger, clear its ID.
-  */
+
   if(currentLedger.id===id){
 
     currentLedger.id=null;
 
     if(editingSavedId===id){
+
       editingSavedId=null;
       editBackup=null;
     }
+
 
     if(ledgerReadOnly){
       setLedgerReadOnly(false);
     }
 
+
     updateLedgerBar();
+
     calculate();
   }
+
 
   renderSavedDays();
 
@@ -1551,53 +2179,84 @@ function deleteSavedFile(id){
 
 
 /* =========================
-   MULTIPLIER SETTINGS
+   5 TAP SALES
    ========================= */
 
 let saleTapCount=0;
 let saleTapTimer=null;
 
-document.getElementById("saleHeader").addEventListener("click",()=>{
+
+document.getElementById(
+  "saleHeader"
+).addEventListener("click",()=>{
 
   if(ledgerReadOnly){
+
     toast("Saved file is read-only.");
+
     return;
   }
 
+
   saleTapCount++;
 
-  clearTimeout(saleTapTimer);
+
+  clearTimeout(
+    saleTapTimer
+  );
+
 
   saleTapTimer=setTimeout(()=>{
     saleTapCount=0;
   },1000);
 
+
   if(saleTapCount>=5){
 
     saleTapCount=0;
 
+
     products.forEach(p=>{
-      document.getElementById(`mult-${p}`).value=
-        multipliers[p];
+
+      document.getElementById(
+        `mult-${p}`
+      ).value=multipliers[p];
+
     });
 
-    document.getElementById("multiplierModal").classList.add("show");
+
+    document.getElementById(
+      "multiplierModal"
+    ).classList.add("show");
   }
 });
 
+
 function closeMultiplierModal(){
-  document.getElementById("multiplierModal").classList.remove("show");
+
+  document.getElementById(
+    "multiplierModal"
+  ).classList.remove("show");
 }
+
 
 function saveMultipliers(){
 
   products.forEach(p=>{
-    const value=num(document.getElementById(`mult-${p}`).value);
+
+    const value=
+      num(
+        document.getElementById(
+          `mult-${p}`
+        ).value
+      );
 
     multipliers[p]=value||0;
   });
 
+
   updateMultiplierTags();
+
   calculate();
 
   closeMultiplierModal();
@@ -1607,93 +2266,209 @@ function saveMultipliers(){
 
 
 /* =========================
-   INPUT EVENTS
+   INPUT
    ========================= */
 
-document.addEventListener("input",e=>{
+document.addEventListener(
+  "input",
+  e=>{
 
-  if(
-    e.target.matches(
-      '.main-table input[type="number"],' +
-      '.summary-table input[type="number"],' +
-      '#note'
-    )
-  ){
+    if(
+      e.target.matches(
+        '.main-table input[type="number"],'+
+        '.summary-table input[type="number"],'+
+        '#note'
+      )
+    ){
 
-    if(!ledgerReadOnly){
-      calculate();
+      if(!ledgerReadOnly){
+        calculate();
+      }
     }
   }
-});
+);
 
 
 /* =========================
-   BUTTON EVENTS
+   BUTTONS
    ========================= */
 
-document.getElementById("clearBtn")
-  .addEventListener("click",clearInputs);
+document.getElementById(
+  "clearBtn"
+).addEventListener(
+  "click",
+  clearInputs
+);
 
-document.getElementById("newDayBtn")
-  .addEventListener("click",showNewDaySetup);
 
-document.getElementById("saveBtn")
-  .addEventListener("click",openSaveFileModal);
+document.getElementById(
+  "newDayBtn"
+).addEventListener(
+  "click",
+  showNewDaySetup
+);
+
+
+document.getElementById(
+  "saveBtn"
+).addEventListener(
+  "click",
+  openSaveFileModal
+);
 
 
 /* NEW LEDGER */
-document.getElementById("setupExitBtn")
-  .addEventListener("click",closeSetup);
 
-document.getElementById("startLedgerBtn")
-  .addEventListener("click",startNewLedger);
+document.getElementById(
+  "setupExitBtn"
+).addEventListener(
+  "click",
+  closeSetup
+);
+
+
+document.getElementById(
+  "startLedgerBtn"
+).addEventListener(
+  "click",
+  startNewLedger
+);
 
 
 /* SAVE */
-document.getElementById("saveCancelBtn")
-  .addEventListener("click",closeSaveModal);
 
-document.getElementById("reviewSaveBtn")
-  .addEventListener("click",revealFinalSave);
+document.getElementById(
+  "saveCancelBtn"
+).addEventListener(
+  "click",
+  closeSaveModal
+);
 
-document.getElementById("finalSaveBtn")
-  .addEventListener("click",finalSaveLedger);
+
+document.getElementById(
+  "reviewSaveBtn"
+).addEventListener(
+  "click",
+  closeSaveModal
+);
 
 
-/*
-  Reveal FINAL SAVE automatically when user scrolls.
-*/
-document.getElementById("saveModalBox")
-  .addEventListener("scroll",e=>{
-
-    if(e.target.scrollTop>20){
-      document.getElementById("finalSaveBtn").style.display="block";
-    }
-  });
+document.getElementById(
+  "finalSaveBtn"
+).addEventListener(
+  "click",
+  finalSaveLedger
+);
 
 
 /* EDIT */
-document.getElementById("editCancelBtn")
-  .addEventListener("click",closeEditModal);
 
-document.getElementById("editConfirmBtn")
-  .addEventListener("click",()=>{
+document.getElementById(
+  "editCancelBtn"
+).addEventListener(
+  "click",
+  closeEditModal
+);
 
-    const id=document.getElementById("editModal").dataset.id;
+
+document.getElementById(
+  "editConfirmBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    const id=
+      document.getElementById(
+        "editModal"
+      ).dataset.id;
 
     beginEditSavedFile(id);
-  });
-
-document.getElementById("cancelEditBtn")
-  .addEventListener("click",cancelEdit);
+  }
+);
 
 
 /* MULTIPLIERS */
-document.getElementById("multCancelBtn")
-  .addEventListener("click",closeMultiplierModal);
 
-document.getElementById("multSaveBtn")
-  .addEventListener("click",saveMultipliers);
+document.getElementById(
+  "multCancelBtn"
+).addEventListener(
+  "click",
+  closeMultiplierModal
+);
+
+
+document.getElementById(
+  "multSaveBtn"
+).addEventListener(
+  "click",
+  saveMultipliers
+);
+
+
+/* =========================
+   RESTORE UNFINISHED WORK
+   ========================= */
+
+function restoreUnfinishedWork(){
+
+  try{
+
+    const raw=
+      localStorage.getItem(
+        CURRENT_KEY
+      );
+
+    if(!raw)return false;
+
+
+    const data=
+      JSON.parse(raw);
+
+
+    if(!data||!data.ledger){
+      return false;
+    }
+
+
+    currentLedger={
+      ...currentLedger,
+      ...(data.ledger||{})
+    };
+
+
+    multipliers={
+      ...multipliers,
+      ...(data.multipliers||{})
+    };
+
+
+    putInputs(
+      data.inputs||{}
+    );
+
+
+    updateMultiplierTags();
+
+    setLedgerReadOnly(false);
+
+    updateLedgerBar();
+
+    calculate();
+
+
+    return !!(
+      currentLedger.date||
+      currentLedger.name||
+      Object.keys(
+        data.inputs?.del||{}
+      ).length
+    );
+
+  }catch(e){
+
+    return false;
+  }
+}
 
 
 /* =========================
@@ -1702,69 +2477,38 @@ document.getElementById("multSaveBtn")
 
 buildProductRows();
 
-/*
-  DO NOT put today's date here.
-  NEW LEDGER must start with an empty Date field.
-*/
-document.getElementById("setupDate").value="";
 
 /*
-  Try to restore unfinished current work.
-  This is useful if the browser/app was closed before SAVE.
+  Date starts EMPTY.
 */
-function restoreUnfinishedWork(){
+document.getElementById(
+  "setupDate"
+).value="";
 
-  try{
-
-    const raw=localStorage.getItem(CURRENT_KEY);
-
-    if(!raw) return false;
-
-    const data=JSON.parse(raw);
-
-    if(!data || !data.ledger) return false;
-
-    currentLedger={
-      ...currentLedger,
-      ...(data.ledger||{})
-    };
-
-    multipliers={
-      ...multipliers,
-      ...(data.multipliers||{})
-    };
-
-    putInputs(data.inputs||{});
-
-    updateMultiplierTags();
-    setLedgerReadOnly(false);
-    updateLedgerBar();
-    calculate();
-
-    return !!(
-      currentLedger.date ||
-      currentLedger.name ||
-      Object.keys(data.inputs?.del||{}).length
-    );
-
-  }catch(e){
-    return false;
-  }
-}
 
 renderSavedDays();
+
 updateLedgerBar();
+
 setLedgerReadOnly(false);
 
-const restored=restoreUnfinishedWork();
 
-/*
-  If there is no unfinished ledger, show NEW LEDGER.
-  EXIT simply closes it and leaves the blank calculator.
-*/
+const restored=
+  restoreUnfinishedWork();
+
+
 if(!restored){
+
+  /*
+    No ledger yet.
+    Show setup.
+
+    If user EXITs:
+    blank ledger becomes READ ONLY.
+  */
   showNewDaySetup();
 }
+
 
 calculate();
 
