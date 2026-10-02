@@ -30,11 +30,87 @@ body {
   margin: auto;
 }
 
-h1 {
+/* =========================================================
+   LEDGER BAR
+========================================================= */
+
+#ledgerBar {
+  display: none;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  padding: 9px;
+  margin-bottom: 12px;
+}
+
+.ledger-bar-info {
+  display: flex;
+  gap: 7px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.ledger-info-pill {
+  flex: 1;
+  min-width: 0;
+  background: #ecfdf5;
+  color: #107c41;
+  border: 1px solid #bbf7d0;
+  border-radius: 7px;
+  padding: 8px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ledger-bar-buttons {
+  display: flex;
+  gap: 7px;
+}
+
+#newDayBtn {
+  flex: 1;
+  background: #e5e7eb;
+  color: #111827;
+}
+
+#saveLedgerBtn {
+  flex: 1;
+  background: #107c41;
+  color: white;
+}
+
+/* =========================================================
+   EDITING NOTICE
+========================================================= */
+
+#editingNotice {
+  display: none;
   text-align: center;
-  margin: 4px 0 14px;
-  font-size: 25px;
-  letter-spacing: .5px;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 6px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* =========================================================
+   MAIN TABLE
+   ONLY THIS AREA CAN SCROLL
+========================================================= */
+
+.main-table-scroll {
+  width: 100%;
+  max-height: 330px;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .card {
@@ -45,10 +121,19 @@ h1 {
   margin-bottom: 14px;
 }
 
+.main-table-scroll .card {
+  margin-bottom: 0;
+  min-width: 100%;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+}
+
+.main-table-scroll table {
+  min-width: 520px;
 }
 
 th,
@@ -117,6 +202,14 @@ textarea:focus {
   color: #107c41;
 }
 
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary {
+  overflow: hidden;
+}
+
 .summary td:first-child {
   text-align: left;
   font-weight: bold;
@@ -145,10 +238,9 @@ textarea:focus {
   color: white;
 }
 
-
-/* =========================
+/* =========================================================
    NOTE BAR
-   ========================= */
+========================================================= */
 
 .note-card {
   background: white;
@@ -206,7 +298,7 @@ textarea:focus {
   text-align: center;
   color: #6b7280;
   font-size: 12px;
-  margin: 8px 0 2px;
+  margin: 8px 0 12px;
 }
 
 button {
@@ -223,6 +315,116 @@ button {
   background: #dc2626;
   color: white;
 }
+
+/* =========================================================
+   SAVED FILES AT BOTTOM
+   SEPARATE SCROLL AREA
+========================================================= */
+
+.saved-files-bottom-card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  padding: 10px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.saved-files-bottom-title {
+  font-weight: bold;
+  font-size: 15px;
+  color: #111827;
+  padding: 3px 3px 9px;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.saved-days-list-bottom {
+  margin-top: 8px;
+
+  /*
+    About 4 files visible.
+    Only this box scrolls.
+  */
+  height: 290px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+
+  padding-right: 2px;
+}
+
+.saved-empty {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 12px 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.saved-file {
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  padding: 9px;
+  margin-bottom: 7px;
+}
+
+.saved-file:last-child {
+  margin-bottom: 0;
+}
+
+.saved-file-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.saved-file-date {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.saved-file-name {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.saved-file-net {
+  color: #107c41;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.saved-file-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.saved-file-buttons button {
+  flex: 1;
+  padding: 8px;
+  font-size: 12px;
+}
+
+.edit-file {
+  background: #107c41;
+  color: white;
+}
+
+.delete-file {
+  background: #dc2626;
+  color: white;
+}
+
+/* =========================================================
+   MULTIPLIER MODAL
+========================================================= */
 
 .modal-backdrop {
   display: none;
@@ -296,9 +498,8 @@ button {
   margin-top: 8px;
 }
 
-
 /* =========================================================
-   ADDED ONLY: DAILY LEDGER SYSTEM
+   NEW DAILY FILE SETUP
 ========================================================= */
 
 #ledgerSetup {
@@ -370,129 +571,9 @@ button {
   margin-top: 6px;
 }
 
-.saved-days-title {
-  margin-top: 18px;
-  padding-top: 13px;
-  border-top: 1px solid #d1d5db;
-  font-weight: bold;
-  font-size: 15px;
-}
-
-.saved-days-list {
-  margin-top: 8px;
-}
-
-.saved-empty {
-  background: #f3f4f6;
-  color: #6b7280;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 12px;
-}
-
-.saved-file {
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  border-radius: 9px;
-  padding: 9px;
-  margin-bottom: 7px;
-}
-
-.saved-file-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.saved-file-date {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.saved-file-name {
-  color: #6b7280;
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-.saved-file-net {
-  color: #107c41;
-  font-weight: bold;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.saved-file-buttons {
-  display: flex;
-  gap: 6px;
-  margin-top: 7px;
-}
-
-.saved-file-buttons button {
-  flex: 1;
-  padding: 8px;
-  font-size: 12px;
-}
-
-.edit-file {
-  background: #107c41;
-  color: white;
-}
-
-.delete-file {
-  background: #dc2626;
-  color: white;
-}
-
-
-/* CURRENT LEDGER BAR */
-
-#ledgerBar {
-  display: none;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  padding: 8px;
-  margin-bottom: 12px;
-}
-
-.ledger-bar-info {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 7px;
-}
-
-.ledger-info-pill {
-  background: #ecfdf5;
-  color: #107c41;
-  border: 1px solid #bbf7d0;
-  border-radius: 7px;
-  padding: 6px 8px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.ledger-bar-buttons {
-  display: flex;
-  gap: 7px;
-}
-
-#newDayBtn {
-  flex: 1;
-  background: #e5e7eb;
-  color: #111827;
-}
-
-#saveLedgerBtn {
-  flex: 1;
-  background: #107c41;
-  color: white;
-}
-
-
-/* SAVE FILE MODAL */
+/* =========================================================
+   SAVE FILE MODAL
+========================================================= */
 
 #saveFileBackdrop {
   display: none;
@@ -589,27 +670,19 @@ button {
   display: block;
 }
 
-
-/* EDIT MODE NOTICE */
-
-#editingNotice {
-  display: none;
-  text-align: center;
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 420px) {
 
   body {
     padding: 8px;
+  }
+
+  .ledger-info-pill {
+    font-size: 11px;
+    padding: 7px 6px;
   }
 
   th,
@@ -636,6 +709,10 @@ button {
     font-size: 15px;
     line-height: 20px;
   }
+
+  .saved-days-list-bottom {
+    height: 285px;
+  }
 }
 </style>
 </head>
@@ -643,74 +720,83 @@ button {
 <body>
 
 
-<!-- =======================================================
-     ADDED: LEDGER BAR
-======================================================= -->
-
-<div id="ledgerBar">
-
-  <div class="ledger-bar-info">
-
-    <div class="ledger-info-pill">
-      DATE:
-      <span id="ledgerDateDisplay">—</span>
-    </div>
-
-    <div class="ledger-info-pill">
-      NAME:
-      <span id="ledgerNameDisplay">—</span>
-    </div>
-
-  </div>
-
-  <div class="ledger-bar-buttons">
-
-    <button id="newDayBtn">
-      NEW DAY
-    </button>
-
-    <button id="saveLedgerBtn">
-      SAVE
-    </button>
-
-  </div>
-
-</div>
-
-
 <div class="app">
 
-  <h1>DEL • RET • SALES</h1>
+  <!-- =====================================================
+       DATE / NAME AT TOP OF TABLE
+  ====================================================== -->
+
+  <div id="ledgerBar">
+
+    <div class="ledger-bar-info">
+
+      <div class="ledger-info-pill">
+        DATE:
+        <span id="ledgerDateDisplay">—</span>
+      </div>
+
+      <div class="ledger-info-pill">
+        NAME:
+        <span id="ledgerNameDisplay">—</span>
+      </div>
+
+    </div>
+
+    <div class="ledger-bar-buttons">
+
+      <button id="newDayBtn">
+        NEW DAY
+      </button>
+
+      <button id="saveLedgerBtn">
+        SAVE
+      </button>
+
+    </div>
+
+  </div>
+
 
   <div id="editingNotice">
     EDITING SAVED DAILY FILE
   </div>
 
 
-  <!-- MAIN TABLE -->
+  <!-- =====================================================
+       MAIN TABLE
+       ONLY THIS TABLE AREA SCROLLS
+  ====================================================== -->
 
-  <div class="card">
+  <div class="main-table-scroll">
 
-    <table>
+    <div class="card">
 
-      <thead>
-        <tr>
-          <th>ITEM</th>
-          <th>DEL</th>
-          <th>RET</th>
-          <th id="saleHeader">SALE</th>
-          <th id="amountHeader">Amount</th>
-        </tr>
-      </thead>
+      <table>
 
-      <tbody id="mainRows"></tbody>
+        <thead>
 
-    </table>
+          <tr>
+            <th>ITEM</th>
+            <th>DEL</th>
+            <th>RET</th>
+            <th id="saleHeader">SALE</th>
+            <th id="amountHeader">Amount</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="mainRows"></tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
 
-  <!-- SUMMARY -->
+  <!-- =====================================================
+       SUMMARY
+  ====================================================== -->
 
   <div class="card summary">
 
@@ -795,7 +881,9 @@ button {
   </div>
 
 
-  <!-- NOTE BAR -->
+  <!-- =====================================================
+       NOTE
+  ====================================================== -->
 
   <div class="note-card">
 
@@ -816,7 +904,9 @@ button {
   </div>
 
 
-  <!-- CLEAR BUTTON -->
+  <!-- =====================================================
+       CLEAR
+  ====================================================== -->
 
   <button class="clear" id="clearBtn">
     CLEAR INPUTS
@@ -824,6 +914,25 @@ button {
 
   <div class="hint">
     Tap "SALE" 5 times to edit multiplier settings.
+  </div>
+
+
+  <!-- =====================================================
+       SAVED FILES AT BOTTOM
+       THIS AREA HAS ITS OWN SCROLL
+  ====================================================== -->
+
+  <div class="saved-files-bottom-card">
+
+    <div class="saved-files-bottom-title">
+      SAVED FILES
+    </div>
+
+    <div
+      class="saved-days-list-bottom"
+      id="savedDaysList">
+    </div>
+
   </div>
 
 </div>
@@ -863,7 +972,7 @@ button {
 
 
 <!-- =======================================================
-     ADDED: NEW DAILY FILE SETUP
+     NEW DAILY FILE SETUP
 ======================================================= -->
 
 <div id="ledgerSetup">
@@ -878,7 +987,6 @@ button {
       Enter the Date and Name to open the ledger.
     </div>
 
-
     <label class="ledger-field-label">
       DATE
     </label>
@@ -888,7 +996,6 @@ button {
       class="ledger-field"
       type="date"
       autocomplete="off">
-
 
     <label class="ledger-field-label">
       NAME
@@ -901,23 +1008,13 @@ button {
       placeholder="Enter name"
       autocomplete="off">
 
-
     <button id="openLedgerBtn">
       OPEN LEDGER
     </button>
 
     <div
       class="ledger-warning"
-      id="ledgerWarning"></div>
-
-
-    <div class="saved-days-title">
-      SAVED DAYS
-    </div>
-
-    <div
-      class="saved-days-list"
-      id="savedDaysList">
+      id="ledgerWarning">
     </div>
 
   </div>
@@ -926,7 +1023,7 @@ button {
 
 
 <!-- =======================================================
-     ADDED: SAVE FILE MODAL
+     SAVE FILE MODAL
 ======================================================= -->
 
 <div id="saveFileBackdrop">
@@ -943,7 +1040,6 @@ button {
       Check or edit the Date and Name before creating the saved file.
     </div>
 
-
     <label>
       DATE
     </label>
@@ -953,7 +1049,6 @@ button {
       type="date"
       autocomplete="off">
 
-
     <label>
       NAME
     </label>
@@ -962,7 +1057,6 @@ button {
       id="saveFileName"
       type="text"
       autocomplete="off">
-
 
     <div class="save-preview">
 
@@ -982,13 +1076,11 @@ button {
 
     </div>
 
-
     <div
       class="save-scroll-message"
       id="saveScrollMessage">
       Scroll down a little to reveal the green SAVE button.
     </div>
-
 
     <div class="save-file-actions">
 
@@ -1287,9 +1379,7 @@ function restoreInputs() {
 }
 
 
-/* =========================
-   AUTO GROW NOTE
-   ========================= */
+/* AUTO GROW NOTE */
 
 function autoGrowNote() {
 
@@ -1414,14 +1504,8 @@ document.addEventListener(
 
 
 /* =========================================================
-   ORIGINAL RESTORE
-   ========================================================= */
-
-/*
-   IMPORTANT:
-   Refreshing the app starts a NEW EMPTY FILE.
-   Saved daily files are kept separately.
-*/
+   REFRESH = NEW EMPTY FILE
+========================================================= */
 
 localStorage.removeItem("delret_inputs");
 
@@ -1430,9 +1514,9 @@ autoGrowNote();
 calculate();
 
 
-/* =========================
+/* =========================================================
    5-TAP SALE SETTINGS
-   ========================= */
+========================================================= */
 
 let tapCount = 0;
 let tapTimer;
@@ -1702,9 +1786,9 @@ modalWindow.addEventListener(
 );
 
 
-/* =========================
+/* =========================================================
    CLEAR INPUTS
-   ========================= */
+========================================================= */
 
 document.getElementById(
   "clearBtn"
@@ -1733,12 +1817,9 @@ document.getElementById(
       });
 
 
-    /* CLEAR NOTE */
-
     note.value = "";
 
     autoGrowNote();
-
 
     calculate();
 
@@ -1746,15 +1827,8 @@ document.getElementById(
 
 
 /* =========================================================
-   =========================================================
-   ADDED DAILY LEDGER SYSTEM
-   =========================================================
-   ========================================================= */
-
-
-/* -------------------------
-   LEDGER STORAGE
-------------------------- */
+   DAILY LEDGER SYSTEM
+========================================================= */
 
 const LEDGER_STORAGE_KEY =
   "delret_30_day_files";
@@ -1766,9 +1840,7 @@ let currentLedger = {
 };
 
 
-/* -------------------------
-   GET SAVED FILES
-------------------------- */
+/* GET SAVED FILES */
 
 function getLedgerFiles() {
 
@@ -1794,9 +1866,7 @@ function getLedgerFiles() {
 }
 
 
-/* -------------------------
-   SAVE FILES
-------------------------- */
+/* SAVE FILES */
 
 function setLedgerFiles(files) {
 
@@ -1808,9 +1878,7 @@ function setLedgerFiles(files) {
 }
 
 
-/* -------------------------
-   FORMAT DATE
-------------------------- */
+/* FORMAT DATE */
 
 function formatLedgerDate(date) {
 
@@ -1834,9 +1902,7 @@ function formatLedgerDate(date) {
 }
 
 
-/* -------------------------
-   CLEAR ONLY CALCULATOR
-------------------------- */
+/* CLEAR CALCULATOR */
 
 function clearCalculatorOnly() {
 
@@ -1863,14 +1929,13 @@ function clearCalculatorOnly() {
 }
 
 
-/* -------------------------
-   COLLECT CALCULATOR DATA
-------------------------- */
+/* COLLECT DATA */
 
 function collectLedgerData() {
 
   const data = {
     products: {},
+
     barya:
       document.getElementById(
         "barya"
@@ -1940,10 +2005,7 @@ function collectLedgerData() {
 }
 
 
-/* -------------------------
-   CALCULATE WITHOUT
-   NEEDING TO SAVE DRAFT
-------------------------- */
+/* CALCULATE WITHOUT STORAGE */
 
 function calculateWithoutChangingStorage() {
 
@@ -2025,9 +2087,7 @@ function calculateWithoutChangingStorage() {
 }
 
 
-/* -------------------------
-   LOAD LEDGER DATA
-------------------------- */
+/* LOAD SAVED DATA */
 
 function loadLedgerData(data) {
 
@@ -2117,9 +2177,7 @@ function loadLedgerData(data) {
 }
 
 
-/* -------------------------
-   UPDATE LEDGER BAR
-------------------------- */
+/* UPDATE LEDGER BAR */
 
 function updateLedgerBar() {
 
@@ -2153,9 +2211,7 @@ function updateLedgerBar() {
 }
 
 
-/* -------------------------
-   OPEN LEDGER
-------------------------- */
+/* OPEN NEW LEDGER */
 
 function openLedger() {
 
@@ -2244,9 +2300,7 @@ function openLedger() {
 }
 
 
-/* -------------------------
-   SETUP BUTTON COLOR
-------------------------- */
+/* CHECK SETUP */
 
 function checkSetupFields() {
 
@@ -2289,9 +2343,7 @@ function checkSetupFields() {
 }
 
 
-/* -------------------------
-   SHOW NEW DAY SETUP
-------------------------- */
+/* NEW DAY */
 
 function showNewDaySetup() {
 
@@ -2366,9 +2418,7 @@ function showNewDaySetup() {
 }
 
 
-/* -------------------------
-   CURRENT DATA CHECK
-------------------------- */
+/* CURRENT DATA CHECK */
 
 function hasCurrentCalculatorData() {
 
@@ -2396,9 +2446,7 @@ function hasCurrentCalculatorData() {
 }
 
 
-/* -------------------------
-   SAVE BUTTON
-------------------------- */
+/* OPEN SAVE MODAL */
 
 function openSaveFileModal() {
 
@@ -2483,9 +2531,7 @@ function openSaveFileModal() {
 }
 
 
-/* -------------------------
-   SAVE MODAL SCROLL
-------------------------- */
+/* SAVE MODAL SCROLL */
 
 document.getElementById(
   "saveFileModal"
@@ -2514,9 +2560,7 @@ document.getElementById(
 );
 
 
-/* -------------------------
-   FINAL SAVE
-------------------------- */
+/* FINAL SAVE */
 
 function finalSaveLedger() {
 
@@ -2563,10 +2607,6 @@ function finalSaveLedger() {
         file.date === date
     );
 
-
-  /*
-    Same date = one file only.
-  */
 
   if (
     existingIndex >= 0 &&
@@ -2630,10 +2670,6 @@ function finalSaveLedger() {
   }
 
 
-  /*
-    Newest date first.
-  */
-
   files.sort(
     (a,b) =>
       String(b.date)
@@ -2642,10 +2678,6 @@ function finalSaveLedger() {
         )
   );
 
-
-  /*
-    Maximum 30 daily files.
-  */
 
   let removedOldest = false;
 
@@ -2704,9 +2736,7 @@ function finalSaveLedger() {
 }
 
 
-/* -------------------------
-   EDIT SAVED FILE
-------------------------- */
+/* EDIT SAVED FILE */
 
 function editSavedFile(id) {
 
@@ -2773,9 +2803,7 @@ function editSavedFile(id) {
 }
 
 
-/* -------------------------
-   DELETE SAVED FILE
-------------------------- */
+/* DELETE SAVED FILE */
 
 function deleteSavedFile(id) {
 
@@ -2827,9 +2855,10 @@ function deleteSavedFile(id) {
 }
 
 
-/* -------------------------
-   RENDER 30 SAVED DAYS
-------------------------- */
+/* =========================================================
+   RENDER SAVED FILES
+   BOTTOM SCROLL AREA ONLY
+========================================================= */
 
 function renderSavedDays() {
 
@@ -2964,9 +2993,7 @@ function renderSavedDays() {
 }
 
 
-/* -------------------------
-   ESCAPE HTML
-------------------------- */
+/* ESCAPE HTML */
 
 function escapeHTML(value) {
 
@@ -2997,9 +3024,7 @@ function escapeHTML(value) {
 }
 
 
-/* -------------------------
-   TOAST
-------------------------- */
+/* TOAST */
 
 function showLedgerToast(message) {
 
@@ -3092,9 +3117,7 @@ function showLedgerToast(message) {
 }
 
 
-/* -------------------------
-   SETUP INPUT EVENTS
-------------------------- */
+/* SETUP INPUT EVENTS */
 
 document.getElementById(
   "ledgerSetupDate"
@@ -3112,9 +3135,7 @@ document.getElementById(
 );
 
 
-/* -------------------------
-   OPEN LEDGER
-------------------------- */
+/* OPEN LEDGER */
 
 document.getElementById(
   "openLedgerBtn"
@@ -3122,9 +3143,7 @@ document.getElementById(
   openLedger;
 
 
-/* -------------------------
-   ENTER NAME
-------------------------- */
+/* ENTER NAME */
 
 document.getElementById(
   "ledgerSetupName"
@@ -3146,9 +3165,7 @@ document.getElementById(
 );
 
 
-/* -------------------------
-   NEW DAY
-------------------------- */
+/* NEW DAY */
 
 document.getElementById(
   "newDayBtn"
@@ -3156,9 +3173,7 @@ document.getElementById(
   showNewDaySetup;
 
 
-/* -------------------------
-   SAVE
-------------------------- */
+/* SAVE */
 
 document.getElementById(
   "saveLedgerBtn"
@@ -3166,9 +3181,7 @@ document.getElementById(
   openSaveFileModal;
 
 
-/* -------------------------
-   FINAL SAVE
-------------------------- */
+/* FINAL SAVE */
 
 document.getElementById(
   "finalFileSave"
@@ -3176,9 +3189,7 @@ document.getElementById(
   finalSaveLedger;
 
 
-/* -------------------------
-   CANCEL SAVE
-------------------------- */
+/* CANCEL SAVE */
 
 document.getElementById(
   "cancelFileSave"
@@ -3193,9 +3204,7 @@ document.getElementById(
   };
 
 
-/* -------------------------
-   SAVE MODAL OUTSIDE TAP
-------------------------- */
+/* SAVE MODAL OUTSIDE TAP */
 
 document.getElementById(
   "saveFileBackdrop"
@@ -3262,15 +3271,6 @@ if (
 /* =========================================================
    INITIAL LEDGER STATE
 ========================================================= */
-
-/*
-   Every refresh:
-   - calculator is empty
-   - Date is empty
-   - Name is empty
-   - Open Ledger is gray
-   - saved 30-day files remain
-*/
 
 document.getElementById(
   "ledgerSetupDate"
