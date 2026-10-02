@@ -31,8 +31,7 @@ body {
 }
 
 /* =========================================================
-   LEDGER BAR
-   DATE / NAME ONLY
+   LEDGER DATE / NAME
 ========================================================= */
 
 #ledgerBar {
@@ -41,7 +40,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0,0,0,.08);
   padding: 9px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .ledger-bar-info {
@@ -66,23 +65,6 @@ body {
 }
 
 /* =========================================================
-   EDITING NOTICE
-========================================================= */
-
-#editingNotice {
-  display: none;
-  text-align: center;
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fed7aa;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* =========================================================
    MAIN TABLE
    ONLY THIS AREA CAN SCROLL
 ========================================================= */
@@ -102,11 +84,6 @@ body {
   box-shadow: 0 2px 10px rgba(0,0,0,.08);
   overflow: hidden;
   margin-bottom: 14px;
-}
-
-.main-table-scroll .card {
-  margin-bottom: 0;
-  min-width: 100%;
 }
 
 table {
@@ -174,6 +151,14 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(16,124,65,.12);
 }
 
+input:disabled,
+textarea:disabled {
+  background: #f3f4f6;
+  color: #374151;
+  opacity: 1;
+  border-color: #d1d5db;
+}
+
 .sale,
 .amount,
 .calc-value {
@@ -183,6 +168,35 @@ textarea:focus {
 
 .amount {
   color: #107c41;
+}
+
+/* =========================================================
+   CLEAR INPUTS
+   AT TOP OF MAIN TABLE
+========================================================= */
+
+.clear-top {
+  width: 100%;
+  background: #dc2626;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* =========================================================
+   READ ONLY NOTICE
+========================================================= */
+
+.readonly-notice {
+  display: none;
+  text-align: center;
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* =========================================================
@@ -229,7 +243,7 @@ textarea:focus {
   background: white;
   border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   padding: 8px;
 }
 
@@ -254,15 +268,21 @@ textarea:focus {
   min-height: 38px;
   height: 38px;
   max-height: 180px;
+
   border: 1px solid #cbd5e1;
   border-radius: 7px;
+
   padding: 8px 10px;
+
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 21px;
+
   text-align: left;
+
   background: #fff;
   outline: none;
+
   resize: none;
   overflow-y: hidden;
 }
@@ -272,29 +292,14 @@ textarea:focus {
 }
 
 /* =========================================================
-   BUTTON AREA
+   NEW DAY / SAVE
+   AT BOTTOM BEFORE SAVED FILES
 ========================================================= */
 
-button {
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.clear {
-  width: 100%;
-  background: #dc2626;
-  color: white;
-}
-
-.main-ledger-buttons {
+.ledger-bottom-buttons {
   display: flex;
-  gap: 8px;
-  margin-top: 10px;
-  margin-bottom: 14px;
+  gap: 7px;
+  margin-bottom: 10px;
 }
 
 #newDayBtn {
@@ -309,9 +314,31 @@ button {
   color: white;
 }
 
+#saveLedgerBtn:disabled,
+#newDayBtn:disabled,
+.clear-top:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.hint {
+  text-align: center;
+  color: #6b7280;
+  font-size: 12px;
+  margin: 3px 0 12px;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 16px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* =========================================================
    SAVED FILES
-   SEPARATE SCROLL AREA
 ========================================================= */
 
 .saved-files-bottom-card {
@@ -319,7 +346,6 @@ button {
   border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,.08);
   padding: 10px;
-  margin-top: 14px;
   margin-bottom: 14px;
 }
 
@@ -331,8 +357,11 @@ button {
   border-bottom: 1px solid #d1d5db;
 }
 
-.saved-days-list-bottom {
+.saved-days-list {
   margin-top: 8px;
+}
+
+.saved-days-list-bottom {
   height: 290px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -356,40 +385,25 @@ button {
   border-radius: 9px;
   padding: 9px;
   margin-bottom: 7px;
-  transition: background .15s ease, border .15s ease, box-shadow .15s ease;
   cursor: pointer;
+  transition: .15s ease;
 }
 
 .saved-file:last-child {
   margin-bottom: 0;
 }
 
-/* TAPPED / SELECTED */
+/* SELECTED FILE */
 .saved-file.selected {
-  background: #dcfce7;
+  background: #ecfdf5;
   border: 2px solid #107c41;
-  box-shadow: 0 0 0 2px rgba(16,124,65,.12);
-}
-
-/* CURRENTLY OPENED FILE */
-.saved-file.current-file {
-  border-color: #107c41;
-  box-shadow: inset 0 0 0 1px #107c41;
-}
-
-.saved-file.selected.current-file {
-  background: #bbf7d0;
-  border: 2px solid #107c41;
+  box-shadow: 0 0 0 2px rgba(16,124,65,.10);
 }
 
 .saved-file-top {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-}
-
-.saved-file-left {
-  min-width: 0;
 }
 
 .saved-file-date {
@@ -401,20 +415,6 @@ button {
   color: #6b7280;
   font-size: 12px;
   margin-top: 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.saved-current-label {
-  display: inline-block;
-  margin-top: 4px;
-  padding: 2px 6px;
-  border-radius: 5px;
-  background: #107c41;
-  color: white;
-  font-size: 9px;
-  font-weight: bold;
 }
 
 .saved-file-net {
@@ -662,10 +662,20 @@ button {
   color: #107c41;
 }
 
+.save-scroll-message {
+  text-align: center;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
 .save-file-actions {
   display: flex;
   gap: 8px;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 #cancelFileSave {
@@ -677,6 +687,10 @@ button {
   flex: 1;
   background: #107c41;
   color: white;
+  display: none;
+}
+
+#finalFileSave.show {
   display: block;
 }
 
@@ -723,10 +737,6 @@ button {
   .saved-days-list-bottom {
     height: 285px;
   }
-
-  .saved-file-net {
-    font-size: 13px;
-  }
 }
 </style>
 </head>
@@ -736,7 +746,7 @@ button {
 <div class="app">
 
   <!-- =====================================================
-       DATE / NAME AT TOP
+       DATE / NAME
   ====================================================== -->
 
   <div id="ledgerBar">
@@ -758,8 +768,21 @@ button {
   </div>
 
 
-  <div id="editingNotice">
-    EDITING SAVED DAILY FILE
+  <!-- =====================================================
+       CLEAR AT TOP OF MAIN TABLE
+  ====================================================== -->
+
+  <button class="clear-top" id="clearBtn">
+    CLEAR INPUTS
+  </button>
+
+
+  <!-- =====================================================
+       READ ONLY NOTICE
+  ====================================================== -->
+
+  <div class="readonly-notice" id="readonlyNotice">
+    SAVED FILE — READ ONLY
   </div>
 
 
@@ -905,20 +928,11 @@ button {
 
 
   <!-- =====================================================
-       CLEAR INPUTS
+       NEW DAY / SAVE
+       BETWEEN CLEAR AREA AND SAVED FILES
   ====================================================== -->
 
-  <button class="clear" id="clearBtn">
-    CLEAR INPUTS
-  </button>
-
-
-  <!-- =====================================================
-       NEW DAY + SAVE
-       BETWEEN CLEAR AND SAVED FILES
-  ====================================================== -->
-
-  <div class="main-ledger-buttons">
+  <div class="ledger-bottom-buttons">
 
     <button id="newDayBtn">
       NEW DAY
@@ -931,9 +945,13 @@ button {
   </div>
 
 
+  <div class="hint">
+    Tap "SALE" 5 times to edit multiplier settings.
+  </div>
+
+
   <!-- =====================================================
        SAVED FILES
-       ONLY THIS AREA SCROLLS
   ====================================================== -->
 
   <div class="saved-files-bottom-card">
@@ -1090,6 +1108,12 @@ button {
 
     </div>
 
+    <div
+      class="save-scroll-message"
+      id="saveScrollMessage">
+      Scroll down a little to reveal the green SAVE button.
+    </div>
+
     <div class="save-file-actions">
 
       <button
@@ -1133,13 +1157,28 @@ const mainRows =
 
 
 /* =========================================================
-   SAVED FILE SELECTION
+   CURRENT LEDGER
 ========================================================= */
+
+let currentLedger = {
+  date: "",
+  name: "",
+  id: null
+};
 
 let selectedSavedFileId = null;
 
 
-/* CREATE PRODUCT ROWS */
+/* =========================================================
+   READ ONLY STATE
+========================================================= */
+
+let ledgerReadOnly = false;
+
+
+/* =========================================================
+   CREATE PRODUCT ROWS
+========================================================= */
 
 products.forEach(p => {
 
@@ -1193,7 +1232,9 @@ products.forEach(p => {
 });
 
 
-/* UPDATE DISPLAY MULTIPLIERS */
+/* =========================================================
+   UPDATE MULTIPLIER LABELS
+========================================================= */
 
 function updateProductLabels() {
 
@@ -1214,7 +1255,9 @@ function updateProductLabels() {
 }
 
 
-/* NUMBER FUNCTION */
+/* =========================================================
+   NUMBER
+========================================================= */
 
 function num(value) {
 
@@ -1225,7 +1268,9 @@ function num(value) {
 }
 
 
-/* CALCULATE */
+/* =========================================================
+   CALCULATE
+========================================================= */
 
 function calculate() {
 
@@ -1315,14 +1360,20 @@ function calculate() {
     net.toFixed(2);
 
 
-  saveInputs();
+  if (!ledgerReadOnly) {
+    saveInputs();
+  }
 
 }
 
 
-/* SAVE INPUTS */
+/* =========================================================
+   SAVE INPUTS
+========================================================= */
 
 function saveInputs() {
+
+  if (ledgerReadOnly) return;
 
   const data = {};
 
@@ -1357,44 +1408,9 @@ function saveInputs() {
 }
 
 
-/* RESTORE INPUTS */
-
-function restoreInputs() {
-
-  const data =
-    JSON.parse(
-      localStorage.getItem(
-        "delret_inputs"
-      ) || "{}"
-    );
-
-
-  document.querySelectorAll(
-    "input, textarea"
-  ).forEach(input => {
-
-    const key =
-      input.id ||
-      input.dataset.product +
-      "_" +
-      input.className;
-
-
-    if (
-      data[key] !== undefined
-    ) {
-
-      input.value =
-        data[key];
-
-    }
-
-  });
-
-}
-
-
-/* AUTO GROW NOTE */
+/* =========================================================
+   AUTO GROW NOTE
+========================================================= */
 
 function autoGrowNote() {
 
@@ -1423,15 +1439,18 @@ note.addEventListener(
   "input",
   () => {
 
-    autoGrowNote();
+    if (ledgerReadOnly) return;
 
+    autoGrowNote();
     saveInputs();
 
   }
 );
 
 
-/* INPUT LISTENER */
+/* =========================================================
+   INPUT LISTENER
+========================================================= */
 
 document.addEventListener(
   "input",
@@ -1443,6 +1462,8 @@ document.addEventListener(
       )
     ) {
 
+      if (ledgerReadOnly) return;
+
       calculate();
 
     }
@@ -1451,7 +1472,9 @@ document.addEventListener(
 );
 
 
-/* AUTO SELECT */
+/* =========================================================
+   AUTO SELECT
+========================================================= */
 
 document.addEventListener(
   "focusin",
@@ -1460,6 +1483,8 @@ document.addEventListener(
     if (
       e.target.tagName === "INPUT"
     ) {
+
+      if (e.target.disabled) return;
 
       setTimeout(() => {
 
@@ -1473,7 +1498,9 @@ document.addEventListener(
 );
 
 
-/* ENTER NEXT */
+/* =========================================================
+   ENTER NEXT
+========================================================= */
 
 document.addEventListener(
   "keydown",
@@ -1484,6 +1511,8 @@ document.addEventListener(
       e.target.tagName === "INPUT"
     ) {
 
+      if (e.target.disabled) return;
+
       e.preventDefault();
 
       const inputs =
@@ -1492,7 +1521,9 @@ document.addEventListener(
             "input[type=number]"
           )
         ).filter(
-          i => i.offsetParent !== null
+          i =>
+            i.offsetParent !== null &&
+            !i.disabled
         );
 
       const index =
@@ -1519,7 +1550,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   REFRESH = NEW EMPTY FILE
+   REFRESH = EMPTY NEW FILE
 ========================================================= */
 
 localStorage.removeItem("delret_inputs");
@@ -1572,7 +1603,9 @@ document
   );
 
 
-/* OPEN SETTINGS */
+/* =========================================================
+   OPEN MULTIPLIER SETTINGS
+========================================================= */
 
 function openMultiplierSettings() {
 
@@ -1624,7 +1657,9 @@ function openMultiplierSettings() {
 }
 
 
-/* CLOSE MODAL */
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
 
 function closeModal() {
 
@@ -1651,7 +1686,9 @@ document.getElementById(
   closeModal;
 
 
-/* SAVE MULTIPLIERS */
+/* =========================================================
+   SAVE MULTIPLIERS
+========================================================= */
 
 document.getElementById(
   "saveBtn"
@@ -1713,7 +1750,9 @@ document
   );
 
 
-/* SWIPE DOWN MODAL */
+/* =========================================================
+   SWIPE DOWN MODAL
+========================================================= */
 
 const modalWindow =
   document.getElementById(
@@ -1802,6 +1841,46 @@ modalWindow.addEventListener(
 
 
 /* =========================================================
+   READ ONLY CONTROL
+========================================================= */
+
+function setLedgerReadOnly(state) {
+
+  ledgerReadOnly = state;
+
+  const inputs =
+    document.querySelectorAll(
+      'input[type="number"], #note'
+    );
+
+  inputs.forEach(input => {
+
+    input.disabled = state;
+
+  });
+
+
+  document.getElementById(
+    "clearBtn"
+  ).disabled =
+    state;
+
+
+  document.getElementById(
+    "saveLedgerBtn"
+  ).disabled =
+    state;
+
+
+  document.getElementById(
+    "readonlyNotice"
+  ).style.display =
+    state ? "block" : "none";
+
+}
+
+
+/* =========================================================
    CLEAR INPUTS
 ========================================================= */
 
@@ -1809,6 +1888,9 @@ document.getElementById(
   "clearBtn"
 ).onclick =
   () => {
+
+    if (ledgerReadOnly) return;
+
 
     if (
       !confirm(
@@ -1848,14 +1930,10 @@ document.getElementById(
 const LEDGER_STORAGE_KEY =
   "delret_30_day_files";
 
-let currentLedger = {
-  date: "",
-  name: "",
-  id: null
-};
 
-
-/* GET SAVED FILES */
+/* =========================================================
+   GET SAVED FILES
+========================================================= */
 
 function getLedgerFiles() {
 
@@ -1893,7 +1971,9 @@ function setLedgerFiles(files) {
 }
 
 
-/* FORMAT DATE */
+/* =========================================================
+   FORMAT DATE
+========================================================= */
 
 function formatLedgerDate(date) {
 
@@ -1917,7 +1997,9 @@ function formatLedgerDate(date) {
 }
 
 
-/* CLEAR CALCULATOR */
+/* =========================================================
+   CLEAR CALCULATOR
+========================================================= */
 
 function clearCalculatorOnly() {
 
@@ -1944,7 +2026,9 @@ function clearCalculatorOnly() {
 }
 
 
-/* COLLECT DATA */
+/* =========================================================
+   COLLECT DATA
+========================================================= */
 
 function collectLedgerData() {
 
@@ -2020,7 +2104,9 @@ function collectLedgerData() {
 }
 
 
-/* CALCULATE WITHOUT STORAGE */
+/* =========================================================
+   CALCULATE WITHOUT STORAGE
+========================================================= */
 
 function calculateWithoutChangingStorage() {
 
@@ -2102,7 +2188,9 @@ function calculateWithoutChangingStorage() {
 }
 
 
-/* LOAD SAVED DATA */
+/* =========================================================
+   LOAD SAVED DATA
+========================================================= */
 
 function loadLedgerData(data) {
 
@@ -2192,7 +2280,9 @@ function loadLedgerData(data) {
 }
 
 
-/* UPDATE LEDGER BAR */
+/* =========================================================
+   UPDATE LEDGER BAR
+========================================================= */
 
 function updateLedgerBar() {
 
@@ -2215,18 +2305,12 @@ function updateLedgerBar() {
   ).style.display =
     "block";
 
-
-  document.getElementById(
-    "editingNotice"
-  ).style.display =
-    currentLedger.id
-      ? "block"
-      : "none";
-
 }
 
 
-/* OPEN NEW LEDGER */
+/* =========================================================
+   OPEN NEW LEDGER
+========================================================= */
 
 function openLedger() {
 
@@ -2301,6 +2385,8 @@ function openLedger() {
 
   clearCalculatorOnly();
 
+  setLedgerReadOnly(false);
+
   updateLedgerBar();
 
   renderSavedDays();
@@ -2319,7 +2405,9 @@ function openLedger() {
 }
 
 
-/* CHECK SETUP */
+/* =========================================================
+   CHECK SETUP
+========================================================= */
 
 function checkSetupFields() {
 
@@ -2362,7 +2450,9 @@ function checkSetupFields() {
 }
 
 
-/* NEW DAY */
+/* =========================================================
+   NEW DAY
+========================================================= */
 
 function showNewDaySetup() {
 
@@ -2375,7 +2465,7 @@ function showNewDaySetup() {
     if (
       !confirm(
         "Start a NEW DAY?\n\n" +
-        "The current unsaved entries will be cleared."
+        "The current entries will be cleared."
       )
     ) {
 
@@ -2399,6 +2489,9 @@ function showNewDaySetup() {
   selectedSavedFileId = null;
 
 
+  setLedgerReadOnly(false);
+
+
   document.getElementById(
     "ledgerDateDisplay"
   ).textContent =
@@ -2409,12 +2502,6 @@ function showNewDaySetup() {
     "ledgerNameDisplay"
   ).textContent =
     "—";
-
-
-  document.getElementById(
-    "editingNotice"
-  ).style.display =
-    "none";
 
 
   document.getElementById(
@@ -2440,7 +2527,9 @@ function showNewDaySetup() {
 }
 
 
-/* CURRENT DATA CHECK */
+/* =========================================================
+   CURRENT DATA CHECK
+========================================================= */
 
 function hasCurrentCalculatorData() {
 
@@ -2468,9 +2557,22 @@ function hasCurrentCalculatorData() {
 }
 
 
-/* OPEN SAVE MODAL */
+/* =========================================================
+   OPEN SAVE FILE MODAL
+========================================================= */
 
 function openSaveFileModal() {
+
+  if (ledgerReadOnly) {
+
+    showLedgerToast(
+      "This ledger is read only. Tap EDIT on the saved file to make changes."
+    );
+
+    return;
+
+  }
+
 
   if (
     !currentLedger.date ||
@@ -2523,6 +2625,28 @@ function openSaveFileModal() {
     totals.net.toFixed(2);
 
 
+  const modal =
+    document.getElementById(
+      "saveFileModal"
+    );
+
+
+  modal.scrollTop = 0;
+
+
+  document.getElementById(
+    "saveScrollMessage"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "finalFileSave"
+  ).classList.remove(
+    "show"
+  );
+
+
   document.getElementById(
     "saveFileBackdrop"
   ).style.display =
@@ -2531,7 +2655,40 @@ function openSaveFileModal() {
 }
 
 
-/* FINAL SAVE */
+/* =========================================================
+   SAVE MODAL SCROLL
+========================================================= */
+
+document.getElementById(
+  "saveFileModal"
+).addEventListener(
+  "scroll",
+  function() {
+
+    if (
+      this.scrollTop > 35
+    ) {
+
+      document.getElementById(
+        "finalFileSave"
+      ).classList.add(
+        "show"
+      );
+
+      document.getElementById(
+        "saveScrollMessage"
+      ).style.display =
+        "none";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   FINAL SAVE
+========================================================= */
 
 function finalSaveLedger() {
 
@@ -2678,7 +2835,15 @@ function finalSaveLedger() {
   };
 
 
-  selectedSavedFileId = null;
+  /*
+    IMPORTANT:
+    After SAVE, the current ledger becomes READ ONLY.
+  */
+
+  setLedgerReadOnly(true);
+
+  selectedSavedFileId =
+    currentLedger.id;
 
 
   updateLedgerBar();
@@ -2690,6 +2855,9 @@ function finalSaveLedger() {
     "none";
 
 
+  renderSavedDays();
+
+
   if (removedOldest) {
 
     showLedgerToast(
@@ -2699,45 +2867,17 @@ function finalSaveLedger() {
   } else {
 
     showLedgerToast(
-      "Daily file saved."
+      "Daily file saved. Ledger is now READ ONLY."
     );
 
   }
-
-
-  renderSavedDays();
-
-}
-
-
-/* =========================================================
-   SELECT SAVED FILE
-   TAP ON ROW ONLY SELECTS
-   SECOND TAP ON SAME ROW DESELECTS
-========================================================= */
-
-function selectSavedFile(id) {
-
-  if (
-    selectedSavedFileId === id
-  ) {
-
-    selectedSavedFileId = null;
-
-  } else {
-
-    selectedSavedFileId = id;
-
-  }
-
-  renderSavedDays();
 
 }
 
 
 /* =========================================================
    EDIT SAVED FILE
-   ONLY EDIT BUTTON OPENS THE FILE
+   ONLY THIS BUTTON OPENS THE FILE
 ========================================================= */
 
 function editSavedFile(id) {
@@ -2756,7 +2896,8 @@ function editSavedFile(id) {
 
 
   if (
-    hasCurrentCalculatorData()
+    hasCurrentCalculatorData() &&
+    currentLedger.id !== file.id
   ) {
 
     if (
@@ -2782,7 +2923,8 @@ function editSavedFile(id) {
   };
 
 
-  selectedSavedFileId = null;
+  selectedSavedFileId =
+    file.id;
 
 
   clearCalculatorOnly();
@@ -2791,6 +2933,12 @@ function editSavedFile(id) {
     file.data
   );
 
+
+  /*
+    EDIT = editable again
+  */
+
+  setLedgerReadOnly(false);
 
   updateLedgerBar();
 
@@ -2810,7 +2958,9 @@ function editSavedFile(id) {
 }
 
 
-/* DELETE SAVED FILE */
+/* =========================================================
+   DELETE SAVED FILE
+========================================================= */
 
 function deleteSavedFile(id) {
 
@@ -2861,32 +3011,51 @@ function deleteSavedFile(id) {
   }
 
 
-  /*
-    If deleting the currently opened file,
-    remove the CURRENT indicator.
-    The calculator itself is not cleared.
-  */
-
-  if (
-    currentLedger.id === id
-  ) {
-
-    currentLedger.id = null;
-
-    document.getElementById(
-      "editingNotice"
-    ).style.display =
-      "none";
-
-  }
-
-
   renderSavedDays();
 
 
   showLedgerToast(
     "Saved file deleted."
   );
+
+}
+
+
+/* =========================================================
+   SELECT SAVED FILE
+   TAP FILE = HIGHLIGHT ONLY
+   TAP AGAIN = REMOVE HIGHLIGHT
+   DOES NOT OPEN FILE
+========================================================= */
+
+function selectSavedFile(id) {
+
+  if (
+    selectedSavedFileId === id
+  ) {
+
+    /*
+      Second tap:
+      remove highlight and keep
+      current ledger on screen.
+    */
+
+    selectedSavedFileId = null;
+
+  } else {
+
+    /*
+      First tap:
+      highlight only.
+      DO NOT OPEN.
+    */
+
+    selectedSavedFileId = id;
+
+  }
+
+
+  renderSavedDays();
 
 }
 
@@ -2948,25 +3117,6 @@ function renderSavedDays() {
       "saved-file";
 
 
-    /*
-      CURRENT FILE
-    */
-
-    if (
-      currentLedger.id === file.id
-    ) {
-
-      item.classList.add(
-        "current-file"
-      );
-
-    }
-
-
-    /*
-      USER TAPPED / SELECTED FILE
-    */
-
     if (
       selectedSavedFileId === file.id
     ) {
@@ -2985,15 +3135,11 @@ function renderSavedDays() {
       );
 
 
-    const isCurrent =
-      currentLedger.id === file.id;
-
-
     item.innerHTML = `
 
       <div class="saved-file-top">
 
-        <div class="saved-file-left">
+        <div>
 
           <div class="saved-file-date">
             ${escapeHTML(
@@ -3009,16 +3155,6 @@ function renderSavedDays() {
             )}
           </div>
 
-          ${
-            isCurrent
-              ? `
-                <div class="saved-current-label">
-                  CURRENT
-                </div>
-              `
-              : ""
-          }
-
         </div>
 
         <div class="saved-file-net">
@@ -3031,14 +3167,12 @@ function renderSavedDays() {
       <div class="saved-file-buttons">
 
         <button
-          class="edit-file"
-          type="button">
+          class="edit-file">
           EDIT
         </button>
 
         <button
-          class="delete-file"
-          type="button">
+          class="delete-file">
           DELETE
         </button>
 
@@ -3048,8 +3182,8 @@ function renderSavedDays() {
 
 
     /*
-      TAP ROW
-      DOES NOT OPEN FILE
+      Tapping the FILE itself:
+      highlight only.
     */
 
     item.addEventListener(
@@ -3057,7 +3191,8 @@ function renderSavedDays() {
       e => {
 
         /*
-          Ignore taps on EDIT / DELETE
+          Don't treat EDIT/DELETE
+          button taps as file selection.
         */
 
         if (
@@ -3070,7 +3205,6 @@ function renderSavedDays() {
 
         }
 
-
         selectSavedFile(
           file.id
         );
@@ -3080,47 +3214,43 @@ function renderSavedDays() {
 
 
     /*
-      EDIT BUTTON
+      EDIT = actually open file
     */
 
     item
       .querySelector(
         ".edit-file"
       )
-      .addEventListener(
-        "click",
-        e => {
+      .onclick =
+      e => {
 
-          e.stopPropagation();
+        e.stopPropagation();
 
-          editSavedFile(
-            file.id
-          );
+        editSavedFile(
+          file.id
+        );
 
-        }
-      );
+      };
 
 
     /*
-      DELETE BUTTON
+      DELETE = delete file
     */
 
     item
       .querySelector(
         ".delete-file"
       )
-      .addEventListener(
-        "click",
-        e => {
+      .onclick =
+      e => {
 
-          e.stopPropagation();
+        e.stopPropagation();
 
-          deleteSavedFile(
-            file.id
-          );
+        deleteSavedFile(
+          file.id
+        );
 
-        }
-      );
+      };
 
 
     box.appendChild(
@@ -3132,7 +3262,9 @@ function renderSavedDays() {
 }
 
 
-/* ESCAPE HTML */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHTML(value) {
 
@@ -3163,7 +3295,9 @@ function escapeHTML(value) {
 }
 
 
-/* TOAST */
+/* =========================================================
+   TOAST
+========================================================= */
 
 function showLedgerToast(message) {
 
@@ -3250,13 +3384,15 @@ function showLedgerToast(message) {
           "none";
 
       },
-      2200
+      2500
     );
 
 }
 
 
-/* SETUP INPUT EVENTS */
+/* =========================================================
+   SETUP INPUT EVENTS
+========================================================= */
 
 document.getElementById(
   "ledgerSetupDate"
@@ -3274,7 +3410,9 @@ document.getElementById(
 );
 
 
-/* OPEN LEDGER */
+/* =========================================================
+   OPEN LEDGER
+========================================================= */
 
 document.getElementById(
   "openLedgerBtn"
@@ -3304,7 +3442,9 @@ document.getElementById(
 );
 
 
-/* NEW DAY */
+/* =========================================================
+   NEW DAY
+========================================================= */
 
 document.getElementById(
   "newDayBtn"
@@ -3312,7 +3452,9 @@ document.getElementById(
   showNewDaySetup;
 
 
-/* SAVE */
+/* =========================================================
+   SAVE
+========================================================= */
 
 document.getElementById(
   "saveLedgerBtn"
@@ -3320,7 +3462,9 @@ document.getElementById(
   openSaveFileModal;
 
 
-/* FINAL SAVE */
+/* =========================================================
+   FINAL SAVE
+========================================================= */
 
 document.getElementById(
   "finalFileSave"
@@ -3328,7 +3472,9 @@ document.getElementById(
   finalSaveLedger;
 
 
-/* CANCEL SAVE */
+/* =========================================================
+   CANCEL SAVE
+========================================================= */
 
 document.getElementById(
   "cancelFileSave"
@@ -3343,7 +3489,9 @@ document.getElementById(
   };
 
 
-/* SAVE MODAL OUTSIDE TAP */
+/* =========================================================
+   SAVE MODAL OUTSIDE TAP
+========================================================= */
 
 document.getElementById(
   "saveFileBackdrop"
@@ -3422,6 +3570,8 @@ document.getElementById(
 checkSetupFields();
 
 renderSavedDays();
+
+setLedgerReadOnly(false);
 
 document.getElementById(
   "ledgerSetup"
