@@ -30,10 +30,6 @@ button{cursor:pointer;border:0}
   padding:5px
 }
 
-/* =========================
-   TOP
-   ========================= */
-
 .ledger-bar{
   display:grid;
   grid-template-columns:1fr 1fr auto;
@@ -72,10 +68,6 @@ button{cursor:pointer;border:0}
 }
 
 .top-btn:disabled{opacity:.4}
-
-/* =========================
-   MODE ATMOSPHERE
-   ========================= */
 
 body.saved-preview{
   background:#e7e9ec
@@ -146,10 +138,6 @@ body.edit-mode .mode-pill{
   color:#fff
 }
 
-/* =========================
-   CARD
-   ========================= */
-
 .card,.saved-card{
   background:#fff;
   border:1px solid #ccc;
@@ -157,10 +145,6 @@ body.edit-mode .mode-pill{
   padding:5px;
   margin-bottom:5px
 }
-
-/* =========================
-   MAIN TABLE
-   ========================= */
 
 .main-table-scroll{
   max-height:285px;
@@ -221,10 +205,6 @@ table{
 .sale-cell{font-weight:bold}
 .amount-cell{font-weight:bold}
 
-/* =========================
-   SUMMARY
-   ========================= */
-
 .summary-table{
   margin-top:5px
 }
@@ -267,10 +247,6 @@ table{
   text-align:right
 }
 
-/* =========================
-   NOTE
-   ========================= */
-
 #note{
   width:100%;
   min-height:42px;
@@ -280,10 +256,6 @@ table{
   padding:5px;
   resize:vertical
 }
-
-/* =========================
-   ACTIONS
-   ========================= */
 
 .actions{
   display:grid;
@@ -307,20 +279,12 @@ table{
   opacity:.4
 }
 
-/* =========================
-   HINT
-   ========================= */
-
 .hint{
   text-align:center;
   color:#777;
   font-size:9px;
   padding:3px
 }
-
-/* =========================
-   SAVED FILES
-   ========================= */
 
 .saved-title{
   font-weight:bold;
@@ -390,10 +354,6 @@ body.edit-mode .saved-item.selected{
 .edit-btn{background:#2878b9}
 .delete-btn{background:#b33}
 
-/* =========================
-   MODALS
-   ========================= */
-
 .modal{
   position:fixed;
   inset:0;
@@ -460,10 +420,6 @@ body.edit-mode .saved-item.selected{
 .blue-btn{background:#2878b9}
 .red-btn{background:#b33}
 
-/* =========================
-   NEW DAY EDIT WARNING
-   ========================= */
-
 .confirm-box{
   max-width:360px;
   padding:18px 16px
@@ -509,10 +465,6 @@ body.edit-mode .saved-item.selected{
   background:#107c41
 }
 
-/* =========================
-   SAVE PREVIEW
-   ========================= */
-
 .save-preview{
   background:#f4f7f5;
   border:1px solid #ddd;
@@ -553,10 +505,6 @@ body.edit-mode .saved-item.selected{
   width:100%;
   margin-top:12px
 }
-
-/* =========================
-   DUPLICATE DATE WARNING
-   ========================= */
 
 #duplicateDateConfirm{
   z-index:200
@@ -602,10 +550,6 @@ body.edit-mode .saved-item.selected{
   background:#107c41
 }
 
-/* =========================
-   MULTIPLIER
-   ========================= */
-
 .mult-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -625,10 +569,6 @@ body.edit-mode .saved-item.selected{
   border-radius:4px;
   text-align:center
 }
-
-/* =========================
-   TOAST
-   ========================= */
 
 #toast{
   position:fixed;
@@ -1097,13 +1037,69 @@ const products=["R","P","L","M","C"];
 const STORAGE_KEY="delret_saved_files";
 const CURRENT_KEY="delret_current_inputs";
 
-let multipliers={
+/* NEW: persistent multiplier storage */
+const MULTIPLIER_KEY="delret_default_multipliers";
+
+
+/* =========================
+   MULTIPLIERS
+   ========================= */
+
+/*
+  Initial defaults are 45 for all items.
+
+  After the user edits the multipliers and presses SAVE,
+  the new values are stored in localStorage and become
+  the new defaults for the PWA.
+*/
+
+const DEFAULT_MULTIPLIERS={
   R:45,
   P:45,
   L:45,
   M:45,
-  C:40
+  C:45
 };
+
+
+function getDefaultMultipliers(){
+
+  try{
+
+    const saved=
+      JSON.parse(
+        localStorage.getItem(MULTIPLIER_KEY)||"null"
+      );
+
+    if(saved && typeof saved==="object"){
+
+      return{
+        ...DEFAULT_MULTIPLIERS,
+        ...saved
+      };
+
+    }
+
+  }catch(e){}
+
+  return{
+    ...DEFAULT_MULTIPLIERS
+  };
+}
+
+
+function saveDefaultMultipliers(){
+
+  localStorage.setItem(
+    MULTIPLIER_KEY,
+    JSON.stringify(multipliers)
+  );
+}
+
+
+let multipliers=
+  getDefaultMultipliers();
+
 
 let currentLedger={
   id:null,
@@ -1545,14 +1541,12 @@ function loadRecordIntoLedger(record,readOnly){
 
 
   /*
-    Keep defaults, then load saved multipliers.
+    Saved ledgers keep their own multiplier settings.
+    If an older saved file has no multiplier data,
+    use the current persistent defaults.
   */
   multipliers={
-    R:45,
-    P:45,
-    L:45,
-    M:45,
-    C:40,
+    ...getDefaultMultipliers(),
     ...(record.multipliers||{})
   };
 
@@ -1709,14 +1703,15 @@ function startNewLedger(){
   };
 
 
-  /* DEFAULT MULTIPLIERS */
-  multipliers={
-    R:45,
-    P:45,
-    L:45,
-    M:45,
-    C:40
-  };
+  /*
+    USE THE SAVED PWA DEFAULTS.
+    This is the important change.
+
+    If C was changed from 45 to 40,
+    NEW DAY will use C=40.
+  */
+  multipliers=
+    getDefaultMultipliers();
 
 
   editingSavedId=null;
@@ -2284,6 +2279,14 @@ function finalSaveLedger(){
   setSavedFiles(files);
 
 
+  /*
+    NEW:
+    Whatever multiplier was used/edited in this
+    ledger becomes the new PWA default.
+  */
+  saveDefaultMultipliers();
+
+
   currentLedger={
     id:record.id,
     date:record.date,
@@ -2472,6 +2475,21 @@ function saveMultipliers(){
 
     multipliers[p]=value||0;
   });
+
+
+  /*
+    NEW:
+    Save the edited multipliers immediately
+    as the new PWA defaults.
+  */
+  saveDefaultMultipliers();
+
+
+  /*
+    Also keep the current unfinished ledger
+    synchronized with the new multiplier settings.
+  */
+  saveCurrentInputs();
 
 
   updateMultiplierTags();
@@ -2813,8 +2831,12 @@ function restoreUnfinishedWork(){
     };
 
 
+    /*
+      Unfinished work keeps its own current
+      multiplier settings.
+    */
     multipliers={
-      ...multipliers,
+      ...getDefaultMultipliers(),
       ...(data.multipliers||{})
     };
 
