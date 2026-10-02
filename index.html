@@ -1616,19 +1616,11 @@ function setLedgerReadOnly(state){
 
 function updateLedgerBar(){
 
-  let displayDate = currentLedger.date || "—";
+  document.getElementById("ledgerDate").textContent=
+    currentLedger.date||"—";
 
-  if(displayDate !== "—"){
-    const d = new Date(displayDate);
-
-    if(!isNaN(d.getTime())){
-      displayDate = d.toLocaleDateString("en-US",{
-        month:"long",
-        day:"numeric",
-        year:"numeric"
-      });
-    }
-  }
+  document.getElementById("ledgerName").textContent=
+    currentLedger.name||"—";
 
   document.getElementById("ledgerDate").textContent =
     displayDate;
