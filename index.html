@@ -77,12 +77,6 @@ button{cursor:pointer;border:0}
    MODE ATMOSPHERE
    ========================= */
 
-/*
-  Normal = white/green
-  Saved preview = cool gray atmosphere
-  Edit mode = warm/light atmosphere
-*/
-
 body.saved-preview{
   background:#e7e9ec
 }
@@ -126,8 +120,6 @@ body.edit-mode .top-box{
   border-color:#d8a354
 }
 
-/* Small fixed mode indicator.
-   It does NOT push the screen down. */
 .mode-pill{
   position:fixed;
   top:4px;
@@ -469,6 +461,55 @@ body.edit-mode .saved-item.selected{
 .red-btn{background:#b33}
 
 /* =========================
+   NEW DAY EDIT WARNING
+   ========================= */
+
+.confirm-box{
+  max-width:360px;
+  padding:18px 16px
+}
+
+.confirm-title{
+  font-weight:bold;
+  font-size:18px;
+  text-align:center;
+  color:#c47b19;
+  margin-bottom:12px
+}
+
+.confirm-message{
+  font-size:16px;
+  line-height:1.45;
+  text-align:center;
+  color:#333;
+  margin-bottom:18px
+}
+
+.confirm-actions{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-top:4px
+}
+
+.confirm-btn{
+  min-width:82px;
+  padding:7px 14px;
+  border-radius:5px;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold
+}
+
+.confirm-cancel{
+  background:#666
+}
+
+.confirm-ok{
+  background:#107c41
+}
+
+/* =========================
    SAVE PREVIEW
    ========================= */
 
@@ -729,6 +770,46 @@ body.edit-mode .saved-item.selected{
 
 
 <!-- =========================
+     NEW DAY WHILE EDITING
+     ========================= -->
+
+<div class="modal" id="editNewDayConfirm">
+
+  <div class="modal-box confirm-box">
+
+    <div class="confirm-title">
+      SAVE CURRENT EDIT?
+    </div>
+
+    <div class="confirm-message">
+      You are currently editing a saved file.<br><br>
+      Press <b>OK</b> to save this edit before starting a new ledger.
+      <br><br>
+      Press <b>CANCEL</b> to stay in the current Edit Mode.
+    </div>
+
+    <div class="confirm-actions">
+
+      <button
+        class="confirm-btn confirm-cancel"
+        id="editNewDayCancelBtn">
+        CANCEL
+      </button>
+
+      <button
+        class="confirm-btn confirm-ok"
+        id="editNewDayOkBtn">
+        OK
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
      SAVE
      ========================= -->
 
@@ -940,20 +1021,9 @@ let ledgerReadOnly=false;
 
 let selectedSavedFileId=null;
 
-
-/*
-  Saved preview:
-  Holds the CURRENT WORK before we temporarily
-  display a saved file.
-*/
 let savedViewBackup=null;
 let viewingSavedId=null;
 
-
-/*
-  Edit backup:
-  Holds the state before entering edit mode.
-*/
 let editBackup=null;
 let editingSavedId=null;
 
@@ -970,12 +1040,6 @@ function num(v){
 }
 
 
-/*
-  No unnecessary .00.
-  500 stays 500.
-  500.50 stays 500.50.
-  0 stays 0.
-*/
 function money(v){
 
   const n=num(v);
@@ -1476,6 +1540,20 @@ function updateLedgerBar(){
 function showNewDaySetup(){
 
   /*
+    NEW DAY while editing a saved file:
+    ask first before opening New Ledger.
+  */
+  if(editingSavedId){
+
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.add("show");
+
+    return;
+  }
+
+
+  /*
     Date ALWAYS starts empty.
   */
   document.getElementById("setupDate").value="";
@@ -1496,7 +1574,6 @@ function closeSetup(){
   /*
     If there is NO valid current ledger,
     exiting setup leaves the calculator READ ONLY.
-    User can press NEW DAY again.
   */
   if(!currentLedger.date || !currentLedger.name){
 
@@ -1932,10 +2009,6 @@ function cancelEdit(){
   editBackup=null;
 
 
-  /*
-    Re-apply the proper visual mode
-    after leaving edit.
-  */
   setLedgerReadOnly(ledgerReadOnly);
 
   renderSavedDays();
@@ -1991,10 +2064,6 @@ function openSaveFileModal(){
   ).textContent=money(result.net);
 
 
-  /*
-    FINAL SAVE is now immediately visible.
-    No scroll instruction.
-  */
   document.getElementById(
     "saveModal"
   ).classList.add("show");
@@ -2093,7 +2162,17 @@ function finalSaveLedger(){
   );
 
 
-  setLedgerReadOnly(true);
+  /*
+    IMPORTANT:
+    Reload the just-saved record into the
+    visible ledger before making it READ ONLY.
+    This keeps the saved values on screen.
+  */
+  loadRecordIntoLedger(
+    record,
+    true
+  );
+
 
   updateLedgerBar();
 
@@ -2309,6 +2388,65 @@ document.getElementById(
 );
 
 
+/* =========================
+   NEW DAY EDIT CONFIRMATION
+   ========================= */
+
+document.getElementById(
+  "editNewDayCancelBtn"
+).addEventListener(
+  "click",
+  ()=>{
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.remove("show");
+
+    toast("Current edit kept.");
+  }
+);
+
+
+document.getElementById(
+  "editNewDayOkBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.remove("show");
+
+
+    /*
+      Save the current edit first.
+      finalSaveLedger() will:
+      - update the saved file
+      - keep the saved ledger visible
+      - make it READ ONLY
+      - end EDIT MODE
+    */
+    finalSaveLedger();
+
+
+    /*
+      Now proceed to NEW LEDGER setup.
+    */
+    document.getElementById(
+      "setupDate"
+    ).value="";
+
+    document.getElementById(
+      "setupName"
+    ).value="";
+
+    document.getElementById(
+      "setup"
+    ).classList.add("show");
+
+  }
+);
+
+
 document.getElementById(
   "saveBtn"
 ).addEventListener(
@@ -2478,9 +2616,6 @@ function restoreUnfinishedWork(){
 buildProductRows();
 
 
-/*
-  Date starts EMPTY.
-*/
 document.getElementById(
   "setupDate"
 ).value="";
@@ -2499,13 +2634,6 @@ const restored=
 
 if(!restored){
 
-  /*
-    No ledger yet.
-    Show setup.
-
-    If user EXITs:
-    blank ledger becomes READ ONLY.
-  */
   showNewDaySetup();
 }
 
