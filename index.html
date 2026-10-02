@@ -1565,13 +1565,14 @@ function loadRecordIntoLedger(record,readOnly){
 
 
   multipliers={
-    R:45,
-    P:45,
-    L:45,
-    M:45,
-    C:40,
-    ...(record.multipliers||{})
-  };
+  R:45,
+  P:45,
+  L:45,
+  M:45,
+  C:40,
+  ...(record.multipliers||{}),
+  C:40
+};
 
 
   putInputs(record.inputs||{});
