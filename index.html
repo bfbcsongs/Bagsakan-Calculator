@@ -538,7 +538,8 @@ body.edit-mode .saved-item.selected{
   color:#107c41
 }
 
-/* NEW: editable save fields */
+/* EDITABLE SAVE FIELDS */
+
 .save-edit-input{
   width:68%;
   padding:6px 7px;
@@ -885,7 +886,6 @@ body.edit-mode .saved-item.selected{
 
     <div class="save-preview">
 
-      <!-- CHANGED: DATE IS NOW EDITABLE -->
       <div class="preview-row">
         <span>Date</span>
         <input
@@ -894,7 +894,6 @@ body.edit-mode .saved-item.selected{
           type="date">
       </div>
 
-      <!-- CHANGED: NAME IS NOW EDITABLE -->
       <div class="preview-row">
         <span>Name</span>
         <input
@@ -1135,6 +1134,14 @@ let viewingSavedId=null;
 
 let editBackup=null;
 let editingSavedId=null;
+
+
+/*
+  IMPORTANT:
+  TRUE only while the user has pressed ALTER
+  and is expected to choose a new date.
+*/
+let alteringSaveDate=false;
 
 
 /* =========================
@@ -1648,10 +1655,6 @@ function updateLedgerBar(){
 
 function showNewDaySetup(){
 
-  /*
-    NEW DAY while editing a saved file:
-    ask first before opening New Ledger.
-  */
   if(editingSavedId){
 
     document.getElementById(
@@ -1662,9 +1665,6 @@ function showNewDaySetup(){
   }
 
 
-  /*
-    Date ALWAYS starts empty.
-  */
   document.getElementById("setupDate").value="";
 
   document.getElementById("setupName").value="";
@@ -1680,10 +1680,6 @@ function closeSetup(){
     .classList.remove("show");
 
 
-  /*
-    If there is NO valid current ledger,
-    exiting setup leaves the calculator READ ONLY.
-  */
   if(!currentLedger.date || !currentLedger.name){
 
     setLedgerReadOnly(true);
@@ -1826,10 +1822,6 @@ function viewSavedFile(id){
   if(!record)return;
 
 
-  /*
-    SECOND TAP ON SAME FILE:
-    restore the exact current work.
-  */
   if(viewingSavedId===id){
 
     if(savedViewBackup){
@@ -1850,10 +1842,6 @@ function viewSavedFile(id){
   }
 
 
-  /*
-    FIRST TAP:
-    save current work only once.
-  */
   if(!viewingSavedId){
 
     savedViewBackup=
@@ -2075,9 +2063,6 @@ function beginEditSavedFile(id){
   if(!record)return;
 
 
-  /*
-    Save the exact state before editing.
-  */
   editBackup=
     captureLedgerState();
 
@@ -2136,10 +2121,6 @@ function hasDuplicateDate(date,currentId){
 
   return files.some(record=>{
 
-    /*
-      Same file being edited is allowed.
-      Another saved file with the same date is NOT allowed.
-    */
     return (
       record.date===date &&
       record.id!==currentId
@@ -2177,9 +2158,8 @@ function openSaveFileModal(){
 
 
   /*
-    IMPORTANT:
-    These are only temporary SAVE SCREEN values.
-    They do NOT change currentLedger until FINAL SAVE.
+    Always start the SAVE screen
+    with the current ledger information.
   */
   document.getElementById(
     "previewDate"
@@ -2201,6 +2181,9 @@ function openSaveFileModal(){
   ).textContent=money(result.net);
 
 
+  alteringSaveDate=false;
+
+
   document.getElementById(
     "saveModal"
   ).classList.add("show");
@@ -2208,6 +2191,8 @@ function openSaveFileModal(){
 
 
 function closeSaveModal(){
+
+  alteringSaveDate=false;
 
   document.getElementById(
     "saveModal"
@@ -2225,7 +2210,7 @@ function finalSaveLedger(){
 
 
   /*
-    READ THE EDITABLE SAVE SCREEN VALUES.
+    READ THE VALUES FROM THE SAVE SCREEN.
   */
   const saveDate=
     document.getElementById(
@@ -2255,14 +2240,7 @@ function finalSaveLedger(){
 
 
   /*
-    DUPLICATE DATE PROTECTION.
-
-    If this is a NEW FILE:
-      any existing same date = duplicate.
-
-    If this is EDITING:
-      its own current file ID is excluded,
-      but another file with that date blocks saving.
+    CHECK DUPLICATE DATE.
   */
   if(
     hasDuplicateDate(
@@ -2271,6 +2249,9 @@ function finalSaveLedger(){
     )
   ){
 
+    /*
+      Keep SAVE modal open underneath.
+    */
     document.getElementById(
       "duplicateDateConfirm"
     ).classList.add("show");
@@ -2287,9 +2268,6 @@ function finalSaveLedger(){
     id:
       currentLedger.id||makeId(),
 
-    /*
-      USE THE EDITABLE SAVE VALUES.
-    */
     date:
       saveDate,
 
@@ -2335,10 +2313,6 @@ function finalSaveLedger(){
   setSavedFiles(files);
 
 
-  /*
-    ONLY NOW do Date and Name become
-    the current ledger values.
-  */
   currentLedger={
     id:record.id,
     date:record.date,
@@ -2361,12 +2335,6 @@ function finalSaveLedger(){
   );
 
 
-  /*
-    IMPORTANT:
-    Reload the just-saved record into the
-    visible ledger before making it READ ONLY.
-    This keeps all filled values visible.
-  */
   loadRecordIntoLedger(
     record,
     true
@@ -2376,6 +2344,10 @@ function finalSaveLedger(){
   updateLedgerBar();
 
   closeSaveModal();
+
+  document.getElementById(
+    "duplicateDateConfirm"
+  ).classList.remove("show");
 
   renderSavedDays();
 
@@ -2411,10 +2383,6 @@ function deleteSavedFile(id){
   );
 
 
-  /*
-    If deleting the file being reviewed,
-    return to the previous working ledger.
-  */
   if(viewingSavedId===id){
 
     if(savedViewBackup){
@@ -2619,41 +2587,25 @@ document.getElementById(
     ).classList.remove("show");
 
 
-    /*
-      Save current edit first.
-
-      IMPORTANT:
-      finalSaveLedger() now returns FALSE if
-      duplicate date blocks the save.
-
-      Therefore NEW LEDGER will NOT open
-      unless the current edit was actually saved.
-    */
     const saved=
       finalSaveLedger();
 
 
     if(!saved){
 
-      /*
-        If duplicate date appeared, leave the
-        SAVE screen available and DO NOT start
-        a new ledger.
-      */
       return;
     }
 
 
-    /*
-      Now proceed to NEW LEDGER setup.
-    */
     document.getElementById(
       "setupDate"
     ).value="";
 
+
     document.getElementById(
       "setupName"
     ).value="";
+
 
     document.getElementById(
       "setup"
@@ -2730,13 +2682,16 @@ document.getElementById(
   ()=>{
 
     /*
-      Cancel ONLY the save attempt.
-      The SAVE screen remains underneath
-      with the editable Date and Name.
+      CANCEL means cancel the entire
+      save attempt.
     */
+    alteringSaveDate=false;
+
     document.getElementById(
       "duplicateDateConfirm"
     ).classList.remove("show");
+
+    closeSaveModal();
 
     toast("Save cancelled.");
   }
@@ -2750,21 +2705,87 @@ document.getElementById(
   ()=>{
 
     /*
-      Close warning and return directly
-      to the editable SAVE screen.
+      ALTER means:
+      - close duplicate warning
+      - keep SAVE screen open
+      - activate Date field
+      - open date picker
+      - wait for the user to choose
+        a new date
     */
+
     document.getElementById(
       "duplicateDateConfirm"
     ).classList.remove("show");
+
+
+    alteringSaveDate=true;
+
 
     const dateInput=
       document.getElementById(
         "previewDate"
       );
 
+
     dateInput.focus();
 
-    toast("Please alter the date.");
+
+    /*
+      Open native date picker.
+    */
+    if(dateInput.showPicker){
+
+      try{
+
+        dateInput.showPicker();
+
+      }catch(e){}
+
+    }else{
+
+      dateInput.click();
+
+    }
+
+  }
+);
+
+
+/*
+  IMPORTANT:
+
+  After ALTER, selecting a date automatically
+  proceeds to FINAL SAVE.
+*/
+document.getElementById(
+  "previewDate"
+).addEventListener(
+  "change",
+  ()=>{
+
+    if(!alteringSaveDate){
+      return;
+    }
+
+
+    /*
+      Stop the ALTER state first so that
+      another duplicate can activate it again.
+    */
+    alteringSaveDate=false;
+
+
+    /*
+      Give the native date picker time to
+      finish closing before saving.
+    */
+    setTimeout(()=>{
+
+      finalSaveLedger();
+
+    },100);
+
   }
 );
 
