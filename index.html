@@ -8,832 +8,1111 @@
 <title>DEL • RET • SALES</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box}
+
 html,body{
   margin:0;
   padding:0;
-  width:100%;
-  min-height:100%;
+  background:#f2f4f3;
   font-family:Arial,sans-serif;
-  background:#f3f5f4;
-  color:#222;
+  color:#222
 }
-body{padding:8px}
+
+body{font-size:13px}
+
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0}
 
 .app{
   width:100%;
-  max-width:760px;
+  max-width:600px;
   margin:auto;
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 2px 10px rgba(0,0,0,.12);
+  padding:5px
 }
 
-.header{
-  background:#107c41;
-  color:white;
-  padding:10px 12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-.header-title{
-  font-size:18px;
-  font-weight:800;
-}
-.header-sub{
-  font-size:10px;
-  opacity:.85;
-  text-align:right;
-}
+/* =========================
+   TOP
+   ========================= */
 
 .ledger-bar{
-  padding:7px 10px;
-  background:#edf5f0;
-  border-bottom:1px solid #d8e4dc;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  font-size:11px;
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:4px;
+  margin-bottom:4px
 }
-.ledger-info{
-  min-width:0;
+
+.top-box{
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:5px;
+  padding:5px 7px;
+  min-width:0
 }
-.ledger-date{
-  font-weight:800;
-}
-.ledger-name{
-  color:#555;
-  margin-left:5px;
-}
-.status-pill{
-  flex:none;
-  padding:4px 7px;
-  border-radius:10px;
+
+.top-label{
   font-size:9px;
-  font-weight:800;
-  background:#107c41;
-  color:#fff;
+  color:#777;
+  text-transform:uppercase
 }
 
-body.readonly-mode .ledger-bar{
-  background:#e9e9e9;
+.top-value{
+  font-weight:bold;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
 }
-body.readonly-mode .status-pill{
+
+.top-btn{
   background:#666;
-}
-body.edit-mode .ledger-bar{
-  background:#fff0dc;
-  border-bottom-color:#e2bd8b;
-}
-body.edit-mode .status-pill{
-  background:#d97706;
+  color:#fff;
+  border-radius:5px;
+  padding:0 9px;
+  font-size:10px;
+  font-weight:bold
 }
 
-.table-wrap{
-  width:100%;
-  overflow-x:auto;
+.top-btn:disabled{opacity:.4}
+
+/* =========================
+   MODE ATMOSPHERE
+   ========================= */
+
+body.saved-preview{
+  background:#e7e9ec
+}
+
+body.edit-mode{
+  background:#fff4df
+}
+
+body.saved-preview .card,
+body.saved-preview .saved-card{
+  border-color:#7d8791
+}
+
+body.saved-preview .main-table th{
+  background:#59636d
+}
+
+body.saved-preview .summary-table .net-row{
+  background:#59636d
+}
+
+body.saved-preview .top-box{
+  background:#f5f6f7;
+  border-color:#8b949d
+}
+
+body.edit-mode .card{
+  border-color:#d59b42
+}
+
+body.edit-mode .main-table th{
+  background:#c47b19
+}
+
+body.edit-mode .summary-table .net-row{
+  background:#c47b19
+}
+
+body.edit-mode .top-box{
+  background:#fffaf0;
+  border-color:#d8a354
+}
+
+.mode-pill{
+  position:fixed;
+  top:4px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:90;
+  display:none;
+  padding:3px 9px;
+  border-radius:20px;
+  font-size:9px;
+  font-weight:bold;
+  box-shadow:0 2px 7px rgba(0,0,0,.2)
+}
+
+body.saved-preview .mode-pill{
+  display:block;
+  background:#59636d;
+  color:#fff
+}
+
+body.edit-mode .mode-pill{
+  display:block;
+  background:#c47b19;
+  color:#fff
+}
+
+/* =========================
+   CARD
+   ========================= */
+
+.card,.saved-card{
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:6px;
+  padding:5px;
+  margin-bottom:5px
+}
+
+/* =========================
+   MAIN TABLE
+   ========================= */
+
+.main-table-scroll{
+  max-height:285px;
+  overflow:auto;
+  border:1px solid #aaa;
+  border-radius:4px
 }
 
 table{
-  width:100%;
   border-collapse:collapse;
-  table-layout:fixed;
+  width:100%
 }
 
-th,td{
-  border:1px solid #d5d9d7;
+.main-table{
+  table-layout:fixed
+}
+
+.main-table th,
+.main-table td{
+  border:1px solid #aaa;
   text-align:center;
-  padding:5px 3px;
-  font-size:13px;
+  padding:4px 2px
 }
 
-th{
+.main-table th{
   background:#107c41;
-  color:white;
+  color:#fff;
   font-size:11px;
-  font-weight:800;
+  position:sticky;
+  top:0;
+  z-index:2
 }
 
-th:first-child,td:first-child{width:15%}
-th:nth-child(2),td:nth-child(2){width:19%}
-th:nth-child(3),td:nth-child(3){width:19%}
-th:nth-child(4),td:nth-child(4){width:19%}
-th:nth-child(5),td:nth-child(5){width:28%}
+.main-table th:nth-child(1){width:23%}
+.main-table th:nth-child(2),
+.main-table th:nth-child(3),
+.main-table th:nth-child(4){width:18%}
+.main-table th:nth-child(5){width:23%}
 
-.item-name{
-  font-weight:800;
+.item-name{font-weight:bold}
+
+.mult-tag{
+  display:block;
+  font-size:8px;
+  color:#777;
+  margin-top:1px
 }
 
-input{
-  font-family:inherit;
-}
-
-.qty{
+.main-table input{
   width:100%;
-  border:1px solid #bbb;
-  border-radius:5px;
-  padding:6px 2px;
+  border:1px solid #ccc;
+  border-radius:3px;
   text-align:center;
-  font-size:14px;
-  background:#fff;
+  padding:4px 1px;
+  background:#fff
 }
 
-.qty:focus{
-  outline:2px solid #107c41;
-  border-color:#107c41;
+.sale-cell{font-weight:bold}
+.amount-cell{font-weight:bold}
+
+/* =========================
+   SUMMARY
+   ========================= */
+
+.summary-table{
+  margin-top:5px
 }
 
-.amount{
-  font-weight:800;
-  white-space:nowrap;
+.summary-table td{
+  border:1px solid #aaa;
+  padding:4px
 }
 
-.readonly-input{
-  background:#f1f1f1!important;
-  color:#555;
+.summary-table td:first-child{
+  font-weight:bold;
+  width:50%
 }
 
-.summary{
-  padding:8px;
-  background:#fafafa;
-  border-top:2px solid #107c41;
+.summary-table input{
+  width:100%;
+  border:1px solid #ccc;
+  border-radius:3px;
+  padding:4px;
+  text-align:right
 }
 
-.summary-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-  margin-bottom:6px;
+.total-row{
+  background:#e9f5ed
 }
 
-.summary-box{
-  border:1px solid #d5d9d7;
-  border-radius:7px;
-  padding:6px 8px;
-  background:white;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:6px;
+.net-row{
+  background:#107c41;
+  color:#fff;
+  font-size:15px
 }
 
-.summary-label{
-  font-size:11px;
-  font-weight:800;
+.net-row td{
+  border-color:#107c41
 }
 
-.summary-value{
-  font-size:14px;
-  font-weight:800;
+#totalAmount,
+#netTotal{
+  font-weight:bold;
+  text-align:right
 }
 
-.money-input{
-  width:90px;
-  max-width:45%;
-  border:1px solid #bbb;
-  border-radius:5px;
+/* =========================
+   NOTE
+   ========================= */
+
+#note{
+  width:100%;
+  min-height:42px;
+  margin-top:5px;
+  border:1px solid #ccc;
+  border-radius:4px;
   padding:5px;
-  text-align:right;
-  font-size:13px;
+  resize:vertical
 }
 
-.net-box{
-  background:#107c41;
-  color:#fff;
-  border-color:#107c41;
-}
+/* =========================
+   ACTIONS
+   ========================= */
 
-.net-box .summary-label,
-.net-box .summary-value{
-  color:#fff;
-}
-
-.note-wrap{
-  padding:8px;
-  border-top:1px solid #ddd;
-}
-
-.note-title{
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:4px;
-}
-
-textarea{
-  width:100%;
-  min-height:55px;
-  resize:vertical;
-  border:1px solid #bbb;
-  border-radius:6px;
-  padding:7px;
-  font-family:inherit;
-  font-size:12px;
-}
-
-.buttons{
-  padding:8px;
+.actions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:7px;
+  gap:5px;
+  margin-top:5px
 }
 
-.btn{
-  border:0;
-  border-radius:7px;
-  padding:9px 6px;
-  font-weight:800;
-  font-size:12px;
-  cursor:pointer;
+.action-btn{
+  padding:8px 4px;
+  border-radius:5px;
+  color:#fff;
+  font-weight:bold;
+  font-size:11px
 }
 
-.btn-green{
-  background:#107c41;
-  color:white;
+.new-btn{background:#555}
+.save-btn{background:#107c41}
+
+.action-btn:disabled{
+  opacity:.4
 }
 
-.btn-gray{
-  background:#777;
-  color:white;
+/* =========================
+   HINT
+   ========================= */
+
+.hint{
+  text-align:center;
+  color:#777;
+  font-size:9px;
+  padding:3px
 }
 
-.btn-orange{
-  background:#d97706;
-  color:white;
-}
-
-.btn-red{
-  background:#c62828;
-  color:white;
-}
-
-.saved-section{
-  border-top:1px solid #ddd;
-  padding:8px;
-  background:#f7f7f7;
-}
+/* =========================
+   SAVED FILES
+   ========================= */
 
 .saved-title{
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:7px;
+  font-weight:bold;
+  color:#107c41;
+  padding:2px 1px 5px
 }
 
 .saved-list{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+  height:210px;
+  overflow:auto;
+  border-top:1px solid #ddd
 }
 
 .saved-item{
-  background:white;
-  border:1px solid #d1d1d1;
-  border-radius:7px;
-  padding:7px;
   display:grid;
-  grid-template-columns:1fr auto;
-  gap:6px;
+  grid-template-columns:1fr auto auto;
+  gap:4px;
   align-items:center;
+  border-bottom:1px solid #ddd;
+  padding:5px 2px;
+  background:#fff
 }
 
-.saved-main{
+.saved-item.selected{
+  background:#e6f3eb
+}
+
+body.saved-preview .saved-item.selected{
+  background:#d9dee3
+}
+
+body.edit-mode .saved-item.selected{
+  background:#ffe8bf
+}
+
+.saved-info{
   min-width:0;
+  cursor:pointer
 }
 
 .saved-date{
-  font-weight:800;
-  font-size:12px;
+  font-weight:bold;
+  font-size:11px
 }
 
 .saved-name{
-  font-size:11px;
-  color:#555;
-  margin-top:2px;
+  color:#666;
+  font-size:10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
 }
 
 .saved-net{
-  font-size:12px;
-  font-weight:800;
-  color:#107c41;
-  margin-top:2px;
-}
-
-.saved-actions{
-  display:flex;
-  gap:4px;
+  font-size:9px;
+  color:#107c41
 }
 
 .small-btn{
-  border:0;
-  border-radius:5px;
-  padding:6px 7px;
-  font-size:10px;
-  font-weight:800;
-  color:white;
+  padding:5px 7px;
+  border-radius:4px;
+  color:#fff;
+  font-size:9px;
+  font-weight:bold
 }
 
-.edit-btn{background:#d97706}
-.delete-btn{background:#c62828}
+.edit-btn{background:#2878b9}
+.delete-btn{background:#b33}
+
+/* =========================
+   MODALS
+   ========================= */
 
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.52);
+  background:rgba(0,0,0,.45);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:15px;
-  z-index:100;
+  z-index:100
 }
 
 .modal.show{
-  display:flex;
+  display:flex
 }
 
 .modal-box{
-  width:100%;
-  max-width:390px;
-  background:white;
-  border-radius:12px;
-  padding:15px;
-  box-shadow:0 8px 30px rgba(0,0,0,.25);
+  width:calc(100% - 24px);
+  max-width:350px;
+  max-height:90vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:8px;
+  padding:12px;
+  box-shadow:0 8px 30px rgba(0,0,0,.3)
 }
 
 .modal-title{
+  font-weight:bold;
   font-size:16px;
-  font-weight:900;
-  color:#107c41;
-  margin-bottom:12px;
   text-align:center;
+  margin-bottom:10px;
+  color:#107c41
 }
 
-.form-row{
-  margin-bottom:9px;
-}
-
-.form-row label{
+.form-label{
   display:block;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:4px;
+  font-size:10px;
+  color:#666;
+  margin:7px 0 3px
 }
 
-.form-row input{
+.form-input{
   width:100%;
-  border:1px solid #aaa;
-  border-radius:6px;
   padding:8px;
-  font-size:13px;
+  border:1px solid #bbb;
+  border-radius:5px
 }
 
 .modal-actions{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:12px;
+  gap:6px;
+  margin-top:12px
 }
 
-.preview-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin-bottom:8px;
-  font-size:12px;
+.modal-btn{
+  padding:9px;
+  border-radius:5px;
+  font-weight:bold;
+  color:#fff
 }
 
-.preview-row>span{
-  font-weight:800;
-  flex:none;
-}
+.cancel-btn{background:#666}
+.green-btn{background:#107c41}
+.blue-btn{background:#2878b9}
+.red-btn{background:#b33}
 
-.save-edit-input{
-  width:68%;
-  border:1px solid #aaa;
-  border-radius:6px;
-  padding:7px 8px;
-  font-size:12px;
-  background:#fff;
-}
-
-.save-total{
-  font-weight:900;
-  color:#107c41;
-}
+/* =========================
+   NEW DAY EDIT WARNING
+   ========================= */
 
 .confirm-box{
-  text-align:center;
+  max-width:360px;
+  padding:18px 16px
 }
 
 .confirm-title{
-  font-size:17px;
-  font-weight:900;
-  color:#107c41;
-  margin-bottom:12px;
+  font-weight:bold;
+  font-size:18px;
+  text-align:center;
+  color:#c47b19;
+  margin-bottom:12px
 }
 
 .confirm-message{
   font-size:16px;
   line-height:1.45;
-  margin-bottom:20px;
+  text-align:center;
+  color:#333;
+  margin-bottom:18px
 }
 
 .confirm-actions{
   display:flex;
   justify-content:center;
-  align-items:center;
   gap:18px;
+  margin-top:4px
 }
 
 .confirm-btn{
-  border:0;
-  border-radius:7px;
-  padding:8px 14px;
+  min-width:82px;
+  padding:7px 14px;
+  border-radius:5px;
+  color:#fff;
   font-size:11px;
-  font-weight:900;
-  min-width:85px;
+  font-weight:bold
 }
 
 .confirm-cancel{
-  background:#777;
-  color:#fff;
+  background:#666
 }
 
 .confirm-ok{
-  background:#107c41;
-  color:#fff;
+  background:#107c41
 }
 
-#duplicateDateConfirm{
-  z-index:200;
+/* =========================
+   SAVE PREVIEW
+   ========================= */
+
+.save-preview{
+  background:#f4f7f5;
+  border:1px solid #ddd;
+  border-radius:5px;
+  padding:8px;
+  margin-bottom:10px
 }
 
-.multiplier-row{
-  display:grid;
-  grid-template-columns:1fr 90px;
+.preview-row{
+  display:flex;
+  justify-content:space-between;
   align-items:center;
   gap:8px;
-  margin-bottom:7px;
+  border-bottom:1px solid #ddd;
+  padding:4px 0
 }
 
-.multiplier-row label{
-  font-weight:800;
-  font-size:12px;
+.preview-row:last-child{
+  border:0
 }
 
-.multiplier-row input{
-  width:90px;
-  border:1px solid #aaa;
-  border-radius:5px;
-  padding:7px;
+.preview-row strong{
+  color:#107c41
+}
+
+/* NEW: editable save fields */
+.save-edit-input{
+  width:68%;
+  padding:6px 7px;
+  border:1px solid #bbb;
+  border-radius:4px;
+  background:#fff;
+  text-align:right;
+  font-weight:bold;
+  color:#107c41
+}
+
+#finalSaveBtn{
+  width:100%;
+  margin-top:12px
+}
+
+/* =========================
+   DUPLICATE DATE WARNING
+   ========================= */
+
+#duplicateDateConfirm{
+  z-index:200
+}
+
+.duplicate-title{
+  font-weight:bold;
+  font-size:18px;
   text-align:center;
+  color:#b33;
+  margin-bottom:12px
 }
 
-.toast{
+.duplicate-message{
+  font-size:16px;
+  line-height:1.45;
+  text-align:center;
+  color:#333;
+  margin-bottom:18px
+}
+
+.duplicate-actions{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-top:4px
+}
+
+.duplicate-btn{
+  min-width:82px;
+  padding:7px 14px;
+  border-radius:5px;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold
+}
+
+.duplicate-cancel{
+  background:#666
+}
+
+.duplicate-alter{
+  background:#107c41
+}
+
+/* =========================
+   MULTIPLIER
+   ========================= */
+
+.mult-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px
+}
+
+.mult-box label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:3px
+}
+
+.mult-box input{
+  width:100%;
+  padding:7px;
+  border:1px solid #bbb;
+  border-radius:4px;
+  text-align:center
+}
+
+/* =========================
+   TOAST
+   ========================= */
+
+#toast{
   position:fixed;
   left:50%;
-  bottom:18px;
+  bottom:20px;
   transform:translateX(-50%);
   background:#222;
-  color:white;
-  padding:9px 14px;
-  border-radius:20px;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:5px;
   font-size:11px;
-  font-weight:700;
-  z-index:500;
   display:none;
-}
-
-.toast.show{
-  display:block;
-}
-
-@media(max-width:420px){
-  body{padding:4px}
-  .header-title{font-size:16px}
-  th,td{font-size:12px}
-  .qty{font-size:13px;padding:5px 1px}
-  .amount{font-size:12px}
-  .summary-label{font-size:10px}
-  .summary-value{font-size:13px}
+  z-index:300;
+  max-width:90%;
+  text-align:center
 }
 </style>
 </head>
 
 <body>
 
+<div class="mode-pill" id="modePill"></div>
+
 <div class="app">
 
-  <div class="header">
-    <div class="header-title">DEL • RET • SALES</div>
-    <div class="header-sub">SALES CALCULATOR</div>
-  </div>
-
   <div class="ledger-bar">
-    <div class="ledger-info">
-      <span class="ledger-date" id="ledgerDate">—</span>
-      <span class="ledger-name" id="ledgerName"></span>
+
+    <div class="top-box">
+      <div class="top-label">Date</div>
+      <div class="top-value" id="ledgerDate">—</div>
     </div>
-    <div class="status-pill" id="statusPill">NEW</div>
+
+    <div class="top-box">
+      <div class="top-label">Name</div>
+      <div class="top-value" id="ledgerName">—</div>
+    </div>
+
+    <button class="top-btn" id="clearBtn">
+      CLEAR<br>INPUTS
+    </button>
+
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>ITEM</th>
-          <th>DEL</th>
-          <th>RET</th>
-          <th id="salesHeader">SALES</th>
-          <th>AMOUNT</th>
+  <div class="card">
+
+    <div class="main-table-scroll">
+
+      <table class="main-table">
+
+        <thead>
+          <tr>
+            <th>ITEM</th>
+            <th>DEL</th>
+            <th>RET</th>
+            <th id="saleHeader">SALES</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+
+        <tbody id="productRows"></tbody>
+
+      </table>
+
+    </div>
+
+    <table class="summary-table">
+
+      <tbody>
+
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td id="totalAmount">0</td>
         </tr>
-      </thead>
-      <tbody id="productBody"></tbody>
+
+        <tr>
+          <td>BARYA</td>
+          <td>
+            <input id="barya" type="number" inputmode="decimal" step="any">
+          </td>
+        </tr>
+
+        <tr>
+          <td>AL</td>
+          <td>
+            <input id="al" type="number" inputmode="decimal" step="any">
+          </td>
+        </tr>
+
+        <tr>
+          <td>EX1</td>
+          <td>
+            <input id="ex1" type="number" inputmode="decimal" step="any">
+          </td>
+        </tr>
+
+        <tr>
+          <td>EX2</td>
+          <td>
+            <input id="ex2" type="number" inputmode="decimal" step="any">
+          </td>
+        </tr>
+
+        <tr>
+          <td>EX3</td>
+          <td>
+            <input id="ex3" type="number" inputmode="decimal" step="any">
+          </td>
+        </tr>
+
+        <tr class="net-row">
+          <td>NET TOTAL</td>
+          <td id="netTotal">0</td>
+        </tr>
+
+      </tbody>
+
     </table>
-  </div>
 
-  <div class="summary">
+    <textarea id="note" placeholder="Note..."></textarea>
 
-    <div class="summary-row">
-      <div class="summary-box">
-        <span class="summary-label">TOTAL</span>
-        <span class="summary-value" id="totalValue">0</span>
-      </div>
+    <div class="actions">
 
-      <div class="summary-box">
-        <span class="summary-label">BARYA</span>
-        <input class="money-input" id="barya" type="number" inputmode="decimal" value="0">
-      </div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-box">
-        <span class="summary-label">AL</span>
-        <input class="money-input" id="al" type="number" inputmode="decimal" value="0">
-      </div>
-
-      <div class="summary-box">
-        <span class="summary-label">EX1</span>
-        <input class="money-input" id="ex1" type="number" inputmode="decimal" value="0">
-      </div>
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-box">
-        <span class="summary-label">EX2</span>
-        <input class="money-input" id="ex2" type="number" inputmode="decimal" value="0">
-      </div>
-
-      <div class="summary-box">
-        <span class="summary-label">EX3</span>
-        <input class="money-input" id="ex3" type="number" inputmode="decimal" value="0">
-      </div>
-    </div>
-
-    <div class="summary-box net-box">
-      <span class="summary-label">NET TOTAL</span>
-      <span class="summary-value" id="netValue">0</span>
-    </div>
-
-  </div>
-
-  <div class="note-wrap">
-    <div class="note-title">NOTE</div>
-    <textarea id="note" placeholder="Optional note..."></textarea>
-  </div>
-
-  <div class="buttons">
-    <button class="btn btn-gray" id="newDayBtn">NEW DAY</button>
-    <button class="btn btn-green" id="saveBtn">SAVE</button>
-  </div>
-
-  <div class="saved-section">
-    <div class="saved-title">SAVED FILES</div>
-    <div class="saved-list" id="savedList"></div>
-  </div>
-
-</div>
-
-
-<!-- NEW DAY SETUP -->
-<div class="modal" id="newDayModal">
-  <div class="modal-box">
-    <div class="modal-title">NEW LEDGER</div>
-
-    <div class="form-row">
-      <label>DATE</label>
-      <input type="date" id="setupDate">
-    </div>
-
-    <div class="form-row">
-      <label>NAME</label>
-      <input type="text" id="setupName" autocomplete="off">
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-gray" id="setupCancel">CANCEL</button>
-      <button class="btn btn-green" id="setupStart">START</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- SAVE MODAL -->
-<div class="modal" id="saveModal">
-  <div class="modal-box">
-
-    <div class="modal-title">SAVE LEDGER</div>
-
-    <!-- EDITABLE DATE -->
-    <div class="preview-row">
-      <span>DATE</span>
-      <input class="save-edit-input" id="previewDate" type="date">
-    </div>
-
-    <!-- EDITABLE NAME -->
-    <div class="preview-row">
-      <span>NAME</span>
-      <input class="save-edit-input" id="previewName" type="text" autocomplete="off">
-    </div>
-
-    <div class="preview-row">
-      <span>TOTAL</span>
-      <strong class="save-total" id="previewTotal">0</strong>
-    </div>
-
-    <div class="preview-row">
-      <span>NET TOTAL</span>
-      <strong class="save-total" id="previewNet">0</strong>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-gray" id="saveCancel">CANCEL</button>
-      <button class="btn btn-green" id="finalSave">FINAL SAVE</button>
-    </div>
-
-    <div style="margin-top:8px">
-      <button class="btn btn-gray" id="reviewSave" style="width:100%">
-        REVIEW
+      <button class="action-btn new-btn" id="newDayBtn">
+        NEW DAY
       </button>
+
+      <button class="action-btn save-btn" id="saveBtn">
+        SAVE
+      </button>
+
     </div>
 
   </div>
+
+  <div class="hint">
+    Tap a saved file once to review it. Tap the same file again to return to your current work.
+  </div>
+
+  <div class="saved-card">
+
+    <div class="saved-title">
+      SAVED FILES
+    </div>
+
+    <div class="saved-list" id="savedFilesList"></div>
+
+  </div>
+
 </div>
 
 
-<!-- EDIT NEW DAY CONFIRM -->
+<!-- =========================
+     NEW LEDGER
+     ========================= -->
+
+<div class="modal" id="setup">
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+      NEW LEDGER
+    </div>
+
+    <label class="form-label">DATE</label>
+
+    <input
+      class="form-input"
+      id="setupDate"
+      type="date"
+    >
+
+    <label class="form-label">NAME</label>
+
+    <input
+      class="form-input"
+      id="setupName"
+      type="text"
+      autocomplete="off"
+    >
+
+    <div class="modal-actions">
+
+      <button
+        class="modal-btn cancel-btn"
+        id="setupExitBtn">
+        EXIT
+      </button>
+
+      <button
+        class="modal-btn green-btn"
+        id="startLedgerBtn">
+        START
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     NEW DAY WHILE EDITING
+     ========================= -->
+
 <div class="modal" id="editNewDayConfirm">
+
   <div class="modal-box confirm-box">
 
-    <div class="confirm-title">SAVE CURRENT EDIT?</div>
+    <div class="confirm-title">
+      SAVE CURRENT EDIT?
+    </div>
 
     <div class="confirm-message">
       You are currently editing a saved file.<br><br>
-      Save this edit before starting a New Day?
+      Press <b>OK</b> to save this edit before starting a new ledger.
+      <br><br>
+      Press <b>CANCEL</b> to stay in the current Edit Mode.
     </div>
 
     <div class="confirm-actions">
-      <button class="confirm-btn confirm-cancel" id="editNewDayCancel">
+
+      <button
+        class="confirm-btn confirm-cancel"
+        id="editNewDayCancelBtn">
         CANCEL
       </button>
 
-      <button class="confirm-btn confirm-ok" id="editNewDayOk">
+      <button
+        class="confirm-btn confirm-ok"
+        id="editNewDayOkBtn">
         OK
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- DUPLICATE DATE -->
+<!-- =========================
+     SAVE
+     ========================= -->
+
+<div class="modal" id="saveModal">
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+      SAVE LEDGER
+    </div>
+
+    <div class="save-preview">
+
+      <!-- CHANGED: DATE IS NOW EDITABLE -->
+      <div class="preview-row">
+        <span>Date</span>
+        <input
+          class="save-edit-input"
+          id="previewDate"
+          type="date">
+      </div>
+
+      <!-- CHANGED: NAME IS NOW EDITABLE -->
+      <div class="preview-row">
+        <span>Name</span>
+        <input
+          class="save-edit-input"
+          id="previewName"
+          type="text"
+          autocomplete="off">
+      </div>
+
+      <div class="preview-row">
+        <span>Total</span>
+        <strong id="previewTotal">0</strong>
+      </div>
+
+      <div class="preview-row">
+        <span>Net Total</span>
+        <strong id="previewNet">0</strong>
+      </div>
+
+    </div>
+
+    <button
+      class="modal-btn green-btn"
+      id="finalSaveBtn">
+      FINAL SAVE
+    </button>
+
+    <div class="modal-actions">
+
+      <button
+        class="modal-btn cancel-btn"
+        id="saveCancelBtn">
+        CANCEL
+      </button>
+
+      <button
+        class="modal-btn blue-btn"
+        id="reviewSaveBtn">
+        REVIEW
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     DUPLICATE DATE
+     ========================= -->
+
 <div class="modal" id="duplicateDateConfirm">
+
   <div class="modal-box confirm-box">
 
-    <div class="confirm-title">DATE ALREADY SAVED</div>
+    <div class="duplicate-title">
+      DATE ALREADY SAVED
+    </div>
 
-    <div class="confirm-message">
+    <div class="duplicate-message">
       A saved file already exists for this date.<br><br>
       Please <b>ALTER</b> the date or <b>CANCEL</b> the save.
     </div>
 
-    <div class="confirm-actions">
-      <button class="confirm-btn confirm-cancel" id="duplicateCancelBtn">
+    <div class="duplicate-actions">
+
+      <button
+        class="duplicate-btn duplicate-cancel"
+        id="duplicateCancelBtn">
         CANCEL
       </button>
 
-      <button class="confirm-btn confirm-ok" id="duplicateAlterBtn">
+      <button
+        class="duplicate-btn duplicate-alter"
+        id="duplicateAlterBtn">
         ALTER
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- MULTIPLIERS -->
-<div class="modal" id="multiplierModal">
+<!-- =========================
+     EDIT
+     ========================= -->
+
+<div class="modal" id="editModal">
+
   <div class="modal-box">
 
-    <div class="modal-title">UNIT PRICES</div>
-
-    <div class="multiplier-row">
-      <label>R</label>
-      <input id="multR" type="number">
+    <div class="modal-title">
+      EDIT SAVED FILE
     </div>
 
-    <div class="multiplier-row">
-      <label>P</label>
-      <input id="multP" type="number">
+    <div class="save-preview">
+
+      <div class="preview-row">
+        <span>Date</span>
+        <strong id="editPreviewDate">—</strong>
+      </div>
+
+      <div class="preview-row">
+        <span>Name</span>
+        <strong id="editPreviewName">—</strong>
+      </div>
+
     </div>
 
-    <div class="multiplier-row">
-      <label>L</label>
-      <input id="multL" type="number">
-    </div>
-
-    <div class="multiplier-row">
-      <label>M</label>
-      <input id="multM" type="number">
-    </div>
-
-    <div class="multiplier-row">
-      <label>C</label>
-      <input id="multC" type="number">
+    <div style="font-size:11px;color:#666;text-align:center">
+      This will unlock the saved ledger for editing.
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-gray" id="multCancel">CANCEL</button>
-      <button class="btn btn-green" id="multSave">SAVE</button>
-    </div>
 
-  </div>
-</div>
-
-
-<!-- EDIT CONFIRM -->
-<div class="modal" id="editModal">
-  <div class="modal-box confirm-box">
-
-    <div class="confirm-title">EDIT FILE?</div>
-
-    <div class="confirm-message">
-      This saved file will be unlocked for editing.
-    </div>
-
-    <div class="confirm-actions">
-      <button class="confirm-btn confirm-cancel" id="editCancel">
-        CANCEL
+      <button
+        class="modal-btn cancel-btn"
+        id="editCancelBtn">
+        EXIT
       </button>
 
-      <button class="confirm-btn confirm-ok" id="editOk">
+      <button
+        class="modal-btn blue-btn"
+        id="editConfirmBtn">
         EDIT
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- DELETE CONFIRM -->
-<div class="modal" id="deleteModal">
-  <div class="modal-box confirm-box">
+<!-- =========================
+     MULTIPLIERS
+     ========================= -->
 
-    <div class="confirm-title" style="color:#c62828">DELETE FILE?</div>
+<div class="modal" id="multiplierModal">
 
-    <div class="confirm-message">
-      This saved file will be permanently deleted.
+  <div class="modal-box">
+
+    <div class="modal-title">
+      AMOUNT MULTIPLIERS
     </div>
 
-    <div class="confirm-actions">
-      <button class="confirm-btn confirm-cancel" id="deleteCancel">
+    <div style="font-size:10px;color:#666;text-align:center;margin-bottom:10px">
+      Formula: SALES × multiplier = Amount
+    </div>
+
+    <div class="mult-grid">
+
+      <div class="mult-box">
+        <label>R</label>
+        <input id="mult-R" type="number" step="any">
+      </div>
+
+      <div class="mult-box">
+        <label>P</label>
+        <input id="mult-P" type="number" step="any">
+      </div>
+
+      <div class="mult-box">
+        <label>L</label>
+        <input id="mult-L" type="number" step="any">
+      </div>
+
+      <div class="mult-box">
+        <label>M</label>
+        <input id="mult-M" type="number" step="any">
+      </div>
+
+      <div class="mult-box">
+        <label>C</label>
+        <input id="mult-C" type="number" step="any">
+      </div>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        class="modal-btn cancel-btn"
+        id="multCancelBtn">
         CANCEL
       </button>
 
-      <button class="confirm-btn" id="deleteOk"
-              style="background:#c62828;color:white">
-        DELETE
+      <button
+        class="modal-btn green-btn"
+        id="multSaveBtn">
+        SAVE
       </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<div class="toast" id="toast"></div>
+<div id="toast"></div>
 
 
 <script>
-/* =========================================================
-   DATA
-========================================================= */
 
-const ITEMS = ["R","P","L","M","C"];
+/* =========================
+   BASIC DATA
+   ========================= */
 
-const DEFAULT_MULTIPLIERS = {
+const products=["R","P","L","M","C"];
+
+const STORAGE_KEY="delret_saved_files";
+const CURRENT_KEY="delret_current_inputs";
+
+let multipliers={
   R:45,
   P:45,
   L:45,
@@ -841,320 +1120,517 @@ const DEFAULT_MULTIPLIERS = {
   C:45
 };
 
-const SAVED_KEY = "del_ret_sales_saved_v1";
-const CURRENT_KEY = "del_ret_sales_current_v1";
-const MULT_KEY = "del_ret_sales_mult_v1";
-
-let multipliers = loadMultipliers();
-
-let currentLedger = {
+let currentLedger={
   id:null,
   date:"",
-  name:"",
-  note:"",
-  rows:{},
-  barya:0,
-  al:0,
-  ex1:0,
-  ex2:0,
-  ex3:0
+  name:""
 };
 
-let editingSavedId = null;
-let viewingSavedId = null;
-let pendingEditId = null;
-let pendingDeleteId = null;
+let ledgerReadOnly=false;
 
-let salesHeaderTapCount = 0;
-let salesHeaderTapTimer = null;
+let selectedSavedFileId=null;
+
+let savedViewBackup=null;
+let viewingSavedId=null;
+
+let editBackup=null;
+let editingSavedId=null;
 
 
-/* =========================================================
+/* =========================
    HELPERS
-========================================================= */
+   ========================= */
 
-function money(value){
-  const n=Number(value)||0;
-  return Number.isInteger(n)
-    ? String(n)
-    : n.toFixed(2).replace(/\.00$/,"");
+function num(v){
+
+  const n=parseFloat(v);
+
+  return Number.isFinite(n)?n:0;
 }
 
-function toast(message){
+
+function money(v){
+
+  const n=num(v);
+
+  if(Number.isInteger(n)){
+    return String(n);
+  }
+
+  return n
+    .toFixed(2)
+    .replace(/0+$/,"")
+    .replace(/\.$/,"");
+}
+
+
+function makeId(){
+
+  return Date.now().toString(36)+
+    Math.random().toString(36).slice(2,8);
+}
+
+
+function toast(msg){
+
   const el=document.getElementById("toast");
-  el.textContent=message;
-  el.classList.add("show");
+
+  el.textContent=msg;
+  el.style.display="block";
 
   clearTimeout(window.__toastTimer);
 
   window.__toastTimer=setTimeout(()=>{
-    el.classList.remove("show");
+    el.style.display="none";
   },1800);
 }
 
+
 function getSavedFiles(){
+
   try{
-    return JSON.parse(localStorage.getItem(SAVED_KEY)||"[]");
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY)||"[]"
+    );
   }catch(e){
     return [];
   }
 }
 
+
 function setSavedFiles(files){
-  localStorage.setItem(SAVED_KEY,JSON.stringify(files));
-}
 
-function loadMultipliers(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(MULT_KEY)||"null");
-    return saved ? {...DEFAULT_MULTIPLIERS,...saved} : {...DEFAULT_MULTIPLIERS};
-  }catch(e){
-    return {...DEFAULT_MULTIPLIERS};
-  }
-}
-
-function saveMultipliers(){
-  localStorage.setItem(MULT_KEY,JSON.stringify(multipliers));
-}
-
-function uid(){
-  return Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
-}
-
-function closeModal(id){
-  document.getElementById(id).classList.remove("show");
-}
-
-function openModal(id){
-  document.getElementById(id).classList.add("show");
-}
-
-function getInputValue(id){
-  return Number(document.getElementById(id).value)||0;
-}
-
-function setInputValue(id,value){
-  document.getElementById(id).value=value ?? 0;
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(files)
+  );
 }
 
 
-/* =========================================================
+/* =========================
    BUILD TABLE
-========================================================= */
+   ========================= */
 
 function buildProductRows(){
 
-  const body=document.getElementById("productBody");
+  const tbody=document.getElementById("productRows");
 
-  body.innerHTML="";
+  tbody.innerHTML="";
 
-  ITEMS.forEach(item=>{
+  products.forEach(p=>{
 
     const tr=document.createElement("tr");
 
     tr.innerHTML=`
-      <td class="item-name">${item}</td>
 
       <td>
-        <input
-          class="qty"
-          id="del_${item}"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          value="0">
+        <div class="item-name">${p}</div>
+        <span class="mult-tag" id="tag-${p}">
+          (x${multipliers[p]})
+        </span>
       </td>
 
       <td>
         <input
-          class="qty"
-          id="ret_${item}"
+          id="del-${p}"
           type="number"
           inputmode="decimal"
-          min="0"
-          value="0">
+          step="any">
       </td>
 
       <td>
-        <span class="sales-value" id="sales_${item}">0</span>
+        <input
+          id="ret-${p}"
+          type="number"
+          inputmode="decimal"
+          step="any">
       </td>
 
-      <td>
-        <span class="amount" id="amount_${item}">0</span>
+      <td
+        class="sale-cell"
+        id="sale-${p}">
+        0
       </td>
+
+      <td
+        class="amount-cell"
+        id="amount-${p}">
+        0
+      </td>
+
     `;
 
-    body.appendChild(tr);
+    tbody.appendChild(tr);
+  });
 
-    document.getElementById("del_"+item)
-      .addEventListener("input",calculate);
+  updateMultiplierTags();
+}
 
-    document.getElementById("ret_"+item)
-      .addEventListener("input",calculate);
+
+function updateMultiplierTags(){
+
+  products.forEach(p=>{
+
+    const tag=document.getElementById(`tag-${p}`);
+
+    if(tag){
+      tag.textContent=`(x${multipliers[p]})`;
+    }
+
   });
 }
 
 
-/* =========================================================
+/* =========================
    CALCULATE
-========================================================= */
+   ========================= */
 
 function calculate(){
 
   let total=0;
 
-  ITEMS.forEach(item=>{
+  products.forEach(p=>{
 
-    const del=getInputValue("del_"+item);
-    const ret=getInputValue("ret_"+item);
+    const del=num(
+      document.getElementById(`del-${p}`)?.value
+    );
+
+    const ret=num(
+      document.getElementById(`ret-${p}`)?.value
+    );
 
     const sales=del-ret;
 
-    const amount=sales*(Number(multipliers[item])||0);
+    const amount=
+      sales*num(multipliers[p]);
 
-    document.getElementById("sales_"+item).textContent=money(sales);
-    document.getElementById("amount_"+item).textContent=money(amount);
+    const saleEl=
+      document.getElementById(`sale-${p}`);
+
+    const amountEl=
+      document.getElementById(`amount-${p}`);
+
+    if(saleEl){
+      saleEl.textContent=money(sales);
+    }
+
+    if(amountEl){
+      amountEl.textContent=money(amount);
+    }
 
     total+=amount;
   });
 
-  const barya=getInputValue("barya");
-  const al=getInputValue("al");
-  const ex1=getInputValue("ex1");
-  const ex2=getInputValue("ex2");
-  const ex3=getInputValue("ex3");
 
-  const net=total+barya-al-ex1-ex2-ex3;
+  const barya=num(
+    document.getElementById("barya")?.value
+  );
 
-  document.getElementById("totalValue").textContent=money(total);
-  document.getElementById("netValue").textContent=money(net);
+  const al=num(
+    document.getElementById("al")?.value
+  );
 
-  updateCurrentSnapshot();
+  const ex1=num(
+    document.getElementById("ex1")?.value
+  );
+
+  const ex2=num(
+    document.getElementById("ex2")?.value
+  );
+
+  const ex3=num(
+    document.getElementById("ex3")?.value
+  );
+
+
+  const net=
+    total+
+    barya-
+    al-
+    ex1-
+    ex2-
+    ex3;
+
+
+  const totalEl=
+    document.getElementById("totalAmount");
+
+  const netEl=
+    document.getElementById("netTotal");
+
+
+  if(totalEl){
+    totalEl.textContent=money(total);
+  }
+
+  if(netEl){
+    netEl.textContent=money(net);
+  }
+
+
+  if(!ledgerReadOnly){
+    saveCurrentInputs();
+  }
+
+
+  return{
+    total,
+    barya,
+    al,
+    ex1,
+    ex2,
+    ex3,
+    net
+  };
 }
 
 
-/* =========================================================
-   SNAPSHOT
-========================================================= */
+/* =========================
+   CURRENT INPUTS
+   ========================= */
 
-function getRowsSnapshot(){
+function getCurrentInputs(){
 
-  const rows={};
-
-  ITEMS.forEach(item=>{
-    rows[item]={
-      del:getInputValue("del_"+item),
-      ret:getInputValue("ret_"+item)
-    };
-  });
-
-  return rows;
-}
-
-function updateCurrentSnapshot(){
-
-  currentLedger.rows=getRowsSnapshot();
-
-  currentLedger.note=document.getElementById("note").value;
-
-  currentLedger.barya=getInputValue("barya");
-  currentLedger.al=getInputValue("al");
-  currentLedger.ex1=getInputValue("ex1");
-  currentLedger.ex2=getInputValue("ex2");
-  currentLedger.ex3=getInputValue("ex3");
-
-  try{
-    localStorage.setItem(CURRENT_KEY,JSON.stringify(currentLedger));
-  }catch(e){}
-}
-
-
-/* =========================================================
-   RESTORE / LOAD LEDGER
-========================================================= */
-
-function clearLedgerInputs(){
-
-  ITEMS.forEach(item=>{
-    document.getElementById("del_"+item).value=0;
-    document.getElementById("ret_"+item).value=0;
-  });
-
-  document.getElementById("barya").value=0;
-  document.getElementById("al").value=0;
-  document.getElementById("ex1").value=0;
-  document.getElementById("ex2").value=0;
-  document.getElementById("ex3").value=0;
-
-  document.getElementById("note").value="";
-}
-
-function loadRecordIntoLedger(record,readOnly=false){
-
-  currentLedger={
-    id:record.id||null,
-    date:record.date||"",
-    name:record.name||"",
-    note:record.note||"",
-    rows:record.rows||{},
-    barya:Number(record.barya)||0,
-    al:Number(record.al)||0,
-    ex1:Number(record.ex1)||0,
-    ex2:Number(record.ex2)||0,
-    ex3:Number(record.ex3)||0
+  const data={
+    del:{},
+    ret:{},
+    barya:num(
+      document.getElementById("barya")?.value
+    ),
+    al:num(
+      document.getElementById("al")?.value
+    ),
+    ex1:num(
+      document.getElementById("ex1")?.value
+    ),
+    ex2:num(
+      document.getElementById("ex2")?.value
+    ),
+    ex3:num(
+      document.getElementById("ex3")?.value
+    ),
+    note:
+      document.getElementById("note")?.value||""
   };
 
-  ITEMS.forEach(item=>{
 
-    const row=currentLedger.rows[item]||{del:0,ret:0};
+  products.forEach(p=>{
 
-    document.getElementById("del_"+item).value=row.del||0;
-    document.getElementById("ret_"+item).value=row.ret||0;
+    data.del[p]=num(
+      document.getElementById(`del-${p}`)?.value
+    );
+
+    data.ret[p]=num(
+      document.getElementById(`ret-${p}`)?.value
+    );
+
   });
 
-  document.getElementById("barya").value=currentLedger.barya;
-  document.getElementById("al").value=currentLedger.al;
-  document.getElementById("ex1").value=currentLedger.ex1;
-  document.getElementById("ex2").value=currentLedger.ex2;
-  document.getElementById("ex3").value=currentLedger.ex3;
 
-  document.getElementById("note").value=currentLedger.note||"";
+  return data;
+}
 
-  calculate();
+
+function saveCurrentInputs(){
+
+  if(ledgerReadOnly)return;
+
+  localStorage.setItem(
+    CURRENT_KEY,
+    JSON.stringify({
+      ledger:{...currentLedger},
+      inputs:getCurrentInputs(),
+      multipliers:{...multipliers}
+    })
+  );
+}
+
+
+/* =========================
+   PUT INPUTS
+   ========================= */
+
+function putInputs(data){
+
+  data=data||{};
+
+
+  products.forEach(p=>{
+
+    const del=data.del?.[p];
+    const ret=data.ret?.[p];
+
+    const delEl=
+      document.getElementById(`del-${p}`);
+
+    const retEl=
+      document.getElementById(`ret-${p}`);
+
+
+    if(delEl){
+      delEl.value=
+        (del===undefined||del===0)?"":del;
+    }
+
+    if(retEl){
+      retEl.value=
+        (ret===undefined||ret===0)?"":ret;
+    }
+
+  });
+
+
+  ["barya","al","ex1","ex2","ex3"]
+    .forEach(id=>{
+
+      const el=document.getElementById(id);
+
+      const value=data[id];
+
+      if(el){
+        el.value=
+          (value===undefined||value===0)
+          ?""
+          :value;
+      }
+
+    });
+
+
+  document.getElementById("note").value=
+    data.note||"";
+}
+
+
+/* =========================
+   SNAPSHOT
+   ========================= */
+
+function captureLedgerState(){
+
+  return{
+    currentLedger:{...currentLedger},
+    multipliers:{...multipliers},
+    readOnly:ledgerReadOnly,
+    inputs:getCurrentInputs()
+  };
+}
+
+
+function restoreLedgerState(snapshot){
+
+  if(!snapshot)return;
+
+  currentLedger={
+    ...snapshot.currentLedger
+  };
+
+  multipliers={
+    ...snapshot.multipliers
+  };
+
+  putInputs(snapshot.inputs);
+
+  updateMultiplierTags();
+
+  setLedgerReadOnly(snapshot.readOnly);
 
   updateLedgerBar();
 
-  setLedgerReadOnly(readOnly);
+  calculate();
 }
 
-function restoreUnfinishedWork(){
 
-  try{
+/* =========================
+   LOAD SAVED RECORD
+   ========================= */
 
-    const saved=localStorage.getItem(CURRENT_KEY);
+function loadRecordIntoLedger(record,readOnly){
 
-    if(!saved) return false;
+  if(!record)return;
 
-    const record=JSON.parse(saved);
 
-    if(!record) return false;
+  currentLedger={
+    id:record.id,
+    date:record.date||"",
+    name:record.name||""
+  };
 
-    loadRecordIntoLedger(record,false);
 
-    editingSavedId=record.id||null;
+  multipliers={
+    R:45,
+    P:45,
+    L:45,
+    M:45,
+    C:45,
+    ...(record.multipliers||{})
+  };
 
-    return true;
 
-  }catch(e){
+  putInputs(record.inputs||{});
 
-    return false;
+  updateMultiplierTags();
+
+  setLedgerReadOnly(!!readOnly);
+
+  updateLedgerBar();
+
+  calculate();
+}
+
+
+/* =========================
+   READ ONLY / EDIT MODE
+   ========================= */
+
+function setLedgerReadOnly(state){
+
+  ledgerReadOnly=!!state;
+
+
+  const fields=document.querySelectorAll(
+    '.main-table input[type="number"],'+
+    '.summary-table input[type="number"],'+
+    '#note'
+  );
+
+
+  fields.forEach(el=>{
+    el.disabled=ledgerReadOnly;
+  });
+
+
+  document.getElementById("clearBtn").disabled=
+    ledgerReadOnly;
+
+  document.getElementById("saveBtn").disabled=
+    ledgerReadOnly;
+
+
+  document.body.classList.toggle(
+    "saved-preview",
+    ledgerReadOnly
+  );
+
+  document.body.classList.toggle(
+    "edit-mode",
+    !!editingSavedId
+  );
+
+
+  const pill=
+    document.getElementById("modePill");
+
+
+  if(editingSavedId){
+    pill.textContent="EDIT MODE";
+  }else if(ledgerReadOnly){
+    pill.textContent="READ ONLY";
+  }else{
+    pill.textContent="";
   }
 }
 
-
-/* =========================================================
-   LEDGER BAR / READ ONLY
-========================================================= */
 
 function updateLedgerBar(){
 
@@ -1162,406 +1638,384 @@ function updateLedgerBar(){
     currentLedger.date||"—";
 
   document.getElementById("ledgerName").textContent=
-    currentLedger.name
-      ? "• "+currentLedger.name
-      : "";
-
-  let status="NEW";
-
-  if(viewingSavedId){
-    status="READ ONLY";
-  }else if(editingSavedId){
-    status="EDIT MODE";
-  }
-
-  document.getElementById("statusPill").textContent=status;
-}
-
-function setLedgerReadOnly(readOnly){
-
-  document.body.classList.toggle("readonly-mode",readOnly);
-  document.body.classList.toggle(
-    "edit-mode",
-    !!editingSavedId && !readOnly
-  );
-
-  const inputs=document.querySelectorAll(
-    ".qty,.money-input,#note"
-  );
-
-  inputs.forEach(input=>{
-    input.disabled=readOnly;
-    input.classList.toggle("readonly-input",readOnly);
-  });
-
-  document.getElementById("newDayBtn").disabled=false;
-  document.getElementById("saveBtn").disabled=readOnly;
-
-  updateLedgerBar();
+    currentLedger.name||"—";
 }
 
 
-/* =========================================================
-   NEW DAY
-========================================================= */
+/* =========================
+   NEW LEDGER
+   ========================= */
 
 function showNewDaySetup(){
 
+  /*
+    NEW DAY while editing a saved file:
+    ask first before opening New Ledger.
+  */
   if(editingSavedId){
 
-    openModal("editNewDayConfirm");
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.add("show");
 
     return;
   }
 
+
+  /*
+    Date ALWAYS starts empty.
+  */
   document.getElementById("setupDate").value="";
+
   document.getElementById("setupName").value="";
 
-  openModal("newDayModal");
+  document.getElementById("setup")
+    .classList.add("show");
 }
+
+
+function closeSetup(){
+
+  document.getElementById("setup")
+    .classList.remove("show");
+
+
+  /*
+    If there is NO valid current ledger,
+    exiting setup leaves the calculator READ ONLY.
+  */
+  if(!currentLedger.date || !currentLedger.name){
+
+    setLedgerReadOnly(true);
+
+    currentLedger={
+      id:null,
+      date:"",
+      name:""
+    };
+
+    updateLedgerBar();
+
+    calculate();
+  }
+}
+
 
 function startNewLedger(){
 
-  const date=document.getElementById("setupDate").value;
-  const name=document.getElementById("setupName").value.trim();
+  const date=
+    document.getElementById("setupDate").value;
+
+  const name=
+    document.getElementById("setupName")
+      .value.trim();
+
 
   if(!date){
     toast("Please select a date.");
     return;
   }
 
+
   if(!name){
     toast("Please enter a name.");
     return;
   }
 
+
   currentLedger={
     id:null,
-    date:date,
-    name:name,
-    note:"",
-    rows:{},
+    date,
+    name
+  };
+
+
+  multipliers={
+    R:45,
+    P:45,
+    L:45,
+    M:45,
+    C:45
+  };
+
+
+  editingSavedId=null;
+  editBackup=null;
+
+  savedViewBackup=null;
+  viewingSavedId=null;
+  selectedSavedFileId=null;
+
+
+  putInputs({
+    del:{},
+    ret:{},
     barya:0,
     al:0,
     ex1:0,
     ex2:0,
-    ex3:0
-  };
+    ex3:0,
+    note:""
+  });
 
-  editingSavedId=null;
-  viewingSavedId=null;
 
-  clearLedgerInputs();
-
-  localStorage.removeItem(CURRENT_KEY);
-
-  closeModal("newDayModal");
+  updateMultiplierTags();
 
   setLedgerReadOnly(false);
 
+  updateLedgerBar();
+
+  localStorage.removeItem(CURRENT_KEY);
+
+  closeSetup();
+
   calculate();
 
-  updateLedgerBar();
+  renderSavedDays();
 
   toast("New ledger started.");
 }
 
 
-/* =========================================================
-   SAVE MODAL
-========================================================= */
+/* =========================
+   CLEAR
+   ========================= */
 
-function openSaveFileModal(){
+function clearInputs(){
 
-  if(viewingSavedId){
-    toast("READ ONLY");
+  if(ledgerReadOnly){
+    toast("Saved file is read-only.");
     return;
   }
+
+
+  if(!confirm("Clear all current inputs?")){
+    return;
+  }
+
+
+  putInputs({
+    del:{},
+    ret:{},
+    barya:0,
+    al:0,
+    ex1:0,
+    ex2:0,
+    ex3:0,
+    note:""
+  });
+
 
   calculate();
 
-  document.getElementById("previewDate").value=
-    currentLedger.date||"";
-
-  document.getElementById("previewName").value=
-    currentLedger.name||"";
-
-  document.getElementById("previewTotal").textContent=
-    document.getElementById("totalValue").textContent;
-
-  document.getElementById("previewNet").textContent=
-    document.getElementById("netValue").textContent;
-
-  openModal("saveModal");
+  toast("Inputs cleared.");
 }
 
 
-/* =========================================================
-   DUPLICATE DATE CHECK
-========================================================= */
+/* =========================
+   SAVED FILE PREVIEW
+   ========================= */
 
-function hasDuplicateDate(date,currentId){
+function viewSavedFile(id){
 
   const files=getSavedFiles();
 
-  return files.some(file=>{
-    return file.date===date && file.id!==currentId;
-  });
-}
+  const record=
+    files.find(x=>x.id===id);
 
+  if(!record)return;
 
-/* =========================================================
-   FINAL SAVE
-========================================================= */
-
-function finalSaveLedger(){
-
-  const date=
-    document.getElementById("previewDate").value;
-
-  const name=
-    document.getElementById("previewName").value.trim();
-
-  if(!date){
-    toast("Please select a date.");
-    return;
-  }
-
-  if(!name){
-    toast("Please enter a name.");
-    return;
-  }
 
   /*
-    IMPORTANT:
-    Duplicate date is checked BEFORE saving.
-
-    If editing an existing file, that SAME file's ID
-    is excluded, so keeping its current date is allowed.
+    SECOND TAP ON SAME FILE:
+    restore the exact current work.
   */
-  if(hasDuplicateDate(date,currentLedger.id)){
+  if(viewingSavedId===id){
 
-    openModal("duplicateDateConfirm");
-
-    return;
-  }
-
-  calculate();
-
-  const total=Number(
-    document.getElementById("totalValue").textContent
-  )||0;
-
-  const net=Number(
-    document.getElementById("netValue").textContent
-  )||0;
-
-  const files=getSavedFiles();
-
-  let record;
-
-  if(currentLedger.id){
-
-    const index=files.findIndex(
-      file=>file.id===currentLedger.id
-    );
-
-    if(index!==-1){
-
-      record={
-        ...files[index],
-        date:date,
-        name:name,
-        note:document.getElementById("note").value,
-        rows:getRowsSnapshot(),
-        barya:getInputValue("barya"),
-        al:getInputValue("al"),
-        ex1:getInputValue("ex1"),
-        ex2:getInputValue("ex2"),
-        ex3:getInputValue("ex3"),
-        total:total,
-        net:net
-      };
-
-      files[index]=record;
-
-    }else{
-
-      record=createNewRecord(date,name,total,net);
-
-      files.push(record);
+    if(savedViewBackup){
+      restoreLedgerState(savedViewBackup);
     }
 
-  }else{
 
-    record=createNewRecord(date,name,total,net);
+    savedViewBackup=null;
+    viewingSavedId=null;
+    selectedSavedFileId=null;
 
-    files.push(record);
+
+    renderSavedDays();
+
+    toast("Returned to current work.");
+
+    return;
   }
 
-  setSavedFiles(files);
 
   /*
-    FINAL SAVE now updates the current ledger with the
-    editable Date and Name and keeps the values visible.
+    FIRST TAP:
+    save current work only once.
   */
-  currentLedger={
-    ...currentLedger,
-    id:record.id,
-    date:record.date,
-    name:record.name
-  };
+  if(!viewingSavedId){
 
-  selectedSavedFileId=record.id;
+    savedViewBackup=
+      captureLedgerState();
+  }
 
-  editingSavedId=null;
-  viewingSavedId=null;
 
-  localStorage.removeItem(CURRENT_KEY);
+  viewingSavedId=id;
+  selectedSavedFileId=id;
 
-  /*
-    IMPORTANT:
-    Reload the saved record into the visible ledger.
-    This prevents FINAL SAVE from clearing the table.
-  */
-  loadRecordIntoLedger(record,true);
 
-  closeModal("saveModal");
-  closeModal("duplicateDateConfirm");
+  loadRecordIntoLedger(
+    record,
+    true
+  );
+
 
   renderSavedDays();
-  updateLedgerBar();
 
-  toast("FINAL SAVE complete.");
-}
-
-function createNewRecord(date,name,total,net){
-
-  return {
-    id:uid(),
-    date:date,
-    name:name,
-    note:document.getElementById("note").value,
-    rows:getRowsSnapshot(),
-    barya:getInputValue("barya"),
-    al:getInputValue("al"),
-    ex1:getInputValue("ex1"),
-    ex2:getInputValue("ex2"),
-    ex3:getInputValue("ex3"),
-    total:total,
-    net:net,
-    createdAt:Date.now()
-  };
+  toast("READ ONLY — review mode.");
 }
 
 
-/* =========================================================
-   SAVED FILES
-========================================================= */
-
-let selectedSavedFileId=null;
+/* =========================
+   SAVED LIST
+   ========================= */
 
 function renderSavedDays(){
 
-  const list=document.getElementById("savedList");
+  const list=
+    document.getElementById("savedFilesList");
 
   const files=getSavedFiles();
 
+
+  files.sort((a,b)=>{
+
+    const da=
+      new Date(
+        (a.date||"0000-00-00")+"T00:00:00"
+      ).getTime();
+
+    const db=
+      new Date(
+        (b.date||"0000-00-00")+"T00:00:00"
+      ).getTime();
+
+
+    if(db!==da)return db-da;
+
+    return String(b.savedAt||"")
+      .localeCompare(
+        String(a.savedAt||"")
+      );
+  });
+
+
   list.innerHTML="";
+
 
   if(!files.length){
 
     list.innerHTML=`
       <div style="
+        padding:15px;
         text-align:center;
-        color:#888;
-        font-size:11px;
-        padding:10px;
-      ">
-        No saved files
+        color:#888">
+        No saved files yet.
       </div>
     `;
 
     return;
   }
 
-  files
-    .slice()
-    .sort((a,b)=>{
-      return String(b.date).localeCompare(String(a.date));
-    })
-    .forEach(file=>{
 
-      const item=document.createElement("div");
+  files.forEach(record=>{
 
-      item.className="saved-item";
+    const row=
+      document.createElement("div");
 
-      item.innerHTML=`
-        <div class="saved-main">
-          <div class="saved-date">${formatDate(file.date)}</div>
-          <div class="saved-name">${escapeHtml(file.name||"")}</div>
-          <div class="saved-net">
-            NET: ${money(file.net)}
-          </div>
-        </div>
 
-        <div class="saved-actions">
+    row.className=
+      "saved-item"+
+      (
+        selectedSavedFileId===record.id
+        ?" selected"
+        :""
+      );
 
-          <button
-            class="small-btn edit-btn"
-            data-edit="${file.id}">
-            EDIT
-          </button>
 
-          <button
-            class="small-btn delete-btn"
-            data-delete="${file.id}">
-            DELETE
-          </button>
+    const info=
+      document.createElement("div");
 
-        </div>
-      `;
+    info.className="saved-info";
 
-      list.appendChild(item);
-    });
 
-  list.querySelectorAll("[data-edit]").forEach(btn=>{
+    info.innerHTML=`
+      <div class="saved-date">
+        ${record.date||"—"}
+      </div>
 
-    btn.addEventListener("click",()=>{
+      <div class="saved-name">
+        ${escapeHtml(record.name||"—")}
+      </div>
 
-      pendingEditId=btn.dataset.edit;
+      <div class="saved-net">
+        NET: ${money(record.net)}
+      </div>
+    `;
 
-      openModal("editModal");
-    });
 
-  });
+    info.onclick=()=>{
+      viewSavedFile(record.id);
+    };
 
-  list.querySelectorAll("[data-delete]").forEach(btn=>{
 
-    btn.addEventListener("click",()=>{
+    const edit=
+      document.createElement("button");
 
-      pendingDeleteId=btn.dataset.delete;
+    edit.className=
+      "small-btn edit-btn";
 
-      openModal("deleteModal");
-    });
+    edit.textContent="EDIT";
 
+
+    edit.onclick=e=>{
+
+      e.stopPropagation();
+
+      openEditModal(record.id);
+    };
+
+
+    const del=
+      document.createElement("button");
+
+    del.className=
+      "small-btn delete-btn";
+
+    del.textContent="DEL";
+
+
+    del.onclick=e=>{
+
+      e.stopPropagation();
+
+      deleteSavedFile(record.id);
+    };
+
+
+    row.appendChild(info);
+    row.appendChild(edit);
+    row.appendChild(del);
+
+    list.appendChild(row);
   });
 }
 
-function formatDate(date){
 
-  if(!date) return "—";
+function escapeHtml(str){
 
-  const parts=date.split("-");
-
-  if(parts.length!==3) return date;
-
-  return `${parts[1]}/${parts[2]}/${parts[0]}`;
-}
-
-function escapeHtml(value){
-
-  return String(value)
+  return String(str)
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -1570,364 +2024,876 @@ function escapeHtml(value){
 }
 
 
-/* =========================================================
-   EDIT SAVED FILE
-========================================================= */
+/* =========================
+   EDIT
+   ========================= */
 
-function editSavedFile(){
+function openEditModal(id){
+
+  const record=
+    getSavedFiles()
+      .find(x=>x.id===id);
+
+  if(!record)return;
+
+
+  document.getElementById(
+    "editPreviewDate"
+  ).textContent=record.date||"—";
+
+
+  document.getElementById(
+    "editPreviewName"
+  ).textContent=record.name||"—";
+
+
+  document.getElementById(
+    "editModal"
+  ).dataset.id=id;
+
+
+  document.getElementById(
+    "editModal"
+  ).classList.add("show");
+}
+
+
+function closeEditModal(){
+
+  document.getElementById(
+    "editModal"
+  ).classList.remove("show");
+}
+
+
+function beginEditSavedFile(id){
+
+  const record=
+    getSavedFiles()
+      .find(x=>x.id===id);
+
+  if(!record)return;
+
+
+  /*
+    Save the exact state before editing.
+  */
+  editBackup=
+    captureLedgerState();
+
+  editingSavedId=id;
+
+
+  savedViewBackup=null;
+  viewingSavedId=null;
+
+  selectedSavedFileId=id;
+
+
+  loadRecordIntoLedger(
+    record,
+    false
+  );
+
+
+  closeEditModal();
+
+  renderSavedDays();
+
+  toast("Edit mode enabled.");
+}
+
+
+function cancelEdit(){
+
+  if(!editingSavedId)return;
+
+
+  if(editBackup){
+    restoreLedgerState(editBackup);
+  }
+
+
+  editingSavedId=null;
+  editBackup=null;
+
+
+  setLedgerReadOnly(ledgerReadOnly);
+
+  renderSavedDays();
+
+  toast("Edit cancelled.");
+}
+
+
+/* =========================
+   DUPLICATE DATE CHECK
+   ========================= */
+
+function hasDuplicateDate(date,currentId){
 
   const files=getSavedFiles();
 
-  const record=files.find(
-    file=>file.id===pendingEditId
+  return files.some(record=>{
+
+    /*
+      Same file being edited is allowed.
+      Another saved file with the same date is NOT allowed.
+    */
+    return (
+      record.date===date &&
+      record.id!==currentId
+    );
+
+  });
+}
+
+
+/* =========================
+   SAVE
+   ========================= */
+
+function openSaveFileModal(){
+
+  if(ledgerReadOnly){
+    toast("Saved file is read-only.");
+    return;
+  }
+
+
+  if(!currentLedger.date){
+    toast("Please start a ledger first.");
+    return;
+  }
+
+
+  if(!currentLedger.name){
+    toast("Name is required.");
+    return;
+  }
+
+
+  const result=calculate();
+
+
+  /*
+    IMPORTANT:
+    These are only temporary SAVE SCREEN values.
+    They do NOT change currentLedger until FINAL SAVE.
+  */
+  document.getElementById(
+    "previewDate"
+  ).value=currentLedger.date;
+
+
+  document.getElementById(
+    "previewName"
+  ).value=currentLedger.name;
+
+
+  document.getElementById(
+    "previewTotal"
+  ).textContent=money(result.total);
+
+
+  document.getElementById(
+    "previewNet"
+  ).textContent=money(result.net);
+
+
+  document.getElementById(
+    "saveModal"
+  ).classList.add("show");
+}
+
+
+function closeSaveModal(){
+
+  document.getElementById(
+    "saveModal"
+  ).classList.remove("show");
+}
+
+
+/* =========================
+   FINAL SAVE
+   ========================= */
+
+function finalSaveLedger(){
+
+  if(ledgerReadOnly)return false;
+
+
+  /*
+    READ THE EDITABLE SAVE SCREEN VALUES.
+  */
+  const saveDate=
+    document.getElementById(
+      "previewDate"
+    ).value;
+
+  const saveName=
+    document.getElementById(
+      "previewName"
+    ).value.trim();
+
+
+  if(!saveDate){
+
+    toast("Please select a date.");
+
+    return false;
+  }
+
+
+  if(!saveName){
+
+    toast("Please enter a name.");
+
+    return false;
+  }
+
+
+  /*
+    DUPLICATE DATE PROTECTION.
+
+    If this is a NEW FILE:
+      any existing same date = duplicate.
+
+    If this is EDITING:
+      its own current file ID is excluded,
+      but another file with that date blocks saving.
+  */
+  if(
+    hasDuplicateDate(
+      saveDate,
+      currentLedger.id
+    )
+  ){
+
+    document.getElementById(
+      "duplicateDateConfirm"
+    ).classList.add("show");
+
+    return false;
+  }
+
+
+  const result=calculate();
+
+
+  const record={
+
+    id:
+      currentLedger.id||makeId(),
+
+    /*
+      USE THE EDITABLE SAVE VALUES.
+    */
+    date:
+      saveDate,
+
+    name:
+      saveName,
+
+    inputs:
+      getCurrentInputs(),
+
+    multipliers:
+      {...multipliers},
+
+    total:
+      result.total,
+
+    net:
+      result.net,
+
+    savedAt:
+      new Date().toISOString()
+  };
+
+
+  const files=getSavedFiles();
+
+
+  const existingIndex=
+    files.findIndex(
+      x=>x.id===record.id
+    );
+
+
+  if(existingIndex>=0){
+
+    files[existingIndex]=record;
+
+  }else{
+
+    files.push(record);
+  }
+
+
+  setSavedFiles(files);
+
+
+  /*
+    ONLY NOW do Date and Name become
+    the current ledger values.
+  */
+  currentLedger={
+    id:record.id,
+    date:record.date,
+    name:record.name
+  };
+
+
+  selectedSavedFileId=record.id;
+
+
+  editingSavedId=null;
+  editBackup=null;
+
+  savedViewBackup=null;
+  viewingSavedId=null;
+
+
+  localStorage.removeItem(
+    CURRENT_KEY
   );
 
-  if(!record){
 
-    closeModal("editModal");
+  /*
+    IMPORTANT:
+    Reload the just-saved record into the
+    visible ledger before making it READ ONLY.
+    This keeps all filled values visible.
+  */
+  loadRecordIntoLedger(
+    record,
+    true
+  );
 
-    toast("File not found.");
+
+  updateLedgerBar();
+
+  closeSaveModal();
+
+  renderSavedDays();
+
+  toast("Ledger saved successfully.");
+
+  return true;
+}
+
+
+/* =========================
+   DELETE
+   ========================= */
+
+function deleteSavedFile(id){
+
+  const files=getSavedFiles();
+
+  const record=
+    files.find(x=>x.id===id);
+
+  if(!record)return;
+
+
+  if(!confirm(
+    `Delete saved file?\n\n${record.date} — ${record.name}`
+  )){
+    return;
+  }
+
+
+  setSavedFiles(
+    files.filter(x=>x.id!==id)
+  );
+
+
+  /*
+    If deleting the file being reviewed,
+    return to the previous working ledger.
+  */
+  if(viewingSavedId===id){
+
+    if(savedViewBackup){
+      restoreLedgerState(
+        savedViewBackup
+      );
+    }
+
+
+    savedViewBackup=null;
+    viewingSavedId=null;
+    selectedSavedFileId=null;
+  }
+
+
+  if(currentLedger.id===id){
+
+    currentLedger.id=null;
+
+    if(editingSavedId===id){
+
+      editingSavedId=null;
+      editBackup=null;
+    }
+
+
+    if(ledgerReadOnly){
+      setLedgerReadOnly(false);
+    }
+
+
+    updateLedgerBar();
+
+    calculate();
+  }
+
+
+  renderSavedDays();
+
+  toast("Saved file deleted.");
+}
+
+
+/* =========================
+   5 TAP SALES
+   ========================= */
+
+let saleTapCount=0;
+let saleTapTimer=null;
+
+
+document.getElementById(
+  "saleHeader"
+).addEventListener("click",()=>{
+
+  if(ledgerReadOnly){
+
+    toast("Saved file is read-only.");
 
     return;
   }
 
-  closeModal("editModal");
 
-  viewingSavedId=null;
-  editingSavedId=record.id;
+  saleTapCount++;
 
-  loadRecordIntoLedger(record,false);
 
-  localStorage.setItem(
-    CURRENT_KEY,
-    JSON.stringify(currentLedger)
+  clearTimeout(
+    saleTapTimer
   );
 
-  setLedgerReadOnly(false);
 
-  updateLedgerBar();
+  saleTapTimer=setTimeout(()=>{
+    saleTapCount=0;
+  },1000);
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
+
+  if(saleTapCount>=5){
+
+    saleTapCount=0;
+
+
+    products.forEach(p=>{
+
+      document.getElementById(
+        `mult-${p}`
+      ).value=multipliers[p];
+
+    });
+
+
+    document.getElementById(
+      "multiplierModal"
+    ).classList.add("show");
+  }
+});
+
+
+function closeMultiplierModal(){
+
+  document.getElementById(
+    "multiplierModal"
+  ).classList.remove("show");
+}
+
+
+function saveMultipliers(){
+
+  products.forEach(p=>{
+
+    const value=
+      num(
+        document.getElementById(
+          `mult-${p}`
+        ).value
+      );
+
+    multipliers[p]=value||0;
   });
 
-  toast("EDIT MODE");
-}
 
-
-/* =========================================================
-   DELETE
-========================================================= */
-
-function deleteSavedFile(){
-
-  const files=getSavedFiles();
-
-  const filtered=files.filter(
-    file=>file.id!==pendingDeleteId
-  );
-
-  setSavedFiles(filtered);
-
-  if(currentLedger.id===pendingDeleteId){
-
-    currentLedger.id=null;
-    editingSavedId=null;
-    viewingSavedId=null;
-
-    localStorage.removeItem(CURRENT_KEY);
-
-    clearLedgerInputs();
-
-    currentLedger.date="";
-    currentLedger.name="";
-    currentLedger.note="";
-
-    updateLedgerBar();
-    setLedgerReadOnly(false);
-    calculate();
-  }
-
-  pendingDeleteId=null;
-
-  closeModal("deleteModal");
-
-  renderSavedDays();
-
-  toast("File deleted.");
-}
-
-
-/* =========================================================
-   MULTIPLIER EDIT
-========================================================= */
-
-function openMultiplierModal(){
-
-  document.getElementById("multR").value=multipliers.R;
-  document.getElementById("multP").value=multipliers.P;
-  document.getElementById("multL").value=multipliers.L;
-  document.getElementById("multM").value=multipliers.M;
-  document.getElementById("multC").value=multipliers.C;
-
-  openModal("multiplierModal");
-}
-
-function saveMultiplierModal(){
-
-  multipliers.R=Number(document.getElementById("multR").value)||0;
-  multipliers.P=Number(document.getElementById("multP").value)||0;
-  multipliers.L=Number(document.getElementById("multL").value)||0;
-  multipliers.M=Number(document.getElementById("multM").value)||0;
-  multipliers.C=Number(document.getElementById("multC").value)||0;
-
-  saveMultipliers();
-
-  closeModal("multiplierModal");
+  updateMultiplierTags();
 
   calculate();
 
-  toast("Unit prices updated.");
+  closeMultiplierModal();
+
+  toast("Multipliers updated.");
 }
 
 
-/* =========================================================
-   5 TAP SALES HEADER
-========================================================= */
-
-document.getElementById("salesHeader")
-.addEventListener("click",()=>{
-
-  salesHeaderTapCount++;
-
-  clearTimeout(salesHeaderTapTimer);
-
-  salesHeaderTapTimer=setTimeout(()=>{
-    salesHeaderTapCount=0;
-  },1200);
-
-  if(salesHeaderTapCount>=5){
-
-    salesHeaderTapCount=0;
-
-    openMultiplierModal();
-  }
-});
-
-
-/* =========================================================
-   INPUT EVENTS
-========================================================= */
-
-[
-  "barya",
-  "al",
-  "ex1",
-  "ex2",
-  "ex3"
-].forEach(id=>{
-
-  document.getElementById(id)
-    .addEventListener("input",calculate);
-});
-
-document.getElementById("note")
-  .addEventListener("input",updateCurrentSnapshot);
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-document.getElementById("newDayBtn")
-.addEventListener("click",showNewDaySetup);
-
-document.getElementById("saveBtn")
-.addEventListener("click",openSaveFileModal);
-
-
-/* =========================================================
-   NEW DAY MODAL
-========================================================= */
-
-document.getElementById("setupCancel")
-.addEventListener("click",()=>{
-  closeModal("newDayModal");
-});
-
-document.getElementById("setupStart")
-.addEventListener("click",startNewLedger);
-
-
-/* =========================================================
-   SAVE MODAL
-========================================================= */
-
-document.getElementById("saveCancel")
-.addEventListener("click",()=>{
-  closeModal("saveModal");
-});
-
-document.getElementById("reviewSave")
-.addEventListener("click",()=>{
-  closeModal("saveModal");
-});
-
-document.getElementById("finalSave")
-.addEventListener("click",finalSaveLedger);
-
-
-/* =========================================================
-   DUPLICATE DATE MODAL
-========================================================= */
-
-document.getElementById("duplicateCancelBtn")
-.addEventListener("click",()=>{
-
-  closeModal("duplicateDateConfirm");
-
-  /*
-    Save modal remains available, but the actual save
-    has been cancelled.
-  */
-
-  toast("Save cancelled.");
-});
-
-document.getElementById("duplicateAlterBtn")
-.addEventListener("click",()=>{
-
-  closeModal("duplicateDateConfirm");
-
-  /*
-    The SAVE screen remains open.
-    Date and Name are editable there.
-  */
-
-  const dateInput=document.getElementById("previewDate");
-
-  dateInput.focus();
-
-  toast("Alter the date.");
-});
-
-
-/* =========================================================
-   EDIT NEW DAY CONFIRM
-========================================================= */
-
-document.getElementById("editNewDayCancel")
-.addEventListener("click",()=>{
-
-  closeModal("editNewDayConfirm");
-
-  /*
-    Stay in Edit Mode.
-  */
-
-  setLedgerReadOnly(false);
-
-  toast("Still in Edit Mode.");
-});
-
-document.getElementById("editNewDayOk")
-.addEventListener("click",()=>{
-
-  closeModal("editNewDayConfirm");
-
-  /*
-    Save the current edit first.
-    FINAL SAVE itself performs duplicate-date checking.
-  */
-
-  openSaveFileModal();
-
-  /*
-    If user wants to continue, FINAL SAVE is required.
-    New Day is intentionally not started until the edit
-    has actually been saved.
-  */
-});
-
-
-/* =========================================================
-   MULTIPLIER MODAL
-========================================================= */
-
-document.getElementById("multCancel")
-.addEventListener("click",()=>{
-  closeModal("multiplierModal");
-});
-
-document.getElementById("multSave")
-.addEventListener("click",saveMultiplierModal);
-
-
-/* =========================================================
-   EDIT MODAL
-========================================================= */
-
-document.getElementById("editCancel")
-.addEventListener("click",()=>{
-  closeModal("editModal");
-});
-
-document.getElementById("editOk")
-.addEventListener("click",editSavedFile);
-
-
-/* =========================================================
-   DELETE MODAL
-========================================================= */
-
-document.getElementById("deleteCancel")
-.addEventListener("click",()=>{
-  pendingDeleteId=null;
-  closeModal("deleteModal");
-});
-
-document.getElementById("deleteOk")
-.addEventListener("click",deleteSavedFile);
-
-
-/* =========================================================
-   MODAL BACKDROP
-========================================================= */
-
-document.querySelectorAll(".modal").forEach(modal=>{
-
-  modal.addEventListener("click",e=>{
-
-    if(e.target!==modal) return;
-
-    /*
-      Don't accidentally close confirmation dialogs
-      by tapping outside.
-    */
+/* =========================
+   INPUT
+   ========================= */
+
+document.addEventListener(
+  "input",
+  e=>{
 
     if(
-      modal.id==="editNewDayConfirm" ||
-      modal.id==="duplicateDateConfirm" ||
-      modal.id==="editModal" ||
-      modal.id==="deleteModal"
+      e.target.matches(
+        '.main-table input[type="number"],'+
+        '.summary-table input[type="number"],'+
+        '#note'
+      )
     ){
+
+      if(!ledgerReadOnly){
+        calculate();
+      }
+    }
+  }
+);
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+document.getElementById(
+  "clearBtn"
+).addEventListener(
+  "click",
+  clearInputs
+);
+
+
+document.getElementById(
+  "newDayBtn"
+).addEventListener(
+  "click",
+  showNewDaySetup
+);
+
+
+/* =========================
+   NEW DAY EDIT CONFIRMATION
+   ========================= */
+
+document.getElementById(
+  "editNewDayCancelBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.remove("show");
+
+    toast("Current edit kept.");
+  }
+);
+
+
+document.getElementById(
+  "editNewDayOkBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    document.getElementById(
+      "editNewDayConfirm"
+    ).classList.remove("show");
+
+
+    /*
+      Save current edit first.
+
+      IMPORTANT:
+      finalSaveLedger() now returns FALSE if
+      duplicate date blocks the save.
+
+      Therefore NEW LEDGER will NOT open
+      unless the current edit was actually saved.
+    */
+    const saved=
+      finalSaveLedger();
+
+
+    if(!saved){
+
+      /*
+        If duplicate date appeared, leave the
+        SAVE screen available and DO NOT start
+        a new ledger.
+      */
       return;
     }
 
-    modal.classList.remove("show");
-  });
 
-});
+    /*
+      Now proceed to NEW LEDGER setup.
+    */
+    document.getElementById(
+      "setupDate"
+    ).value="";
+
+    document.getElementById(
+      "setupName"
+    ).value="";
+
+    document.getElementById(
+      "setup"
+    ).classList.add("show");
+
+  }
+);
 
 
-/* =========================================================
+document.getElementById(
+  "saveBtn"
+).addEventListener(
+  "click",
+  openSaveFileModal
+);
+
+
+/* =========================
+   NEW LEDGER
+   ========================= */
+
+document.getElementById(
+  "setupExitBtn"
+).addEventListener(
+  "click",
+  closeSetup
+);
+
+
+document.getElementById(
+  "startLedgerBtn"
+).addEventListener(
+  "click",
+  startNewLedger
+);
+
+
+/* =========================
+   SAVE
+   ========================= */
+
+document.getElementById(
+  "saveCancelBtn"
+).addEventListener(
+  "click",
+  closeSaveModal
+);
+
+
+document.getElementById(
+  "reviewSaveBtn"
+).addEventListener(
+  "click",
+  closeSaveModal
+);
+
+
+document.getElementById(
+  "finalSaveBtn"
+).addEventListener(
+  "click",
+  finalSaveLedger
+);
+
+
+/* =========================
+   DUPLICATE DATE
+   ========================= */
+
+document.getElementById(
+  "duplicateCancelBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    /*
+      Cancel ONLY the save attempt.
+      The SAVE screen remains underneath
+      with the editable Date and Name.
+    */
+    document.getElementById(
+      "duplicateDateConfirm"
+    ).classList.remove("show");
+
+    toast("Save cancelled.");
+  }
+);
+
+
+document.getElementById(
+  "duplicateAlterBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    /*
+      Close warning and return directly
+      to the editable SAVE screen.
+    */
+    document.getElementById(
+      "duplicateDateConfirm"
+    ).classList.remove("show");
+
+    const dateInput=
+      document.getElementById(
+        "previewDate"
+      );
+
+    dateInput.focus();
+
+    toast("Please alter the date.");
+  }
+);
+
+
+/* =========================
+   EDIT
+   ========================= */
+
+document.getElementById(
+  "editCancelBtn"
+).addEventListener(
+  "click",
+  closeEditModal
+);
+
+
+document.getElementById(
+  "editConfirmBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    const id=
+      document.getElementById(
+        "editModal"
+      ).dataset.id;
+
+    beginEditSavedFile(id);
+  }
+);
+
+
+/* =========================
+   MULTIPLIERS
+   ========================= */
+
+document.getElementById(
+  "multCancelBtn"
+).addEventListener(
+  "click",
+  closeMultiplierModal
+);
+
+
+document.getElementById(
+  "multSaveBtn"
+).addEventListener(
+  "click",
+  saveMultipliers
+);
+
+
+/* =========================
+   RESTORE UNFINISHED WORK
+   ========================= */
+
+function restoreUnfinishedWork(){
+
+  try{
+
+    const raw=
+      localStorage.getItem(
+        CURRENT_KEY
+      );
+
+    if(!raw)return false;
+
+
+    const data=
+      JSON.parse(raw);
+
+
+    if(!data||!data.ledger){
+      return false;
+    }
+
+
+    currentLedger={
+      ...currentLedger,
+      ...(data.ledger||{})
+    };
+
+
+    multipliers={
+      ...multipliers,
+      ...(data.multipliers||{})
+    };
+
+
+    putInputs(
+      data.inputs||{}
+    );
+
+
+    updateMultiplierTags();
+
+    setLedgerReadOnly(false);
+
+    updateLedgerBar();
+
+    calculate();
+
+
+    return !!(
+      currentLedger.date||
+      currentLedger.name||
+      Object.keys(
+        data.inputs?.del||{}
+      ).length
+    );
+
+  }catch(e){
+
+    return false;
+  }
+}
+
+
+/* =========================
    STARTUP
-========================================================= */
+   ========================= */
 
 buildProductRows();
 
-document.getElementById("setupDate").value="";
+
+document.getElementById(
+  "setupDate"
+).value="";
+
 
 renderSavedDays();
 
@@ -1935,32 +2901,20 @@ updateLedgerBar();
 
 setLedgerReadOnly(false);
 
-const restored=restoreUnfinishedWork();
+
+const restored=
+  restoreUnfinishedWork();
+
 
 if(!restored){
 
-  currentLedger={
-    id:null,
-    date:"",
-    name:"",
-    note:"",
-    rows:{},
-    barya:0,
-    al:0,
-    ex1:0,
-    ex2:0,
-    ex3:0
-  };
-
-  clearLedgerInputs();
-
-  updateLedgerBar();
-
-  setLedgerReadOnly(false);
+  showNewDaySetup();
 }
+
 
 calculate();
 
 </script>
+
 </body>
 </html>
