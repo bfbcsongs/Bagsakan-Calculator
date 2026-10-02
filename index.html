@@ -2900,42 +2900,6 @@ if(!restored){
 calculate();
 
 </script>
-<script>
-(function(){
-  const originalUpdateLedgerBar = window.updateLedgerBar;
-
-  window.updateLedgerBar = function(){
-    originalUpdateLedgerBar();
-
-    const dateEl = document.getElementById("ledgerDate");
-    if(!dateEl) return;
-
-    const raw = dateEl.textContent.trim();
-    if(!raw || raw === "—") return;
-
-    const match = raw.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-
-    if(match){
-      const month = Number(match[1]);
-      const day = Number(match[2]);
-      const year = Number(match[3]);
-
-      const d = new Date(year, month - 1, day);
-
-      if(
-        d.getFullYear() === year &&
-        d.getMonth() === month - 1 &&
-        d.getDate() === day
-      ){
-        dateEl.textContent = d.toLocaleDateString("en-US", {
-          month:"long",
-          day:"numeric",
-          year:"numeric"
-        });
-      }
-    }
-  };
-})();
-  </script>
+  
 </body>
 </html>
