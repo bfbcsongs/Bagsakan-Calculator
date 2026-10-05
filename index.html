@@ -1035,21 +1035,12 @@ const products=["R","P","L","M","C"];
 const STORAGE_KEY="delret_saved_files";
 const CURRENT_KEY="delret_current_inputs";
 
-/* NEW: persistent multiplier storage */
 const MULTIPLIER_KEY="delret_default_multipliers";
 
 
 /* =========================
    MULTIPLIERS
    ========================= */
-
-/*
-  Initial defaults are 45 for all items.
-
-  After the user edits the multipliers and presses SAVE,
-  the new values are stored in localStorage and become
-  the new defaults for the PWA.
-*/
 
 const DEFAULT_MULTIPLIERS={
   R:45,
@@ -1142,6 +1133,115 @@ function money(v){
     .toFixed(2)
     .replace(/0+$/,"")
     .replace(/\.$/,"");
+}
+
+
+/* =========================
+   DATE DISPLAY
+   ========================= */
+
+/*
+  Stored date remains YYYY-MM-DD.
+
+  Display format:
+  2026-10-05
+  becomes
+  OCT 05, 2026
+*/
+
+function formatDisplayDate(dateString){
+
+  if(!dateString){
+    return "—";
+  }
+
+  const s=String(dateString).trim();
+
+  let date;
+
+  /*
+    Handle the normal HTML date format directly.
+    This avoids timezone-related date shifting.
+  */
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+
+    const parts=s.split("-");
+
+    date=new Date(
+      Number(parts[0]),
+      Number(parts[1])-1,
+      Number(parts[2])
+    );
+
+  }else{
+
+    date=new Date(s);
+  }
+
+
+  if(isNaN(date.getTime())){
+    return s;
+  }
+
+
+  const months=[
+    "JAN","FEB","MAR","APR","MAY","JUN",
+    "JUL","AUG","SEP","OCT","NOV","DEC"
+  ];
+
+
+  const day=
+    String(date.getDate()).padStart(2,"0");
+
+
+  return(
+    months[date.getMonth()] +
+    " " +
+    day +
+    ", " +
+    date.getFullYear()
+  );
+}
+
+
+/*
+  Date sorting is based on the actual calendar date,
+  NOT on savedAt / modification time.
+
+  Valid YYYY-MM-DD values are converted directly
+  to YYYYMMDD numbers.
+
+  Older records with another parseable date format
+  are also handled.
+*/
+
+function getDateSortKey(value){
+
+  const s=String(value||"").trim();
+
+
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+
+    return Number(
+      s.replace(/-/g,"")
+    );
+  }
+
+
+  const d=new Date(s);
+
+
+  if(!Number.isNaN(d.getTime())){
+
+    return Number(
+      d.getFullYear()+
+      String(d.getMonth()+1).padStart(2,"0")+
+      String(d.getDate()).padStart(2,"0")
+    );
+  }
+
+
+  return 0;
 }
 
 
@@ -1538,11 +1638,6 @@ function loadRecordIntoLedger(record,readOnly){
   };
 
 
-  /*
-    Saved ledgers keep their own multiplier settings.
-    If an older saved file has no multiplier data,
-    use the current persistent defaults.
-  */
   multipliers={
     ...getDefaultMultipliers(),
     ...(record.multipliers||{})
@@ -1617,7 +1712,7 @@ function setLedgerReadOnly(state){
 function updateLedgerBar(){
 
   document.getElementById("ledgerDate").textContent=
-    currentLedger.date||"—";
+    formatDisplayDate(currentLedger.date);
 
   document.getElementById("ledgerName").textContent=
     currentLedger.name||"—";
@@ -1701,13 +1796,6 @@ function startNewLedger(){
   };
 
 
-  /*
-    USE THE SAVED PWA DEFAULTS.
-    This is the important change.
-
-    If C was changed from 45 to 40,
-    NEW DAY will use C=40.
-  */
   multipliers=
     getDefaultMultipliers();
 
@@ -1854,20 +1942,24 @@ function renderSavedDays(){
   const files=getSavedFiles();
 
 
+  /*
+    SORT BY ACTUAL LEDGER DATE.
+
+    Newest date first.
+    savedAt is used only when two records
+    have exactly the same date.
+  */
+
   files.sort((a,b)=>{
 
-    const da=
-      new Date(
-        (a.date||"0000-00-00")+"T00:00:00"
-      ).getTime();
-
-    const db=
-      new Date(
-        (b.date||"0000-00-00")+"T00:00:00"
-      ).getTime();
+    const da=getDateSortKey(a.date);
+    const db=getDateSortKey(b.date);
 
 
-    if(db!==da)return db-da;
+    if(db!==da){
+      return db-da;
+    }
+
 
     return String(b.savedAt||"")
       .localeCompare(
@@ -1917,7 +2009,7 @@ function renderSavedDays(){
 
     info.innerHTML=`
       <div class="saved-date">
-        ${record.date||"—"}
+        ${formatDisplayDate(record.date)}
       </div>
 
       <div class="saved-name">
@@ -2004,7 +2096,8 @@ function openEditModal(id){
 
   document.getElementById(
     "editPreviewDate"
-  ).textContent=record.date||"—";
+  ).textContent=
+    formatDisplayDate(record.date);
 
 
   document.getElementById(
@@ -2277,11 +2370,6 @@ function finalSaveLedger(){
   setSavedFiles(files);
 
 
-  /*
-    NEW:
-    Whatever multiplier was used/edited in this
-    ledger becomes the new PWA default.
-  */
   saveDefaultMultipliers();
 
 
@@ -2344,7 +2432,7 @@ function deleteSavedFile(id){
 
 
   if(!confirm(
-    `Delete saved file?\n\n${record.date} — ${record.name}`
+    `Delete saved file?\n\n${formatDisplayDate(record.date)} — ${record.name}`
   )){
     return;
   }
@@ -2475,18 +2563,9 @@ function saveMultipliers(){
   });
 
 
-  /*
-    NEW:
-    Save the edited multipliers immediately
-    as the new PWA defaults.
-  */
   saveDefaultMultipliers();
 
 
-  /*
-    Also keep the current unfinished ledger
-    synchronized with the new multiplier settings.
-  */
   saveCurrentInputs();
 
 
@@ -2829,10 +2908,6 @@ function restoreUnfinishedWork(){
     };
 
 
-    /*
-      Unfinished work keeps its own current
-      multiplier settings.
-    */
     multipliers={
       ...getDefaultMultipliers(),
       ...(data.multipliers||{})
