@@ -150,7 +150,8 @@ body.edit-mode .mode-pill{
   max-height:285px;
   overflow:auto;
   border:1px solid #aaa;
-  border-radius:4px
+  border-radius:4px;
+  margin-bottom:5px;
 }
 
 table{
@@ -205,8 +206,24 @@ table{
 .sale-cell{font-weight:bold}
 .amount-cell{font-weight:bold}
 
+/* Bottom Split Layout for Green / Blue areas */
+.bottom-split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-top:5px;
+}
+
+.left-feature-area{
+  border:1px dashed #107c41;
+  border-radius:4px;
+  padding:6px;
+  background:#fafafa;
+  min-height:180px;
+}
+
 .summary-table{
-  margin-top:5px
+  width:100%
 }
 
 .summary-table td{
@@ -234,7 +251,7 @@ table{
 .net-row{
   background:#107c41;
   color:#fff;
-  font-size:15px
+  font-size:13px
 }
 
 .net-row td{
@@ -632,58 +649,71 @@ body.edit-mode .saved-item.selected{
 
     </div>
 
-    <table class="summary-table">
+    <!-- Bottom Split Layout: Green area on left, Blue summary table on right -->
+    <div class="bottom-split">
+      
+      <!-- Green Area (Now empty and ready for your new feature) -->
+      <div class="left-feature-area" id="leftFeatureArea">
+        <!-- Add your new feature contents here -->
+      </div>
 
-      <tbody>
+      <!-- Blue Area (Summary Table) -->
+      <div class="right-summary-area">
+        <table class="summary-table">
 
-        <tr class="total-row">
-          <td>TOTAL</td>
-          <td id="totalAmount">0</td>
-        </tr>
+          <tbody>
 
-        <tr>
-          <td>BARYA</td>
-          <td>
-            <input id="barya" type="number" inputmode="decimal" step="any">
-          </td>
-        </tr>
+            <tr class="total-row">
+              <td>TOTAL</td>
+              <td id="totalAmount">0</td>
+            </tr>
 
-        <tr>
-          <td>AL</td>
-          <td>
-            <input id="al" type="number" inputmode="decimal" step="any">
-          </td>
-        </tr>
+            <tr>
+              <td>BARYA</td>
+              <td>
+                <input id="barya" type="number" inputmode="decimal" step="any">
+              </td>
+            </tr>
 
-        <tr>
-          <td>EX1</td>
-          <td>
-            <input id="ex1" type="number" inputmode="decimal" step="any">
-          </td>
-        </tr>
+            <tr>
+              <td>AL</td>
+              <td>
+                <input id="al" type="number" inputmode="decimal" step="any">
+              </td>
+            </tr>
 
-        <tr>
-          <td>EX2</td>
-          <td>
-            <input id="ex2" type="number" inputmode="decimal" step="any">
-          </td>
-        </tr>
+            <tr>
+              <td>EX1</td>
+              <td>
+                <input id="ex1" type="number" inputmode="decimal" step="any">
+              </td>
+            </tr>
 
-        <tr>
-          <td>EX3</td>
-          <td>
-            <input id="ex3" type="number" inputmode="decimal" step="any">
-          </td>
-        </tr>
+            <tr>
+              <td>EX2</td>
+              <td>
+                <input id="ex2" type="number" inputmode="decimal" step="any">
+              </td>
+            </tr>
 
-        <tr class="net-row">
-          <td>NET TOTAL</td>
-          <td id="netTotal">0</td>
-        </tr>
+            <tr>
+              <td>EX3</td>
+              <td>
+                <input id="ex3" type="number" inputmode="decimal" step="any">
+              </td>
+            </tr>
 
-      </tbody>
+            <tr class="net-row">
+              <td>NET TOTAL</td>
+              <td id="netTotal">0</td>
+            </tr>
 
-    </table>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
 
     <textarea id="note" placeholder="Note..."></textarea>
 
@@ -1140,15 +1170,6 @@ function money(v){
    DATE DISPLAY
    ========================= */
 
-/*
-  Stored date remains YYYY-MM-DD.
-
-  Display format:
-  2026-10-05
-  becomes
-  OCT 05, 2026
-*/
-
 function formatDisplayDate(dateString){
 
   if(!dateString){
@@ -1159,10 +1180,6 @@ function formatDisplayDate(dateString){
 
   let date;
 
-  /*
-    Handle the normal HTML date format directly.
-    This avoids timezone-related date shifting.
-  */
   if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
 
     const parts=s.split("-");
@@ -1203,17 +1220,6 @@ function formatDisplayDate(dateString){
   );
 }
 
-
-/*
-  Date sorting is based on the actual calendar date,
-  NOT on savedAt / modification time.
-
-  Valid YYYY-MM-DD values are converted directly
-  to YYYYMMDD numbers.
-
-  Older records with another parseable date format
-  are also handled.
-*/
 
 function getDateSortKey(value){
 
@@ -1941,14 +1947,6 @@ function renderSavedDays(){
 
   const files=getSavedFiles();
 
-
-  /*
-    SORT BY ACTUAL LEDGER DATE.
-
-    Newest date first.
-    savedAt is used only when two records
-    have exactly the same date.
-  */
 
   files.sort((a,b)=>{
 
