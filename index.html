@@ -206,7 +206,7 @@ table{
 .sale-cell{font-weight:bold}
 .amount-cell{font-weight:bold}
 
-/* Bottom Split Layout for Green / Blue areas */
+/* Bottom Split Layout */
 .bottom-split{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -215,11 +215,65 @@ table{
 }
 
 .left-feature-area{
-  border:1px dashed #107c41;
+  border:1px solid #aaa;
   border-radius:4px;
-  padding:6px;
+  padding:4px;
   background:#fafafa;
-  min-height:180px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+/* Custom Sub-tables Styling */
+.sub-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.sub-table th{
+  font-size:10px;
+  padding:3px 2px;
+  border:1px solid #aaa;
+  color:#fff;
+}
+
+.sub-table td{
+  border:1px solid #aaa;
+  padding:2px;
+}
+
+.sub-table input{
+  width:100%;
+  border:1px solid #ccc;
+  border-radius:3px;
+  padding:3px;
+  font-size:11px;
+}
+
+/* Upper Table Theme (Blue / Add +) */
+.upper-sub th{ background:#2878b9; }
+.upper-sub input.sub-amount { text-align:right; color:#2878b9; font-weight:bold; }
+
+/* Lower Table Theme (Amber / Subtract -) */
+.lower-sub th{ background:#c47b19; }
+.lower-sub input.sub-amount { text-align:right; color:#c47b19; font-weight:bold; }
+
+.input-with-sign {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-sign span {
+  position: absolute;
+  left: 4px;
+  font-weight: bold;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.input-with-sign input {
+  padding-left: 14px !important;
 }
 
 .summary-table{
@@ -518,10 +572,38 @@ body.edit-mode .saved-item.selected{
 
     <div class="bottom-split">
       
+      <!-- Left Feature Area: Upper & Lower 2-Column Tables -->
       <div class="left-feature-area" id="leftFeatureArea">
-        <!-- Future Feature Area -->
+        
+        <!-- Upper Table (Blue Theme, Added to Total) -->
+        <table class="sub-table upper-sub">
+          <thead>
+            <tr>
+              <th style="width:50%">NAME</th>
+              <th style="width:50%">AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody id="upperTableRows">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+
+        <!-- Lower Table (Amber Theme, Subtracted from Total) -->
+        <table class="sub-table lower-sub">
+          <thead>
+            <tr>
+              <th style="width:50%">NAME</th>
+              <th style="width:50%">AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody id="lowerTableRows">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+
       </div>
 
+      <!-- Right Summary Area -->
       <div class="right-summary-area">
         <table class="summary-table">
 
@@ -765,6 +847,47 @@ let editingSavedId=null;
 
 
 /* =========================
+   BUILD SUB-TABLES (UPPER & LOWER)
+   ========================= */
+
+function buildSubTables(){
+  const upperTbody=document.getElementById("upperTableRows");
+  const lowerTbody=document.getElementById("lowerTableRows");
+  
+  upperTbody.innerHTML="";
+  lowerTbody.innerHTML="";
+
+  for(let i=0; i<4; i++){
+    // Upper row
+    const trU=document.createElement("tr");
+    trU.innerHTML=`
+      <td><input type="text" id="upper_name_${i}" autocomplete="off"></td>
+      <td>
+        <div class="input-with-sign">
+          <span>+</span>
+          <input type="number" inputmode="decimal" step="any" id="upper_amt_${i}" class="sub-amount">
+        </div>
+      </td>
+    `;
+    upperTbody.appendChild(trU);
+
+    // Lower row
+    const trL=document.createElement("tr");
+    trL.innerHTML=`
+      <td><input type="text" id="lower_name_${i}" autocomplete="off"></td>
+      <td>
+        <div class="input-with-sign">
+          <span>-</span>
+          <input type="number" inputmode="decimal" step="any" id="lower_amt_${i}" class="sub-amount">
+        </div>
+      </td>
+    `;
+    lowerTbody.appendChild(trL);
+  }
+}
+
+
+/* =========================
    HELPERS
    ========================= */
 
@@ -886,23 +1009,31 @@ function calculate(){
     total+=amount;
   });
 
+  // Calculate Sub-tables sums
+  let upperSum=0;
+  let lowerSum=0;
+  for(let i=0; i<4; i++){
+    upperSum+=num(document.getElementById(`upper_amt_${i}`)?.value);
+    lowerSum+=num(document.getElementById(`lower_amt_${i}`)?.value);
+  }
+
   const barya=num(document.getElementById("barya")?.value);
   const al=num(document.getElementById("al")?.value);
   const ex1=num(document.getElementById("ex1")?.value);
   const ex2=num(document.getElementById("ex2")?.value);
   const ex3=num(document.getElementById("ex3")?.value);
 
-  const net=total+barya-al-ex1-ex2-ex3;
+  // Net total includes Upper sum added and Lower sum deducted
+  const net=total + upperSum - lowerSum + barya - al - ex1 - ex2 - ex3;
 
   document.getElementById("totalAmount").textContent=money(total);
   document.getElementById("netTotal").textContent=money(net);
 
-  // Auto-save into current record immediately if active
   if(currentLedger.id && !ledgerReadOnly){
     saveActiveRecordToStorage(total, net);
   }
 
-  return {total, barya, al, ex1, ex2, ex3, net};
+  return {total, upperSum, lowerSum, barya, al, ex1, ex2, ex3, net};
 }
 
 
@@ -910,6 +1041,8 @@ function getCurrentInputs(){
   const data={
     del:{},
     ret:{},
+    upper:[],
+    lower:[],
     barya:num(document.getElementById("barya")?.value),
     al:num(document.getElementById("al")?.value),
     ex1:num(document.getElementById("ex1")?.value),
@@ -922,6 +1055,17 @@ function getCurrentInputs(){
     data.del[p]=num(document.getElementById(`del-${p}`)?.value);
     data.ret[p]=num(document.getElementById(`ret-${p}`)?.value);
   });
+
+  for(let i=0; i<4; i++){
+    data.upper.push({
+      name: document.getElementById(`upper_name_${i}`)?.value||"",
+      amt: num(document.getElementById(`upper_amt_${i}`)?.value)
+    });
+    data.lower.push({
+      name: document.getElementById(`lower_name_${i}`)?.value||"",
+      amt: num(document.getElementById(`lower_amt_${i}`)?.value)
+    });
+  }
 
   return data;
 }
@@ -972,6 +1116,21 @@ function putInputs(data){
     if(delEl) delEl.value=(del===undefined||del===0)?"":del;
     if(retEl) retEl.value=(ret===undefined||ret===0)?"":ret;
   });
+
+  for(let i=0; i<4; i++){
+    const uData=data.upper?.[i]||{};
+    const lData=data.lower?.[i]||{};
+
+    const uNameEl=document.getElementById(`upper_name_${i}`);
+    const uAmtEl=document.getElementById(`upper_amt_${i}`);
+    const lNameEl=document.getElementById(`lower_name_${i}`);
+    const lAmtEl=document.getElementById(`lower_amt_${i}`);
+
+    if(uNameEl) uNameEl.value=uData.name||"";
+    if(uAmtEl) uAmtEl.value=(uData.amt===undefined||uData.amt===0)?"":uData.amt;
+    if(lNameEl) lNameEl.value=lData.name||"";
+    if(lAmtEl) lAmtEl.value=(lData.amt===undefined||lData.amt===0)?"":lData.amt;
+  }
 
   ["barya","al","ex1","ex2","ex3"].forEach(id=>{
     const el=document.getElementById(id);
@@ -1030,7 +1189,7 @@ function loadRecordIntoLedger(record,readOnly){
 
 function setLedgerReadOnly(state){
   ledgerReadOnly=!!state;
-  const fields=document.querySelectorAll('.main-table input[type="number"], .summary-table input[type="number"], #note');
+  const fields=document.querySelectorAll('.main-table input, .sub-table input, .summary-table input, #note');
   
   fields.forEach(el=>{ el.disabled=ledgerReadOnly; });
   document.getElementById("clearBtn").disabled=ledgerReadOnly;
@@ -1071,7 +1230,6 @@ document.getElementById("startLedgerBtn").addEventListener("click",()=>{
     return;
   }
 
-  // Create new record right away and store it
   const newId=makeId();
   currentLedger={
     id:newId,
@@ -1101,7 +1259,7 @@ document.getElementById("startLedgerBtn").addEventListener("click",()=>{
   savedViewBackup=null;
   viewingSavedId=null;
 
-  putInputs({del:{}, ret:{}, barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
+  putInputs({del:{}, ret:{}, upper:[], lower:[], barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
   updateMultiplierTags();
   setLedgerReadOnly(false);
   updateLedgerBar();
@@ -1131,7 +1289,7 @@ document.getElementById("clearBtn").addEventListener("click",()=>{
   }
   if(!confirm("Clear all current inputs?")) return;
 
-  putInputs({del:{}, ret:{}, barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
+  putInputs({del:{}, ret:{}, upper:[], lower:[], barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
   calculate();
   toast("Inputs cleared.");
 });
@@ -1317,7 +1475,7 @@ document.getElementById("multSaveBtn").addEventListener("click", saveMultipliers
    ========================= */
 
 document.addEventListener("input", e=>{
-  if(e.target.matches('.main-table input[type="number"], .summary-table input[type="number"], #note')){
+  if(e.target.matches('input, textarea')){
     if(!ledgerReadOnly && currentLedger.id){
       calculate();
     }
@@ -1330,6 +1488,7 @@ document.addEventListener("input", e=>{
    ========================= */
 
 buildProductRows();
+buildSubTables();
 renderSavedDays();
 updateLedgerBar();
 
