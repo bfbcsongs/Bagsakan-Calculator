@@ -420,7 +420,7 @@ body.edit-mode .saved-item.selected{
 
 .modal-actions{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1fr;
   gap:6px;
   margin-top:12px
 }
@@ -432,140 +432,7 @@ body.edit-mode .saved-item.selected{
   color:#fff
 }
 
-.cancel-btn{background:#666}
 .green-btn{background:#107c41}
-.blue-btn{background:#2878b9}
-.red-btn{background:#b33}
-
-.confirm-box{
-  max-width:360px;
-  padding:18px 16px
-}
-
-.confirm-title{
-  font-weight:bold;
-  font-size:18px;
-  text-align:center;
-  color:#c47b19;
-  margin-bottom:12px
-}
-
-.confirm-message{
-  font-size:16px;
-  line-height:1.45;
-  text-align:center;
-  color:#333;
-  margin-bottom:18px
-}
-
-.confirm-actions{
-  display:flex;
-  justify-content:center;
-  gap:18px;
-  margin-top:4px
-}
-
-.confirm-btn{
-  min-width:82px;
-  padding:7px 14px;
-  border-radius:5px;
-  color:#fff;
-  font-size:11px;
-  font-weight:bold
-}
-
-.confirm-cancel{
-  background:#666
-}
-
-.confirm-ok{
-  background:#107c41
-}
-
-.save-preview{
-  background:#f4f7f5;
-  border:1px solid #ddd;
-  border-radius:5px;
-  padding:8px;
-  margin-bottom:10px
-}
-
-.preview-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  border-bottom:1px solid #ddd;
-  padding:4px 0
-}
-
-.preview-row:last-child{
-  border:0
-}
-
-.preview-row strong{
-  color:#107c41
-}
-
-.save-edit-input{
-  width:68%;
-  padding:6px 7px;
-  border:1px solid #bbb;
-  border-radius:4px;
-  background:#fff;
-  text-align:right;
-  font-weight:bold;
-  color:#107c41
-}
-
-#finalSaveBtn{
-  width:100%;
-  margin-top:12px
-}
-
-#duplicateDateConfirm{
-  z-index:200
-}
-
-.duplicate-title{
-  font-weight:bold;
-  font-size:18px;
-  text-align:center;
-  color:#b33;
-  margin-bottom:12px
-}
-
-.duplicate-message{
-  font-size:16px;
-  line-height:1.45;
-  text-align:center;
-  color:#333;
-  margin-bottom:18px
-}
-
-.duplicate-actions{
-  display:flex;
-  justify-content:center;
-  gap:18px;
-  margin-top:4px
-}
-
-.duplicate-btn{
-  min-width:82px;
-  padding:7px 14px;
-  border-radius:5px;
-  color:#fff;
-  font-size:11px;
-  font-weight:bold
-}
-
-.duplicate-cancel{
-  background:#666
-}
-
-.duplicate-alter{
-  background:#107c41
-}
 
 .mult-grid{
   display:grid;
@@ -649,15 +516,12 @@ body.edit-mode .saved-item.selected{
 
     </div>
 
-    <!-- Bottom Split Layout: Green area on left, Blue summary table on right -->
     <div class="bottom-split">
       
-      <!-- Green Area (Now empty and ready for your new feature) -->
       <div class="left-feature-area" id="leftFeatureArea">
-        <!-- Add your new feature contents here -->
+        <!-- Future Feature Area -->
       </div>
 
-      <!-- Blue Area (Summary Table) -->
       <div class="right-summary-area">
         <table class="summary-table">
 
@@ -723,7 +587,7 @@ body.edit-mode .saved-item.selected{
         NEW DAY
       </button>
 
-      <button class="action-btn save-btn" id="saveBtn">
+      <button class="action-btn save-btn" id="saveBtn" style="display:none;">
         SAVE
       </button>
 
@@ -748,14 +612,18 @@ body.edit-mode .saved-item.selected{
 </div>
 
 
-<!-- NEW LEDGER -->
+<!-- MANDATORY STARTUP SETUP MODAL -->
 
-<div class="modal" id="setup">
+<div class="modal show" id="setup">
 
   <div class="modal-box">
 
     <div class="modal-title">
-      NEW LEDGER
+      NEW LEDGER REQUIRED
+    </div>
+
+    <div style="font-size:11px;color:#666;text-align:center;margin-bottom:8px">
+      Please enter Date and Name to begin.
     </div>
 
     <label class="form-label">DATE</label>
@@ -776,210 +644,11 @@ body.edit-mode .saved-item.selected{
     >
 
     <div class="modal-actions">
-
-      <button
-        class="modal-btn cancel-btn"
-        id="setupExitBtn">
-        EXIT
-      </button>
-
       <button
         class="modal-btn green-btn"
         id="startLedgerBtn">
         START
       </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- NEW DAY WHILE EDITING -->
-
-<div class="modal" id="editNewDayConfirm">
-
-  <div class="modal-box confirm-box">
-
-    <div class="confirm-title">
-      SAVE CURRENT EDIT?
-    </div>
-
-    <div class="confirm-message">
-      You are currently editing a saved file.<br><br>
-      Press <b>OK</b> to save this edit before starting a new ledger.
-      <br><br>
-      Press <b>CANCEL</b> to stay in the current Edit Mode.
-    </div>
-
-    <div class="confirm-actions">
-
-      <button
-        class="confirm-btn confirm-cancel"
-        id="editNewDayCancelBtn">
-        CANCEL
-      </button>
-
-      <button
-        class="confirm-btn confirm-ok"
-        id="editNewDayOkBtn">
-        OK
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- SAVE -->
-
-<div class="modal" id="saveModal">
-
-  <div class="modal-box">
-
-    <div class="modal-title">
-      SAVE LEDGER
-    </div>
-
-    <div class="save-preview">
-
-      <div class="preview-row">
-        <span>Date</span>
-        <input
-          class="save-edit-input"
-          id="previewDate"
-          type="date">
-      </div>
-
-      <div class="preview-row">
-        <span>Name</span>
-        <input
-          class="save-edit-input"
-          id="previewName"
-          type="text"
-          autocomplete="off">
-      </div>
-
-      <div class="preview-row">
-        <span>Total</span>
-        <strong id="previewTotal">0</strong>
-      </div>
-
-      <div class="preview-row">
-        <span>Net Total</span>
-        <strong id="previewNet">0</strong>
-      </div>
-
-    </div>
-
-    <button
-      class="modal-btn green-btn"
-      id="finalSaveBtn">
-      FINAL SAVE
-    </button>
-
-    <div class="modal-actions">
-
-      <button
-        class="modal-btn cancel-btn"
-        id="saveCancelBtn">
-        CANCEL
-      </button>
-
-      <button
-        class="modal-btn blue-btn"
-        id="reviewSaveBtn">
-        REVIEW
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- DUPLICATE DATE -->
-
-<div class="modal" id="duplicateDateConfirm">
-
-  <div class="modal-box confirm-box">
-
-    <div class="duplicate-title">
-      DATE ALREADY SAVED
-    </div>
-
-    <div class="duplicate-message">
-      A saved file already exists for this date.<br><br>
-      Please <b>ALTER</b> the date or <b>CANCEL</b> the save.
-    </div>
-
-    <div class="duplicate-actions">
-
-      <button
-        class="duplicate-btn duplicate-cancel"
-        id="duplicateCancelBtn">
-        CANCEL
-      </button>
-
-      <button
-        class="duplicate-btn duplicate-alter"
-        id="duplicateAlterBtn">
-        ALTER
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- EDIT -->
-
-<div class="modal" id="editModal">
-
-  <div class="modal-box">
-
-    <div class="modal-title">
-      EDIT SAVED FILE
-    </div>
-
-    <div class="save-preview">
-
-      <div class="preview-row">
-        <span>Date</span>
-        <strong id="editPreviewDate">—</strong>
-      </div>
-
-      <div class="preview-row">
-        <span>Name</span>
-        <strong id="editPreviewName">—</strong>
-      </div>
-
-    </div>
-
-    <div style="font-size:11px;color:#666;text-align:center">
-      This will unlock the saved ledger for editing.
-    </div>
-
-    <div class="modal-actions">
-
-      <button
-        class="modal-btn cancel-btn"
-        id="editCancelBtn">
-        EXIT
-      </button>
-
-      <button
-        class="modal-btn blue-btn"
-        id="editConfirmBtn">
-        EDIT
-      </button>
-
     </div>
 
   </div>
@@ -1061,64 +730,26 @@ body.edit-mode .saved-item.selected{
    ========================= */
 
 const products=["R","P","L","M","C"];
-
 const STORAGE_KEY="delret_saved_files";
-const CURRENT_KEY="delret_current_inputs";
-
 const MULTIPLIER_KEY="delret_default_multipliers";
 
-
-/* =========================
-   MULTIPLIERS
-   ========================= */
-
-const DEFAULT_MULTIPLIERS={
-  R:45,
-  P:45,
-  L:45,
-  M:45,
-  C:45
-};
-
+const DEFAULT_MULTIPLIERS={ R:45, P:45, L:45, M:45, C:45 };
 
 function getDefaultMultipliers(){
-
   try{
-
-    const saved=
-      JSON.parse(
-        localStorage.getItem(MULTIPLIER_KEY)||"null"
-      );
-
+    const saved=JSON.parse(localStorage.getItem(MULTIPLIER_KEY)||"null");
     if(saved && typeof saved==="object"){
-
-      return{
-        ...DEFAULT_MULTIPLIERS,
-        ...saved
-      };
-
+      return {...DEFAULT_MULTIPLIERS, ...saved};
     }
-
   }catch(e){}
-
-  return{
-    ...DEFAULT_MULTIPLIERS
-  };
+  return {...DEFAULT_MULTIPLIERS};
 }
-
 
 function saveDefaultMultipliers(){
-
-  localStorage.setItem(
-    MULTIPLIER_KEY,
-    JSON.stringify(multipliers)
-  );
+  localStorage.setItem(MULTIPLIER_KEY, JSON.stringify(multipliers));
 }
 
-
-let multipliers=
-  getDefaultMultipliers();
-
+let multipliers=getDefaultMultipliers();
 
 let currentLedger={
   id:null,
@@ -1127,16 +758,10 @@ let currentLedger={
 };
 
 let ledgerReadOnly=false;
-
 let selectedSavedFileId=null;
-
 let savedViewBackup=null;
 let viewingSavedId=null;
-
-let editBackup=null;
 let editingSavedId=null;
-
-let alteringSaveDate=false;
 
 
 /* =========================
@@ -1144,153 +769,66 @@ let alteringSaveDate=false;
    ========================= */
 
 function num(v){
-
   const n=parseFloat(v);
-
   return Number.isFinite(n)?n:0;
 }
 
-
 function money(v){
-
   const n=num(v);
-
-  if(Number.isInteger(n)){
-    return String(n);
-  }
-
-  return n
-    .toFixed(2)
-    .replace(/0+$/,"")
-    .replace(/\.$/,"");
+  if(Number.isInteger(n)) return String(n);
+  return n.toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
 }
-
-
-/* =========================
-   DATE DISPLAY
-   ========================= */
 
 function formatDisplayDate(dateString){
-
-  if(!dateString){
-    return "—";
-  }
-
+  if(!dateString) return "—";
   const s=String(dateString).trim();
-
   let date;
-
   if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
-
     const parts=s.split("-");
-
-    date=new Date(
-      Number(parts[0]),
-      Number(parts[1])-1,
-      Number(parts[2])
-    );
-
+    date=new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2]));
   }else{
-
     date=new Date(s);
   }
-
-
-  if(isNaN(date.getTime())){
-    return s;
-  }
-
-
-  const months=[
-    "JAN","FEB","MAR","APR","MAY","JUN",
-    "JUL","AUG","SEP","OCT","NOV","DEC"
-  ];
-
-
-  const day=
-    String(date.getDate()).padStart(2,"0");
-
-
-  return(
-    months[date.getMonth()] +
-    " " +
-    day +
-    ", " +
-    date.getFullYear()
-  );
+  if(isNaN(date.getTime())) return s;
+  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const day=String(date.getDate()).padStart(2,"0");
+  return months[date.getMonth()]+" "+day+", "+date.getFullYear();
 }
 
-
 function getDateSortKey(value){
-
   const s=String(value||"").trim();
-
-
   if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
-
-    return Number(
-      s.replace(/-/g,"")
-    );
+    return Number(s.replace(/-/g,""));
   }
-
-
   const d=new Date(s);
-
-
   if(!Number.isNaN(d.getTime())){
-
-    return Number(
-      d.getFullYear()+
-      String(d.getMonth()+1).padStart(2,"0")+
-      String(d.getDate()).padStart(2,"0")
-    );
+    return Number(d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0"));
   }
-
-
   return 0;
 }
 
-
 function makeId(){
-
-  return Date.now().toString(36)+
-    Math.random().toString(36).slice(2,8);
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 }
-
 
 function toast(msg){
-
   const el=document.getElementById("toast");
-
   el.textContent=msg;
   el.style.display="block";
-
   clearTimeout(window.__toastTimer);
-
-  window.__toastTimer=setTimeout(()=>{
-    el.style.display="none";
-  },1800);
+  window.__toastTimer=setTimeout(()=>{ el.style.display="none"; },1800);
 }
 
-
 function getSavedFiles(){
-
   try{
-    return JSON.parse(
-      localStorage.getItem(STORAGE_KEY)||"[]"
-    );
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
   }catch(e){
     return [];
   }
 }
 
-
 function setSavedFiles(files){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(files)
-  );
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
 }
 
 
@@ -1299,237 +837,122 @@ function setSavedFiles(files){
    ========================= */
 
 function buildProductRows(){
-
   const tbody=document.getElementById("productRows");
-
   tbody.innerHTML="";
-
   products.forEach(p=>{
-
     const tr=document.createElement("tr");
-
     tr.innerHTML=`
-
       <td>
         <div class="item-name">${p}</div>
-        <span class="mult-tag" id="tag-${p}">
-          (x${multipliers[p]})
-        </span>
+        <span class="mult-tag" id="tag-${p}">(x${multipliers[p]})</span>
       </td>
-
-      <td>
-        <input
-          id="del-${p}"
-          type="number"
-          inputmode="decimal"
-          step="any">
-      </td>
-
-      <td>
-        <input
-          id="ret-${p}"
-          type="number"
-          inputmode="decimal"
-          step="any">
-      </td>
-
-      <td
-        class="sale-cell"
-        id="sale-${p}">
-        0
-      </td>
-
-      <td
-        class="amount-cell"
-        id="amount-${p}">
-        0
-      </td>
-
+      <td><input id="del-${p}" type="number" inputmode="decimal" step="any"></td>
+      <td><input id="ret-${p}" type="number" inputmode="decimal" step="any"></td>
+      <td class="sale-cell" id="sale-${p}">0</td>
+      <td class="amount-cell" id="amount-${p}">0</td>
     `;
-
     tbody.appendChild(tr);
   });
-
   updateMultiplierTags();
 }
 
-
 function updateMultiplierTags(){
-
   products.forEach(p=>{
-
     const tag=document.getElementById(`tag-${p}`);
-
-    if(tag){
-      tag.textContent=`(x${multipliers[p]})`;
-    }
-
+    if(tag) tag.textContent=`(x${multipliers[p]})`;
   });
 }
 
 
 /* =========================
-   CALCULATE
+   CALCULATE & AUTO-SAVE
    ========================= */
 
 function calculate(){
-
   let total=0;
 
   products.forEach(p=>{
-
-    const del=num(
-      document.getElementById(`del-${p}`)?.value
-    );
-
-    const ret=num(
-      document.getElementById(`ret-${p}`)?.value
-    );
-
+    const del=num(document.getElementById(`del-${p}`)?.value);
+    const ret=num(document.getElementById(`ret-${p}`)?.value);
     const sales=del-ret;
+    const amount=sales*num(multipliers[p]);
 
-    const amount=
-      sales*num(multipliers[p]);
+    const saleEl=document.getElementById(`sale-${p}`);
+    const amountEl=document.getElementById(`amount-${p}`);
 
-    const saleEl=
-      document.getElementById(`sale-${p}`);
-
-    const amountEl=
-      document.getElementById(`amount-${p}`);
-
-    if(saleEl){
-      saleEl.textContent=money(sales);
-    }
-
-    if(amountEl){
-      amountEl.textContent=money(amount);
-    }
+    if(saleEl) saleEl.textContent=money(sales);
+    if(amountEl) amountEl.textContent=money(amount);
 
     total+=amount;
   });
 
+  const barya=num(document.getElementById("barya")?.value);
+  const al=num(document.getElementById("al")?.value);
+  const ex1=num(document.getElementById("ex1")?.value);
+  const ex2=num(document.getElementById("ex2")?.value);
+  const ex3=num(document.getElementById("ex3")?.value);
 
-  const barya=num(
-    document.getElementById("barya")?.value
-  );
+  const net=total+barya-al-ex1-ex2-ex3;
 
-  const al=num(
-    document.getElementById("al")?.value
-  );
+  document.getElementById("totalAmount").textContent=money(total);
+  document.getElementById("netTotal").textContent=money(net);
 
-  const ex1=num(
-    document.getElementById("ex1")?.value
-  );
-
-  const ex2=num(
-    document.getElementById("ex2")?.value
-  );
-
-  const ex3=num(
-    document.getElementById("ex3")?.value
-  );
-
-
-  const net=
-    total+
-    barya-
-    al-
-    ex1-
-    ex2-
-    ex3;
-
-
-  const totalEl=
-    document.getElementById("totalAmount");
-
-  const netEl=
-    document.getElementById("netTotal");
-
-
-  if(totalEl){
-    totalEl.textContent=money(total);
+  // Auto-save into current record immediately if active
+  if(currentLedger.id && !ledgerReadOnly){
+    saveActiveRecordToStorage(total, net);
   }
 
-  if(netEl){
-    netEl.textContent=money(net);
-  }
-
-
-  if(!ledgerReadOnly){
-    saveCurrentInputs();
-  }
-
-
-  return{
-    total,
-    barya,
-    al,
-    ex1,
-    ex2,
-    ex3,
-    net
-  };
+  return {total, barya, al, ex1, ex2, ex3, net};
 }
 
 
-/* =========================
-   CURRENT INPUTS
-   ========================= */
-
 function getCurrentInputs(){
-
   const data={
     del:{},
     ret:{},
-    barya:num(
-      document.getElementById("barya")?.value
-    ),
-    al:num(
-      document.getElementById("al")?.value
-    ),
-    ex1:num(
-      document.getElementById("ex1")?.value
-    ),
-    ex2:num(
-      document.getElementById("ex2")?.value
-    ),
-    ex3:num(
-      document.getElementById("ex3")?.value
-    ),
-    note:
-      document.getElementById("note")?.value||""
+    barya:num(document.getElementById("barya")?.value),
+    al:num(document.getElementById("al")?.value),
+    ex1:num(document.getElementById("ex1")?.value),
+    ex2:num(document.getElementById("ex2")?.value),
+    ex3:num(document.getElementById("ex3")?.value),
+    note:document.getElementById("note")?.value||""
   };
 
-
   products.forEach(p=>{
-
-    data.del[p]=num(
-      document.getElementById(`del-${p}`)?.value
-    );
-
-    data.ret[p]=num(
-      document.getElementById(`ret-${p}`)?.value
-    );
-
+    data.del[p]=num(document.getElementById(`del-${p}`)?.value);
+    data.ret[p]=num(document.getElementById(`ret-${p}`)?.value);
   });
-
 
   return data;
 }
 
 
-function saveCurrentInputs(){
+function saveActiveRecordToStorage(total, net){
+  if(!currentLedger.id) return;
 
-  if(ledgerReadOnly)return;
+  const files=getSavedFiles();
+  const index=files.findIndex(x=>x.id===currentLedger.id);
 
-  localStorage.setItem(
-    CURRENT_KEY,
-    JSON.stringify({
-      ledger:{...currentLedger},
-      inputs:getCurrentInputs(),
-      multipliers:{...multipliers}
-    })
-  );
+  const record={
+    id: currentLedger.id,
+    date: currentLedger.date,
+    name: currentLedger.name,
+    inputs: getCurrentInputs(),
+    multipliers: {...multipliers},
+    total: total,
+    net: net,
+    savedAt: new Date().toISOString()
+  };
+
+  if(index>=0){
+    files[index]=record;
+  }else{
+    files.push(record);
+  }
+
+  setSavedFiles(files);
+  saveDefaultMultipliers();
+  renderSavedDays();
 }
 
 
@@ -1538,63 +961,33 @@ function saveCurrentInputs(){
    ========================= */
 
 function putInputs(data){
-
   data=data||{};
 
-
   products.forEach(p=>{
-
     const del=data.del?.[p];
     const ret=data.ret?.[p];
+    const delEl=document.getElementById(`del-${p}`);
+    const retEl=document.getElementById(`ret-${p}`);
 
-    const delEl=
-      document.getElementById(`del-${p}`);
-
-    const retEl=
-      document.getElementById(`ret-${p}`);
-
-
-    if(delEl){
-      delEl.value=
-        (del===undefined||del===0)?"":del;
-    }
-
-    if(retEl){
-      retEl.value=
-        (ret===undefined||ret===0)?"":ret;
-    }
-
+    if(delEl) delEl.value=(del===undefined||del===0)?"":del;
+    if(retEl) retEl.value=(ret===undefined||ret===0)?"":ret;
   });
 
+  ["barya","al","ex1","ex2","ex3"].forEach(id=>{
+    const el=document.getElementById(id);
+    const value=data[id];
+    if(el) el.value=(value===undefined||value===0)?"":value;
+  });
 
-  ["barya","al","ex1","ex2","ex3"]
-    .forEach(id=>{
-
-      const el=document.getElementById(id);
-
-      const value=data[id];
-
-      if(el){
-        el.value=
-          (value===undefined||value===0)
-          ?""
-          :value;
-      }
-
-    });
-
-
-  document.getElementById("note").value=
-    data.note||"";
+  document.getElementById("note").value=data.note||"";
 }
 
 
 /* =========================
-   SNAPSHOT
+   STATE MANAGEMENT
    ========================= */
 
 function captureLedgerState(){
-
   return{
     currentLedger:{...currentLedger},
     multipliers:{...multipliers},
@@ -1603,39 +996,19 @@ function captureLedgerState(){
   };
 }
 
-
 function restoreLedgerState(snapshot){
-
-  if(!snapshot)return;
-
-  currentLedger={
-    ...snapshot.currentLedger
-  };
-
-  multipliers={
-    ...snapshot.multipliers
-  };
-
+  if(!snapshot) return;
+  currentLedger={...snapshot.currentLedger};
+  multipliers={...snapshot.multipliers};
   putInputs(snapshot.inputs);
-
   updateMultiplierTags();
-
   setLedgerReadOnly(snapshot.readOnly);
-
   updateLedgerBar();
-
   calculate();
 }
 
-
-/* =========================
-   LOAD SAVED RECORD
-   ========================= */
-
 function loadRecordIntoLedger(record,readOnly){
-
-  if(!record)return;
-
+  if(!record) return;
 
   currentLedger={
     id:record.id,
@@ -1643,68 +1016,29 @@ function loadRecordIntoLedger(record,readOnly){
     name:record.name||""
   };
 
-
   multipliers={
     ...getDefaultMultipliers(),
     ...(record.multipliers||{})
   };
 
-
   putInputs(record.inputs||{});
-
   updateMultiplierTags();
-
   setLedgerReadOnly(!!readOnly);
-
   updateLedgerBar();
-
   calculate();
 }
 
-
-/* =========================
-   READ ONLY / EDIT MODE
-   ========================= */
-
 function setLedgerReadOnly(state){
-
   ledgerReadOnly=!!state;
+  const fields=document.querySelectorAll('.main-table input[type="number"], .summary-table input[type="number"], #note');
+  
+  fields.forEach(el=>{ el.disabled=ledgerReadOnly; });
+  document.getElementById("clearBtn").disabled=ledgerReadOnly;
 
+  document.body.classList.toggle("saved-preview", ledgerReadOnly);
+  document.body.classList.toggle("edit-mode", !!editingSavedId);
 
-  const fields=document.querySelectorAll(
-    '.main-table input[type="number"],'+
-    '.summary-table input[type="number"],'+
-    '#note'
-  );
-
-
-  fields.forEach(el=>{
-    el.disabled=ledgerReadOnly;
-  });
-
-
-  document.getElementById("clearBtn").disabled=
-    ledgerReadOnly;
-
-  document.getElementById("saveBtn").disabled=
-    ledgerReadOnly;
-
-
-  document.body.classList.toggle(
-    "saved-preview",
-    ledgerReadOnly
-  );
-
-  document.body.classList.toggle(
-    "edit-mode",
-    !!editingSavedId
-  );
-
-
-  const pill=
-    document.getElementById("modePill");
-
-
+  const pill=document.getElementById("modePill");
   if(editingSavedId){
     pill.textContent="EDIT MODE";
   }else if(ledgerReadOnly){
@@ -1714,1263 +1048,295 @@ function setLedgerReadOnly(state){
   }
 }
 
-
 function updateLedgerBar(){
-
-  document.getElementById("ledgerDate").textContent=
-    formatDisplayDate(currentLedger.date);
-
-  document.getElementById("ledgerName").textContent=
-    currentLedger.name||"—";
+  document.getElementById("ledgerDate").textContent=formatDisplayDate(currentLedger.date);
+  document.getElementById("ledgerName").textContent=currentLedger.name||"—";
 }
 
 
 /* =========================
-   NEW LEDGER
+   START / NEW LEDGER
    ========================= */
 
-function showNewDaySetup(){
-
-  if(editingSavedId){
-
-    document.getElementById(
-      "editNewDayConfirm"
-    ).classList.add("show");
-
-    return;
-  }
-
-
-  document.getElementById("setupDate").value="";
-
-  document.getElementById("setupName").value="";
-
-  document.getElementById("setup")
-    .classList.add("show");
-}
-
-
-function closeSetup(){
-
-  document.getElementById("setup")
-    .classList.remove("show");
-
-
-  if(!currentLedger.date || !currentLedger.name){
-
-    setLedgerReadOnly(true);
-
-    currentLedger={
-      id:null,
-      date:"",
-      name:""
-    };
-
-    updateLedgerBar();
-
-    calculate();
-  }
-}
-
-
-function startNewLedger(){
-
-  const date=
-    document.getElementById("setupDate").value;
-
-  const name=
-    document.getElementById("setupName")
-      .value.trim();
-
+document.getElementById("startLedgerBtn").addEventListener("click",()=>{
+  const date=document.getElementById("setupDate").value;
+  const name=document.getElementById("setupName").value.trim();
 
   if(!date){
     toast("Please select a date.");
     return;
   }
-
-
   if(!name){
     toast("Please enter a name.");
     return;
   }
 
-
+  // Create new record right away and store it
+  const newId=makeId();
   currentLedger={
-    id:null,
+    id:newId,
     date,
     name
   };
 
+  multipliers=getDefaultMultipliers();
 
-  multipliers=
-    getDefaultMultipliers();
+  const record={
+    id:newId,
+    date,
+    name,
+    inputs:getCurrentInputs(),
+    multipliers:{...multipliers},
+    total:0,
+    net:0,
+    savedAt:new Date().toISOString()
+  };
 
+  const files=getSavedFiles();
+  files.push(record);
+  setSavedFiles(files);
 
+  selectedSavedFileId=newId;
   editingSavedId=null;
-  editBackup=null;
-
   savedViewBackup=null;
   viewingSavedId=null;
-  selectedSavedFileId=null;
 
-
-  putInputs({
-    del:{},
-    ret:{},
-    barya:0,
-    al:0,
-    ex1:0,
-    ex2:0,
-    ex3:0,
-    note:""
-  });
-
-
+  putInputs({del:{}, ret:{}, barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
   updateMultiplierTags();
-
   setLedgerReadOnly(false);
-
   updateLedgerBar();
 
-  localStorage.removeItem(CURRENT_KEY);
-
-  closeSetup();
-
+  document.getElementById("setup").classList.remove("show");
   calculate();
-
   renderSavedDays();
 
-  toast("New ledger started.");
-}
+  toast("Ledger started & saved.");
+});
+
+document.getElementById("newDayBtn").addEventListener("click",()=>{
+  document.getElementById("setupDate").value="";
+  document.getElementById("setupName").value="";
+  document.getElementById("setup").classList.add("show");
+});
 
 
 /* =========================
-   CLEAR
+   CLEAR INPUTS
    ========================= */
 
-function clearInputs(){
-
+document.getElementById("clearBtn").addEventListener("click",()=>{
   if(ledgerReadOnly){
     toast("Saved file is read-only.");
     return;
   }
+  if(!confirm("Clear all current inputs?")) return;
 
-
-  if(!confirm("Clear all current inputs?")){
-    return;
-  }
-
-
-  putInputs({
-    del:{},
-    ret:{},
-    barya:0,
-    al:0,
-    ex1:0,
-    ex2:0,
-    ex3:0,
-    note:""
-  });
-
-
+  putInputs({del:{}, ret:{}, barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
   calculate();
-
   toast("Inputs cleared.");
-}
+});
 
 
 /* =========================
-   SAVED FILE PREVIEW
+   VIEW & SAVED FILES LIST
    ========================= */
 
 function viewSavedFile(id){
-
   const files=getSavedFiles();
-
-  const record=
-    files.find(x=>x.id===id);
-
-  if(!record)return;
-
+  const record=files.find(x=>x.id===id);
+  if(!record) return;
 
   if(viewingSavedId===id){
-
-    if(savedViewBackup){
-      restoreLedgerState(savedViewBackup);
-    }
-
-
+    if(savedViewBackup) restoreLedgerState(savedViewBackup);
     savedViewBackup=null;
     viewingSavedId=null;
-    selectedSavedFileId=null;
-
-
+    selectedSavedFileId=currentLedger.id;
     renderSavedDays();
-
-    toast("Returned to current work.");
-
+    toast("Returned to active work.");
     return;
   }
 
-
   if(!viewingSavedId){
-
-    savedViewBackup=
-      captureLedgerState();
+    savedViewBackup=captureLedgerState();
   }
-
 
   viewingSavedId=id;
   selectedSavedFileId=id;
-
-
-  loadRecordIntoLedger(
-    record,
-    true
-  );
-
-
+  loadRecordIntoLedger(record, true);
   renderSavedDays();
-
   toast("READ ONLY — review mode.");
 }
 
-
-/* =========================
-   SAVED LIST
-   ========================= */
-
 function renderSavedDays(){
-
-  const list=
-    document.getElementById("savedFilesList");
-
+  const list=document.getElementById("savedFilesList");
   const files=getSavedFiles();
 
-
   files.sort((a,b)=>{
-
     const da=getDateSortKey(a.date);
     const db=getDateSortKey(b.date);
-
-
-    if(db!==da){
-      return db-da;
-    }
-
-
-    return String(b.savedAt||"")
-      .localeCompare(
-        String(a.savedAt||"")
-      );
+    if(db!==da) return db-da;
+    return String(b.savedAt||"").localeCompare(String(a.savedAt||""));
   });
-
 
   list.innerHTML="";
 
-
   if(!files.length){
-
-    list.innerHTML=`
-      <div style="
-        padding:15px;
-        text-align:center;
-        color:#888">
-        No saved files yet.
-      </div>
-    `;
-
+    list.innerHTML=`<div style="padding:15px;text-align:center;color:#888">No saved files yet.</div>`;
     return;
   }
 
-
   files.forEach(record=>{
+    const row=document.createElement("div");
+    row.className="saved-item"+(selectedSavedFileId===record.id?" selected":"");
 
-    const row=
-      document.createElement("div");
-
-
-    row.className=
-      "saved-item"+
-      (
-        selectedSavedFileId===record.id
-        ?" selected"
-        :""
-      );
-
-
-    const info=
-      document.createElement("div");
-
+    const info=document.createElement("div");
     info.className="saved-info";
-
-
     info.innerHTML=`
-      <div class="saved-date">
-        ${formatDisplayDate(record.date)}
-      </div>
-
-      <div class="saved-name">
-        ${escapeHtml(record.name||"—")}
-      </div>
-
-      <div class="saved-net">
-        NET: ${money(record.net)}
-      </div>
+      <div class="saved-date">${formatDisplayDate(record.date)}</div>
+      <div class="saved-name">${escapeHtml(record.name||"—")}</div>
+      <div class="saved-net">NET: ${money(record.net)}</div>
     `;
+    info.onclick=()=>viewSavedFile(record.id);
 
-
-    info.onclick=()=>{
-      viewSavedFile(record.id);
-    };
-
-
-    const edit=
-      document.createElement("button");
-
-    edit.className=
-      "small-btn edit-btn";
-
+    const edit=document.createElement("button");
+    edit.className="small-btn edit-btn";
     edit.textContent="EDIT";
-
-
     edit.onclick=e=>{
-
       e.stopPropagation();
-
       openEditModal(record.id);
     };
 
-
-    const del=
-      document.createElement("button");
-
-    del.className=
-      "small-btn delete-btn";
-
+    const del=document.createElement("button");
+    del.className="small-btn delete-btn";
     del.textContent="DEL";
-
-
     del.onclick=e=>{
-
       e.stopPropagation();
-
       deleteSavedFile(record.id);
     };
-
 
     row.appendChild(info);
     row.appendChild(edit);
     row.appendChild(del);
-
     list.appendChild(row);
   });
 }
 
-
 function escapeHtml(str){
-
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
 
 /* =========================
-   EDIT
+   EDIT & DELETE
    ========================= */
 
 function openEditModal(id){
-
-  const record=
-    getSavedFiles()
-      .find(x=>x.id===id);
-
-  if(!record)return;
-
-
-  document.getElementById(
-    "editPreviewDate"
-  ).textContent=
-    formatDisplayDate(record.date);
-
-
-  document.getElementById(
-    "editPreviewName"
-  ).textContent=record.name||"—";
-
-
-  document.getElementById(
-    "editModal"
-  ).dataset.id=id;
-
-
-  document.getElementById(
-    "editModal"
-  ).classList.add("show");
-}
-
-
-function closeEditModal(){
-
-  document.getElementById(
-    "editModal"
-  ).classList.remove("show");
-}
-
-
-function beginEditSavedFile(id){
-
-  const record=
-    getSavedFiles()
-      .find(x=>x.id===id);
-
-  if(!record)return;
-
-
-  editBackup=
-    captureLedgerState();
-
-  editingSavedId=id;
-
-
-  savedViewBackup=null;
-  viewingSavedId=null;
-
-  selectedSavedFileId=id;
-
-
-  loadRecordIntoLedger(
-    record,
-    false
-  );
-
-
-  closeEditModal();
-
+  const record=getSavedFiles().find(x=>x.id===id);
+  if(!record) return;
+  currentLedger={ id:record.id, date:record.date, name:record.name };
+  selectedSavedFileId=record.id;
+  loadRecordIntoLedger(record, false);
   renderSavedDays();
-
   toast("Edit mode enabled.");
 }
 
-
-function cancelEdit(){
-
-  if(!editingSavedId)return;
-
-
-  if(editBackup){
-    restoreLedgerState(editBackup);
-  }
-
-
-  editingSavedId=null;
-  editBackup=null;
-
-
-  setLedgerReadOnly(ledgerReadOnly);
-
-  renderSavedDays();
-
-  toast("Edit cancelled.");
-}
-
-
-/* =========================
-   DUPLICATE DATE CHECK
-   ========================= */
-
-function hasDuplicateDate(date,currentId){
-
-  const files=getSavedFiles();
-
-  return files.some(record=>{
-
-    return (
-      record.date===date &&
-      record.id!==currentId
-    );
-
-  });
-}
-
-
-/* =========================
-   SAVE
-   ========================= */
-
-function openSaveFileModal(){
-
-  if(ledgerReadOnly){
-    toast("Saved file is read-only.");
-    return;
-  }
-
-
-  if(!currentLedger.date){
-    toast("Please start a ledger first.");
-    return;
-  }
-
-
-  if(!currentLedger.name){
-    toast("Name is required.");
-    return;
-  }
-
-
-  const result=calculate();
-
-
-  document.getElementById(
-    "previewDate"
-  ).value=currentLedger.date;
-
-
-  document.getElementById(
-    "previewName"
-  ).value=currentLedger.name;
-
-
-  document.getElementById(
-    "previewTotal"
-  ).textContent=money(result.total);
-
-
-  document.getElementById(
-    "previewNet"
-  ).textContent=money(result.net);
-
-
-  alteringSaveDate=false;
-
-
-  document.getElementById(
-    "saveModal"
-  ).classList.add("show");
-}
-
-
-function closeSaveModal(){
-
-  alteringSaveDate=false;
-
-  document.getElementById(
-    "saveModal"
-  ).classList.remove("show");
-}
-
-
-/* =========================
-   FINAL SAVE
-   ========================= */
-
-function finalSaveLedger(){
-
-  if(ledgerReadOnly)return false;
-
-
-  const saveDate=
-    document.getElementById(
-      "previewDate"
-    ).value;
-
-  const saveName=
-    document.getElementById(
-      "previewName"
-    ).value.trim();
-
-
-  if(!saveDate){
-
-    toast("Please select a date.");
-
-    return false;
-  }
-
-
-  if(!saveName){
-
-    toast("Please enter a name.");
-
-    return false;
-  }
-
-
-  if(
-    hasDuplicateDate(
-      saveDate,
-      currentLedger.id
-    )
-  ){
-
-    document.getElementById(
-      "duplicateDateConfirm"
-    ).classList.add("show");
-
-    return false;
-  }
-
-
-  const result=calculate();
-
-
-  const record={
-
-    id:
-      currentLedger.id||makeId(),
-
-    date:
-      saveDate,
-
-    name:
-      saveName,
-
-    inputs:
-      getCurrentInputs(),
-
-    multipliers:
-      {...multipliers},
-
-    total:
-      result.total,
-
-    net:
-      result.net,
-
-    savedAt:
-      new Date().toISOString()
-  };
-
-
-  const files=getSavedFiles();
-
-
-  const existingIndex=
-    files.findIndex(
-      x=>x.id===record.id
-    );
-
-
-  if(existingIndex>=0){
-
-    files[existingIndex]=record;
-
-  }else{
-
-    files.push(record);
-  }
-
-
-  setSavedFiles(files);
-
-
-  saveDefaultMultipliers();
-
-
-  currentLedger={
-    id:record.id,
-    date:record.date,
-    name:record.name
-  };
-
-
-  selectedSavedFileId=record.id;
-
-
-  editingSavedId=null;
-  editBackup=null;
-
-  savedViewBackup=null;
-  viewingSavedId=null;
-
-
-  localStorage.removeItem(
-    CURRENT_KEY
-  );
-
-
-  loadRecordIntoLedger(
-    record,
-    true
-  );
-
-
-  updateLedgerBar();
-
-  closeSaveModal();
-
-  document.getElementById(
-    "duplicateDateConfirm"
-  ).classList.remove("show");
-
-  renderSavedDays();
-
-  toast("Ledger saved successfully.");
-
-  return true;
-}
-
-
-/* =========================
-   DELETE
-   ========================= */
-
 function deleteSavedFile(id){
-
   const files=getSavedFiles();
+  const record=files.find(x=>x.id===id);
+  if(!record) return;
 
-  const record=
-    files.find(x=>x.id===id);
+  if(!confirm(`Delete saved file?\n\n${formatDisplayDate(record.date)} — ${record.name}`)) return;
 
-  if(!record)return;
-
-
-  if(!confirm(
-    `Delete saved file?\n\n${formatDisplayDate(record.date)} — ${record.name}`
-  )){
-    return;
-  }
-
-
-  setSavedFiles(
-    files.filter(x=>x.id!==id)
-  );
-
+  setSavedFiles(files.filter(x=>x.id!==id));
 
   if(viewingSavedId===id){
-
-    if(savedViewBackup){
-      restoreLedgerState(
-        savedViewBackup
-      );
-    }
-
-
+    if(savedViewBackup) restoreLedgerState(savedViewBackup);
     savedViewBackup=null;
     viewingSavedId=null;
-    selectedSavedFileId=null;
   }
-
 
   if(currentLedger.id===id){
-
     currentLedger.id=null;
-
-    if(editingSavedId===id){
-
-      editingSavedId=null;
-      editBackup=null;
-    }
-
-
-    if(ledgerReadOnly){
-      setLedgerReadOnly(false);
-    }
-
-
-    updateLedgerBar();
-
-    calculate();
+    document.getElementById("setupDate").value="";
+    document.getElementById("setupName").value="";
+    document.getElementById("setup").classList.add("show");
   }
-
 
   renderSavedDays();
-
   toast("Saved file deleted.");
 }
-
-
-/* =========================
-   5 TAP SALES
-   ========================= */
-
-let saleTapCount=0;
-let saleTapTimer=null;
-
-
-document.getElementById(
-  "saleHeader"
-).addEventListener("click",()=>{
-
-  if(ledgerReadOnly){
-
-    toast("Saved file is read-only.");
-
-    return;
-  }
-
-
-  saleTapCount++;
-
-
-  clearTimeout(
-    saleTapTimer
-  );
-
-
-  saleTapTimer=setTimeout(()=>{
-    saleTapCount=0;
-  },1000);
-
-
-  if(saleTapCount>=5){
-
-    saleTapCount=0;
-
-
-    products.forEach(p=>{
-
-      document.getElementById(
-        `mult-${p}`
-      ).value=multipliers[p];
-
-    });
-
-
-    document.getElementById(
-      "multiplierModal"
-    ).classList.add("show");
-  }
-});
-
-
-function closeMultiplierModal(){
-
-  document.getElementById(
-    "multiplierModal"
-  ).classList.remove("show");
-}
-
-
-function saveMultipliers(){
-
-  products.forEach(p=>{
-
-    const value=
-      num(
-        document.getElementById(
-          `mult-${p}`
-        ).value
-      );
-
-    multipliers[p]=value||0;
-  });
-
-
-  saveDefaultMultipliers();
-
-
-  saveCurrentInputs();
-
-
-  updateMultiplierTags();
-
-  calculate();
-
-  closeMultiplierModal();
-
-  toast("Multipliers updated.");
-}
-
-
-/* =========================
-   INPUT
-   ========================= */
-
-document.addEventListener(
-  "input",
-  e=>{
-
-    if(
-      e.target.matches(
-        '.main-table input[type="number"],'+
-        '.summary-table input[type="number"],'+
-        '#note'
-      )
-    ){
-
-      if(!ledgerReadOnly){
-        calculate();
-      }
-    }
-  }
-);
-
-
-/* =========================
-   BUTTONS
-   ========================= */
-
-document.getElementById(
-  "clearBtn"
-).addEventListener(
-  "click",
-  clearInputs
-);
-
-
-document.getElementById(
-  "newDayBtn"
-).addEventListener(
-  "click",
-  showNewDaySetup
-);
-
-
-/* =========================
-   NEW DAY EDIT CONFIRMATION
-   ========================= */
-
-document.getElementById(
-  "editNewDayCancelBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    document.getElementById(
-      "editNewDayConfirm"
-    ).classList.remove("show");
-
-    toast("Current edit kept.");
-  }
-);
-
-
-document.getElementById(
-  "editNewDayOkBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    document.getElementById(
-      "editNewDayConfirm"
-    ).classList.remove("show");
-
-
-    const saved=
-      finalSaveLedger();
-
-
-    if(!saved){
-
-      return;
-    }
-
-
-    document.getElementById(
-      "setupDate"
-    ).value="";
-
-
-    document.getElementById(
-      "setupName"
-    ).value="";
-
-
-    document.getElementById(
-      "setup"
-    ).classList.add("show");
-
-  }
-);
-
-
-document.getElementById(
-  "saveBtn"
-).addEventListener(
-  "click",
-  openSaveFileModal
-);
-
-
-/* =========================
-   NEW LEDGER
-   ========================= */
-
-document.getElementById(
-  "setupExitBtn"
-).addEventListener(
-  "click",
-  closeSetup
-);
-
-
-document.getElementById(
-  "startLedgerBtn"
-).addEventListener(
-  "click",
-  startNewLedger
-);
-
-
-/* =========================
-   SAVE
-   ========================= */
-
-document.getElementById(
-  "saveCancelBtn"
-).addEventListener(
-  "click",
-  closeSaveModal
-);
-
-
-document.getElementById(
-  "reviewSaveBtn"
-).addEventListener(
-  "click",
-  closeSaveModal
-);
-
-
-document.getElementById(
-  "finalSaveBtn"
-).addEventListener(
-  "click",
-  finalSaveLedger
-);
-
-
-/* =========================
-   DUPLICATE DATE
-   ========================= */
-
-document.getElementById(
-  "duplicateCancelBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    alteringSaveDate=false;
-
-    document.getElementById(
-      "duplicateDateConfirm"
-    ).classList.remove("show");
-
-    closeSaveModal();
-
-    toast("Save cancelled.");
-  }
-);
-
-
-document.getElementById(
-  "duplicateAlterBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    document.getElementById(
-      "duplicateDateConfirm"
-    ).classList.remove("show");
-
-
-    alteringSaveDate=true;
-
-
-    const dateInput=
-      document.getElementById(
-        "previewDate"
-      );
-
-
-    dateInput.focus();
-
-
-    if(dateInput.showPicker){
-
-      try{
-
-        dateInput.showPicker();
-
-      }catch(e){}
-
-    }else{
-
-      dateInput.click();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   ALTER DATE AUTO SAVE
-   ========================= */
-
-document.getElementById(
-  "previewDate"
-).addEventListener(
-  "change",
-  ()=>{
-
-    if(!alteringSaveDate){
-      return;
-    }
-
-
-    alteringSaveDate=false;
-
-
-    setTimeout(()=>{
-
-      finalSaveLedger();
-
-    },100);
-
-  }
-);
-
-
-/* =========================
-   EDIT
-   ========================= */
-
-document.getElementById(
-  "editCancelBtn"
-).addEventListener(
-  "click",
-  closeEditModal
-);
-
-
-document.getElementById(
-  "editConfirmBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    const id=
-      document.getElementById(
-        "editModal"
-      ).dataset.id;
-
-    beginEditSavedFile(id);
-  }
-);
 
 
 /* =========================
    MULTIPLIERS
    ========================= */
 
-document.getElementById(
-  "multCancelBtn"
-).addEventListener(
-  "click",
-  closeMultiplierModal
-);
+let saleTapCount=0;
+let saleTapTimer=null;
 
-
-document.getElementById(
-  "multSaveBtn"
-).addEventListener(
-  "click",
-  saveMultipliers
-);
-
-
-/* =========================
-   RESTORE UNFINISHED WORK
-   ========================= */
-
-function restoreUnfinishedWork(){
-
-  try{
-
-    const raw=
-      localStorage.getItem(
-        CURRENT_KEY
-      );
-
-    if(!raw)return false;
-
-
-    const data=
-      JSON.parse(raw);
-
-
-    if(!data||!data.ledger){
-      return false;
-    }
-
-
-    currentLedger={
-      ...currentLedger,
-      ...(data.ledger||{})
-    };
-
-
-    multipliers={
-      ...getDefaultMultipliers(),
-      ...(data.multipliers||{})
-    };
-
-
-    putInputs(
-      data.inputs||{}
-    );
-
-
-    updateMultiplierTags();
-
-    setLedgerReadOnly(false);
-
-    updateLedgerBar();
-
-    calculate();
-
-
-    return !!(
-      currentLedger.date||
-      currentLedger.name||
-      Object.keys(
-        data.inputs?.del||{}
-      ).length
-    );
-
-  }catch(e){
-
-    return false;
+document.getElementById("saleHeader").addEventListener("click",()=>{
+  if(ledgerReadOnly){
+    toast("Saved file is read-only.");
+    return;
   }
+  saleTapCount++;
+  clearTimeout(saleTapTimer);
+  saleTapTimer=setTimeout(()=>{ saleTapCount=0; },1000);
+
+  if(saleTapCount>=5){
+    saleTapCount=0;
+    products.forEach(p=>{
+      document.getElementById(`mult-${p}`).value=multipliers[p];
+    });
+    document.getElementById("multiplierModal").classList.add("show");
+  }
+});
+
+function closeMultiplierModal(){
+  document.getElementById("multiplierModal").classList.remove("show");
 }
 
+function saveMultipliers(){
+  products.forEach(p=>{
+    const value=num(document.getElementById(`mult-${p}`).value);
+    multipliers[p]=value||0;
+  });
+  saveDefaultMultipliers();
+  updateMultiplierTags();
+  calculate();
+  closeMultiplierModal();
+  toast("Multipliers updated.");
+}
+
+document.getElementById("multCancelBtn").addEventListener("click", closeMultiplierModal);
+document.getElementById("multSaveBtn").addEventListener("click", saveMultipliers);
+
 
 /* =========================
-   STARTUP
+   INPUT LISTENER FOR AUTO-SAVE
+   ========================= */
+
+document.addEventListener("input", e=>{
+  if(e.target.matches('.main-table input[type="number"], .summary-table input[type="number"], #note')){
+    if(!ledgerReadOnly && currentLedger.id){
+      calculate();
+    }
+  }
+});
+
+
+/* =========================
+   STARTUP INITIALIZATION
    ========================= */
 
 buildProductRows();
-
-
-document.getElementById(
-  "setupDate"
-).value="";
-
-
 renderSavedDays();
-
 updateLedgerBar();
 
-setLedgerReadOnly(false);
-
-
-const restored=
-  restoreUnfinishedWork();
-
-
-if(!restored){
-
-  showNewDaySetup();
-}
-
-
-calculate();
+// Always force setup modal on fresh load / refresh
+document.getElementById("setupDate").value="";
+document.getElementById("setupName").value="";
+document.getElementById("setup").classList.add("show");
 
 </script>
   
