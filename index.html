@@ -508,6 +508,31 @@ body.edit-mode .saved-item.selected{
   text-align:center
 }
 
+/* Duplicate Confirmation Modal Rules */
+.confirm-box{
+  max-width:340px;
+  padding:16px;
+}
+.confirm-title{
+  font-weight:bold;
+  font-size:15px;
+  text-align:center;
+  color:#b33;
+  margin-bottom:8px;
+}
+.confirm-message{
+  font-size:12px;
+  line-height:1.4;
+  text-align:center;
+  color:#333;
+  margin-bottom:14px;
+}
+.confirm-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
 #toast{
   position:fixed;
   left:50%;
@@ -738,6 +763,34 @@ body.edit-mode .saved-item.selected{
 </div>
 
 
+<!-- DUPLICATE DATE CONFIRMATION MODAL -->
+
+<div class="modal" id="duplicateConfirmModal">
+
+  <div class="modal-box confirm-box">
+
+    <div class="confirm-title">
+      DATE ALREADY EXISTS
+    </div>
+
+    <div class="confirm-message" id="duplicateConfirmMsg">
+      A record already exists for this date. Do you want to update the existing file or cancel?
+    </div>
+
+    <div class="confirm-actions">
+      <button class="modal-btn cancel-btn" id="dupCancelBtn" style="background:#666">
+        CANCEL
+      </button>
+      <button class="modal-btn green-btn" id="dupOkBtn">
+        UPDATE
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
 <!-- MULTIPLIERS -->
 
 <div class="modal" id="multiplierModal">
@@ -844,6 +897,7 @@ let selectedSavedFileId=null;
 let savedViewBackup=null;
 let viewingSavedId=null;
 let editingSavedId=null;
+let pendingDuplicateRecord=null;
 
 
 /* =========================
@@ -1214,8 +1268,48 @@ function updateLedgerBar(){
 
 
 /* =========================
-   START / NEW LEDGER
+   START / NEW LEDGER WITH DUPLICATE DATE CHECK
    ========================= */
+
+function createAndStartLedger(id, date, name, isExisting=false, existingRecord=null){
+  currentLedger={ id, date, name };
+
+  if(isExisting && existingRecord){
+    loadRecordIntoLedger(existingRecord, false);
+  }else{
+    multipliers=getDefaultMultipliers();
+    const record={
+      id,
+      date,
+      name,
+      inputs:getCurrentInputs(),
+      multipliers:{...multipliers},
+      total:0,
+      net:0,
+      savedAt:new Date().toISOString()
+    };
+    const files=getSavedFiles();
+    files.push(record);
+    setSavedFiles(files);
+
+    putInputs({del:{}, ret:{}, upper:[], lower:[], barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
+    updateMultiplierTags();
+    setLedgerReadOnly(false);
+    updateLedgerBar();
+    calculate();
+  }
+
+  selectedSavedFileId=id;
+  editingSavedId=null;
+  savedViewBackup=null;
+  viewingSavedId=null;
+
+  document.getElementById("setup").classList.remove("show");
+  document.getElementById("duplicateConfirmModal").classList.remove("show");
+  renderSavedDays();
+
+  toast(isExisting ? "Loaded existing ledger for editing." : "Ledger started & saved.");
+}
 
 document.getElementById("startLedgerBtn").addEventListener("click",()=>{
   const date=document.getElementById("setupDate").value;
@@ -1230,45 +1324,34 @@ document.getElementById("startLedgerBtn").addEventListener("click",()=>{
     return;
   }
 
-  const newId=makeId();
-  currentLedger={
-    id:newId,
-    date,
-    name
-  };
-
-  multipliers=getDefaultMultipliers();
-
-  const record={
-    id:newId,
-    date,
-    name,
-    inputs:getCurrentInputs(),
-    multipliers:{...multipliers},
-    total:0,
-    net:0,
-    savedAt:new Date().toISOString()
-  };
-
+  // Check if date already exists in saved files
   const files=getSavedFiles();
-  files.push(record);
-  setSavedFiles(files);
+  const existingRecord=files.find(x=>x.date===date);
 
-  selectedSavedFileId=newId;
-  editingSavedId=null;
-  savedViewBackup=null;
-  viewingSavedId=null;
+  if(existingRecord){
+    pendingDuplicateRecord={ id: existingRecord.id, date, name, existingRecord };
+    document.getElementById("duplicateConfirmMsg").textContent=
+      `A record already exists for ${formatDisplayDate(date)} ("${existingRecord.name}"). Do you want to UPDATE it or CANCEL?`;
+    document.getElementById("duplicateConfirmModal").classList.add("show");
+    return;
+  }
 
-  putInputs({del:{}, ret:{}, upper:[], lower:[], barya:0, al:0, ex1:0, ex2:0, ex3:0, note:""});
-  updateMultiplierTags();
-  setLedgerReadOnly(false);
-  updateLedgerBar();
+  createAndStartLedger(makeId(), date, name, false);
+});
 
-  document.getElementById("setup").classList.remove("show");
-  calculate();
-  renderSavedDays();
+document.getElementById("dupOkBtn").addEventListener("click",()=>{
+  if(pendingDuplicateRecord){
+    const { id, date, name, existingRecord }=pendingDuplicateRecord;
+    // Update name if changed
+    existingRecord.name=name;
+    createAndStartLedger(id, date, name, true, existingRecord);
+    pendingDuplicateRecord=null;
+  }
+});
 
-  toast("Ledger started & saved.");
+document.getElementById("dupCancelBtn").addEventListener("click",()=>{
+  pendingDuplicateRecord=null;
+  document.getElementById("duplicateConfirmModal").classList.remove("show");
 });
 
 document.getElementById("newDayBtn").addEventListener("click",()=>{
